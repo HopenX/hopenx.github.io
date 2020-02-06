@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ML-Study | Hexo</title>
+  <meta name="keywords" content=" 机器学习 ">
+  <meta name="description" content="ML-Study | Hexo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="PAT-甲级 做题笔记目录0000 做题 Tips 基本经验1003 Emergency (Dijkstra 算法)1004 Counting Leaves (计算叶节点数，DFS&#x2F;BFS 树算法)1007 Maximum Subsequence Sum(最大子序列和)1010 Radix (进制转换&#x2F;二分法)1012 The Best Rank (应用问题，数据结构设计，多维度排序)1013 B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="djy">
+<meta property="og:url" content="https://hopenx.github.io/2020/02/06/djy/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="PAT-甲级 做题笔记目录0000 做题 Tips 基本经验1003 Emergency (Dijkstra 算法)1004 Counting Leaves (计算叶节点数，DFS&#x2F;BFS 树算法)1007 Maximum Subsequence Sum(最大子序列和)1010 Radix (进制转换&#x2F;二分法)1012 The Best Rank (应用问题，数据结构设计，多维度排序)1013 B">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-05T17:15:03.000Z">
+<meta property="article:modified_time" content="2020-02-05T21:00:12.521Z">
+<meta property="article:author" content="HopenX">
+<meta property="article:tag" content="PAT">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>HopenX</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/hopenx" target="_blank">
+            
+                <i class="iconfont icon-github"></i>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="instagram" href="https://www.instagram.com/xuhaopengx/" target="_blank">
+            
+                <i class="iconfont icon-instagram"></i>
+            
+        </a>
+        
+    
+        
+    
+        
+        <a title="weibo" href="http://weibo.com/" target="_blank">
+            
+                <i class="iconfont icon-weibo"></i>
+            
+        </a>
+        
+    
+        
+        <a title="jianshu" href="https://www.jianshu.com/u/78191b1ba408" target="_blank">
+            
+                <i class="iconfont icon-jianshu"></i>
+            
+        </a>
+        
+    
+        
+        <a title="zhihu" href="https://www.zhihu.com/people/bo-xue-du-zhi-5" target="_blank">
+            
+                <i class="iconfont icon-zhihu"></i>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:1152214965@qq.com" target="_blank">
+            
+                <i class="iconfont icon-email"></i>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=1152214965&site=qq&menu=yes" target="_blank">
+            
+                <i class="iconfont icon-qq"></i>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(3)</small></div></li>
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="3">
+<input type="hidden" id="yelog_site_word_count" value="8k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="https://hopenx.github.io/">博客</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode === 13){return false;}">
+        <input id="local-search-input" class="search" type="text" placeholder="Search..." />
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color4">PAT</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">机器学习</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class=""
+           href="/2020/02/06/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2020-02-06 00:04:56">2020/02/06</span>
+        </a>
+        
+        <a  class=""
+           href="/2020/02/06/djy/"
+           data-tag="PAT"
+           data-author="" >
+            <span class="post-title" title="djy">djy</span>
+            <span class="post-date" title="2020-02-06 01:15:03">2020/02/06</span>
+        </a>
+        
+        <a  class=""
+           href="/2020/02/06/ML-Study/"
+           data-tag="机器学习"
+           data-author="" >
+            <span class="post-title" title="ML-Study">ML-Study</span>
+            <span class="post-date" title="2020-02-06 04:58:39">2020/02/06</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-ML-Study" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">ML-Study</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+        <span class="tag">
+            
+            <a class="color5">机器学习</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2020-02-06 09:43:27'>2020-02-06 04:58</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:4.1k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#机器学习概述"><span class="toc-text">机器学习概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习分类"><span class="toc-text">机器学习分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习模型"><span class="toc-text">机器学习模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#偏差-方差权衡"><span class="toc-text">偏差&#x2F;方差权衡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见机器学习算法概览"><span class="toc-text">常见机器学习算法概览</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Linear-Algorithm-线性算法"><span class="toc-text">1. Linear Algorithm 线性算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Decision-Tree-决策树"><span class="toc-text">2. Decision Tree 决策树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-SVM-支持向量机"><span class="toc-text">3. SVM 支持向量机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Naive-Bayes-Algorithms-朴素贝叶斯"><span class="toc-text">4. Naive Bayes Algorithms 朴素贝叶斯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-KNN-k-NearestNeighbor-K-最邻近算法"><span class="toc-text">5. KNN(k-NearestNeighbor) K 最邻近算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Clustering-Algorithm-聚类算法"><span class="toc-text">6. Clustering Algorithm 聚类算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-K-means-算法"><span class="toc-text">7. K-means 算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Random-Forest-随机森林"><span class="toc-text">8. Random Forest 随机森林</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-Dimensionality-Reduction-Algorithms-降维算法"><span class="toc-text">9. Dimensionality Reduction Algorithms 降维算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-Gradient-Boosting-algorithms-梯度提升算法"><span class="toc-text">10. Gradient Boosting algorithms 梯度提升算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-Deep-Learning-Algorithms-深度学习"><span class="toc-text">11. Deep Learning Algorithms 深度学习</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习损失函数"><span class="toc-text">机器学习损失函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习优化方法"><span class="toc-text">机器学习优化方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习的评价指标"><span class="toc-text">机器学习的评价指标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习模型选择"><span class="toc-text">机器学习模型选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习参数调优"><span class="toc-text">机器学习参数调优</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="机器学习概述"><a href="#机器学习概述" class="headerlink" title="机器学习概述"></a>机器学习概述</h1><h2 id="机器学习分类"><a href="#机器学习分类" class="headerlink" title="机器学习分类"></a>机器学习分类</h2><ol>
+<li>监督学习：已经有数据，和数据对应的标签。</li>
+<li>非监督学习：给定的样本无需输出/标签，让机器自己学习样本中隐含的内部结构。</li>
+<li>半监督学习：二者结合。</li>
+<li>强化学习：通过打分/评价的形式，类似于监督学习中的标签。</li>
+</ol>
+<h2 id="机器学习模型"><a href="#机器学习模型" class="headerlink" title="机器学习模型"></a>机器学习模型</h2><p>机器学习 = 数据 data + 模型 model + 优化方法 optimal strategy</p>
+<h2 id="偏差-方差权衡"><a href="#偏差-方差权衡" class="headerlink" title="偏差/方差权衡"></a>偏差/方差权衡</h2><p>variance 和 bias，分别对应过拟合和欠拟合</p>
+<p>来自 Wikipedia：</p>
+<blockquote>
+<p>在监督学习中，如果能将模型的方差与误差权衡好，那么可以认为该模型的泛化性能（对于新数据）将会表现出好的结果。</p>
+</blockquote>
+<blockquote>
+<p>偏差刻画的是算法本身的性能。高偏差将会造成欠拟合(Underfitting) [miss the relevant relations between features and target outputs]。换句话说，模型越复杂偏差就越小；而模型越简单，偏差就越大。</p>
+</blockquote>
+<blockquote>
+<p>方差用来衡量因训练集数据波动(fluctuations)而造成的误差影响。高方差将会造成过拟合(Overfitting)。</p>
+</blockquote>
+<p>在周志华老师&lt;机器学习&gt;书中是这样阐述的：</p>
+<blockquote>
+<p><em>偏差</em> 度量了学习算法的期望预测与真实结果的偏离程度，即刻画了算法本身的拟合能力；</p>
+</blockquote>
+<blockquote>
+<p><em>方差</em> 度量了同样大小的训练集的变动所导致的学习性能的变化，即刻画了数据扰动所造成的影响；</p>
+</blockquote>
+<blockquote>
+<p><em>噪声</em> 则表达了在当前任务上任何学习算法所能达到的期望泛化误差的下界，即刻画了学习问题的本身难度</p>
+</blockquote>
+<blockquote>
+<p>偏差-方差分解说明，泛化性能是由学习算法的能力、数据的充分性以及学习任务本身的难度所共同决定的。给定的学习任务，为了取得好的泛化性能，则需使偏差较小，即能够充分拟合数据，并且使方差较小，即使数据扰动产生的影响小。一般来说方差与偏差是有冲突的，这称为方差-偏差窘境。</p>
+</blockquote>
+<h2 id="常见机器学习算法概览"><a href="#常见机器学习算法概览" class="headerlink" title="常见机器学习算法概览"></a>常见机器学习算法概览</h2><h3 id="1-Linear-Algorithm-线性算法"><a href="#1-Linear-Algorithm-线性算法" class="headerlink" title="1. Linear Algorithm 线性算法"></a>1. Linear Algorithm 线性算法</h3><ol>
+<li><p><strong>Linear Regression 线性回归</strong>：使用最小二乘法 Least Squares 拟合一条直线 → 计算 R<sup>2</sup> → 计算 R<sup>2</sup> 的 p 值。R<sup>2</sup> 表示 x 能多大程度反映 y 的变化，p 值表示可靠程度。拟合直线的过程使用「随机梯度下降」（SGD）</p>
+</li>
+<li><p><strong>Lasso 回归 和 Ridge 回归</strong>：都可以减少共线性带来的影响，即 X 自变量之间有相互关联。区别可以归结为L2和L1正则化的性质差异。</p>
+</li>
+<li><p><strong>Polynomial Regression 多项式回归</strong>：能够模拟非线性可分的数据（曲线），线性回归不能做到这一点。但容易过拟合。</p>
+</li>
+<li><p><strong>Logistic Regression 逻辑回归</strong>：判断 True or False，Y 值为 0-1 表示概率，用于分类。线性回归使用「Residual 偏差」，而逻辑回归使用「maximum likelihood 最大似然」</p>
+</li>
+</ol>
+<h3 id="2-Decision-Tree-决策树"><a href="#2-Decision-Tree-决策树" class="headerlink" title="2. Decision Tree 决策树"></a>2. Decision Tree 决策树</h3><ol>
+<li><p><strong>ID3</strong>: 计算「信息熵」 $Entropy(D)$，值越小，说明样本集合D的纯度就越高，进而选择用样本的某一个属性a来划分样本集合D时，就可以得出用属性a对样本D进行划分所带来的「信息增益」 $Gain(D, a)$，值越大，说明如果用属性a来划分样本集合D，那么纯度会提升。 $$Entropy(t)=-\sum_{k} p\left(c_{k} | t\right) \log p\left(c_{k} | t\right)$$  $$Classificationerror (t)=1-\max <em>{k}\left[p\left(c</em>{k} | t\right)\right]$$</p>
+</li>
+<li><p><strong>C4.5</strong>: 提出Gainratio 「增益率」，解决ID3决策树的一个缺点，当一个属性的可取值数目较多时，那么可能在这个属性对应的可取值下的样本只有一个或者是很少个，那么这个时候它的信息增益是非常高的，这个时候纯度很高，ID3决策树会认为这个属性很适合划分，但是较多取值的属性来进行划分带来的问题是它的泛化能力比较弱。用 $I(·)$ 表示不纯度——可以是熵可以是基尼，信息增益：$$\Delta=I(\text { parent })-\sum_{i=1}^{n} \frac{N\left(a_{i}\right)}{N} I\left(a_{i}\right)$$信息增益率：$$Gainratio =\frac{\Delta}{Entropy({parent})}$$</p>
+</li>
+<li><p><strong>CART(Classification and Regression Tree)</strong>: 通过计算 Gini 基尼系数（尽可能小），判断 impurity 不纯洁度。离散数据用「是否」划分子树，连续数据可以用「两两之间平均值」划分子树。$${Gini}(t)=1-\sum_{k}\left[p\left(c_{k} | t\right)\right]^{2}$$D 分裂为 DL 和 DR，分裂后的信息增益$$Gain(D, A)=\frac{\left|D_{L}\right|}{|D|} \operatorname{Gini}\left(D_{L}\right)+\frac{\left|D_{R}\right|}{|D|} \operatorname{Gini}\left(D_{R}\right)$$</p>
+</li>
+</ol>
+<h3 id="3-SVM-支持向量机"><a href="#3-SVM-支持向量机" class="headerlink" title="3. SVM 支持向量机"></a>3. SVM 支持向量机</h3><p>SVM：<a href="https://blog.csdn.net/liugan528/article/details/79448379" target="_blank" rel="noopener">https://blog.csdn.net/liugan528/article/details/79448379</a></p>
+<p>KKT：<a href="https://blog.csdn.net/qq_32763149/article/details/81055062" target="_blank" rel="noopener">https://blog.csdn.net/qq_32763149/article/details/81055062</a></p>
+<p><strong>SVM 分类</strong>：</p>
+<ol>
+<li>硬间隔支持向量机（线性可分支持向量机）：当训练数据线性可分时，可通过硬间隔最大化学得一个线性可分支持向量机。</li>
+<li>软间隔支持向量机：当训练数据近似线性可分时，可通过软间隔最大化得到一个线性支持向量机。</li>
+<li>非线性支持向量机：当训练数据线性不可分时，可通过核方法以及软间隔最大化得一个非线性支持向量机。</li>
+</ol>
+<p><strong>基本原理</strong>：</p>
+<ol>
+<li><p>Maximum Margin Classifier：只看边界。</p>
+</li>
+<li><p>Soft Margin Classifier（即 Support Vector Classifier）：允许 misclassification误分类，寻找两个支撑向量来确定分类边界。</p>
+</li>
+<li><p>Kernel Function：非线性SVM，从低维数据开始，通过「核函数」给数据升维，然后找到一个 Support Vector Classifier 将数据分成两组。核函数的选择，支撑向量的选择，都用 cross validation 交叉验证。</p>
+</li>
+<li><p>Kernel Trick: 根据升维的距离进行计算，但是不进行实际的升维。</p>
+</li>
+</ol>
+<p><strong>具体过程</strong>：</p>
+<ol>
+<li><p>线性可分的情况：对于超平面 $w \cdot x+b=0$ 和 $margin$ 有关系$$ {margin}=\frac{2}{|w|}$$<br> 最大化 $margin$ 等效于最小化 $\frac{1}{2}|w|^{2}$</p>
+<p> 形成一个拉格朗日乘子α的约束问题 $$\begin{array}{ll}{\min <em>{w, b}} &amp; {\frac{1}{2}|w|^{2}} {\text {s.t.}} &amp; {y</em>{i}\left(w \cdot x_{i}+b\right)-1 \geq 0}\end{array}$$<br> 可以列式 $$L(w, b, \alpha)=\frac{1}{2}|w|^{2}-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w \cdot x_{i}+b\right)-1\right]$$<br> 拉格朗日对偶性：解决「凸二次规划」（convex quadratic propgramming）问题，即将原始的约束最优化问题可等价于极大极小的对偶问题（以 w,b 作参数时的最小值，以α作参数时的最大值）<br> $$\max <em>{\alpha} \min _{w, b} \quad L(w, b, \alpha)$$通过求导一系列步骤，转换成\begin{array}{ll}<br>{\min _{\alpha}} &amp; {\frac{1}{2} \sum</em>{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)-\sum_{i=1}^{N} \alpha_{i}} \<br>{\text { s.t. }} &amp; {\sum_{i=1}^{N} \alpha_{i} y_{i}=0} \<br>{} &amp; {\alpha_{i} \geq 0, \quad i=1,2, \cdots, N}<br>\end{array}</p>
+</li>
+<li><p>线性不可分的情况：对每个样本引入一个松弛变量 $\xi_{i} \geq 0$, 约束条件和目标函数变为</p>
+<p>$$\begin{aligned}<br>&amp;y_{i}\left(w \cdot x_{i}+b\right) \geq 1-\xi_{i}\<br>&amp;\min <em>{w, b, \xi} \frac{1}{2}|w|^{2}+C \sum</em>{i=1}^{N} \xi_{i}<br>\end{aligned}$$</p>
+</li>
+</ol>
+<p><strong>部分术语</strong>：</p>
+<ol>
+<li><p>KKT 条件：是拉格朗日乘子的泛化，把所有的不等式约束、等式约束和目标函数全部写为一个式子L(a, b, x)= f(x) + a<em>g(x) + b</em>h(x)，KKT条件是说最优值必须满足以下条件：（1）L(a, b, x)对x求导为零；（2）h(x) =0; （3）a*g(x) = 0;</p>
+</li>
+<li><p>SMO：Sequential Minimal Optimization用二次规划来求解α，要用到 KKT</p>
+</li>
+<li><p>SVR：支持向量回归</p>
+</li>
+</ol>
+<p><strong>优点</strong>：<br>SVM在中小量样本规模的时候容易得到数据和特征之间的非线性关系，可以避免使用神经网络结构选择和局部极小值问题，可解释性强，可以解决高维问题。</p>
+<p><strong>缺点</strong>：<br>SVM对缺失数据敏感，对非线性问题没有通用的解决方案，核函数的正确选择不容易，计算复杂度高，主流的算法可以达到O(n2)O(n2)的复杂度，这对大规模的数据是吃不消的。</p>
+<h3 id="4-Naive-Bayes-Algorithms-朴素贝叶斯"><a href="#4-Naive-Bayes-Algorithms-朴素贝叶斯" class="headerlink" title="4. Naive Bayes Algorithms 朴素贝叶斯"></a>4. Naive Bayes Algorithms 朴素贝叶斯</h3><ol>
+<li>Naive Bayes</li>
+<li>Gaussian Naive Bayes</li>
+<li>Multinomial Naive Bayes</li>
+<li>Bayesian Belief Network (BBN)</li>
+<li>Bayesian Network (BN)</li>
+</ol>
+<p>朴素贝叶斯基本公式：$P(A|B) = \frac{P(B|A)P(A)}{P(B)}$<br><img src="https://i.imgur.com/O9FsXbG.png" alt=""></p>
+<h3 id="5-KNN-k-NearestNeighbor-K-最邻近算法"><a href="#5-KNN-k-NearestNeighbor-K-最邻近算法" class="headerlink" title="5. KNN(k-NearestNeighbor) K 最邻近算法"></a>5. KNN(k-NearestNeighbor) K 最邻近算法</h3><p>用于分类</p>
+<ol>
+<li>计算测试数据与各个训练数据之间的距离；</li>
+<li>按照距离的递增关系进行排序；</li>
+<li>选取距离最小的K个点；</li>
+<li>确定前K个点所在类别的出现频率；</li>
+<li>返回前K个点中出现频率最高的类别作为测试数据的预测分类</li>
+</ol>
+<p><img src="https://i.imgur.com/85vZVhC.png" alt=""></p>
+<h3 id="6-Clustering-Algorithm-聚类算法"><a href="#6-Clustering-Algorithm-聚类算法" class="headerlink" title="6. Clustering Algorithm 聚类算法"></a>6. Clustering Algorithm 聚类算法</h3><ol>
+<li>k-Means：选取平均值</li>
+<li>k-Medians：由选取平均值改为选取中位数</li>
+<li>Expectation Maximisation (EM)：有隐含随机变量的概率模型的参数的估计方法，它是一种无监督的算法</li>
+<li>Hierarchical Clustering 层次聚类：<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">(<span class="hljs-number">1</span>) 将每个对象看作一类，计算两两之间的最小距离；<br><br>(<span class="hljs-number">2</span>) 将距离最小的两个类合并成一个新类；<br><br>(<span class="hljs-number">3</span>) 重新计算新类与所有类之间的距离；<br><br>(<span class="hljs-number">4</span>) 重复(<span class="hljs-number">2</span>)、(<span class="hljs-number">3</span>)，直到所有类最后合并成一类。<br></code></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="7-K-means-算法"><a href="#7-K-means-算法" class="headerlink" title="7. K-means 算法"></a>7. K-means 算法</h3><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stata">选取k个初始质心(作为初始<span class="hljs-keyword">cluster</span>);<br><span class="hljs-keyword">repeat</span>:<br>    对每个样本点，计算得到距其最近的质心，将其类别标为该质心所对应的<span class="hljs-keyword">cluster</span>;<br>    重新计算k个cluser对应的质心;<br>until 质心不再发生变化<br></code></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/a6Sp3Ee.png" alt=""></p>
+<h3 id="8-Random-Forest-随机森林"><a href="#8-Random-Forest-随机森林" class="headerlink" title="8. Random Forest 随机森林"></a>8. Random Forest 随机森林</h3><h3 id="9-Dimensionality-Reduction-Algorithms-降维算法"><a href="#9-Dimensionality-Reduction-Algorithms-降维算法" class="headerlink" title="9. Dimensionality Reduction Algorithms 降维算法"></a>9. Dimensionality Reduction Algorithms 降维算法</h3><h3 id="10-Gradient-Boosting-algorithms-梯度提升算法"><a href="#10-Gradient-Boosting-algorithms-梯度提升算法" class="headerlink" title="10. Gradient Boosting algorithms 梯度提升算法"></a>10. Gradient Boosting algorithms 梯度提升算法</h3><ol>
+<li>GBM</li>
+<li>XGBoost</li>
+<li>LightGBM</li>
+<li>CatBoost</li>
+</ol>
+<h3 id="11-Deep-Learning-Algorithms-深度学习"><a href="#11-Deep-Learning-Algorithms-深度学习" class="headerlink" title="11. Deep Learning Algorithms 深度学习"></a>11. Deep Learning Algorithms 深度学习</h3><ol>
+<li>Convolutional Neural Network (CNN)</li>
+<li>Recurrent Neural Networks (RNNs)</li>
+<li>Long Short-Term Memory Networks (LSTMs)</li>
+<li>Stacked Auto-Encoders</li>
+<li>Deep Boltzmann Machine (DBM)</li>
+<li>Deep Belief Networks (DBN)</li>
+</ol>
+<hr>
+<h2 id="机器学习损失函数"><a href="#机器学习损失函数" class="headerlink" title="机器学习损失函数"></a>机器学习损失函数</h2><ol>
+<li>0-1损失函数<br>$$<br>L(y,f(x)) =<br>\begin{cases}<br>0, &amp; \text{y = f(x)}  \<br>1, &amp; \text{y $\neq$ f(x)}<br>\end{cases}<br>$$</li>
+<li>绝对值损失函数<br>$$<br>L(y,f(x))=|y-f(x)|<br>$$</li>
+<li>平方损失函数<br>$$<br>L(y,f(x))=(y-f(x))^2<br>$$</li>
+<li>log对数损失函数<br>$$<br>L(y,f(x))=log(1+e^{-yf(x)})<br>$$</li>
+<li>指数损失函数<br>$$<br>L(y,f(x))=exp(-yf(x))<br>$$</li>
+<li>Hinge损失函数<br>$$<br>L(w,b)=max{0,1-yf(x)}<br>$$</li>
+</ol>
+<hr>
+<h2 id="机器学习优化方法"><a href="#机器学习优化方法" class="headerlink" title="机器学习优化方法"></a>机器学习优化方法</h2><p>梯度下降是最常用的优化方法之一，它使用梯度的反方向 $ \nabla_\theta J(\theta) $ 更新参数 $ \theta $，使得目标函数$J(\theta)$达到最小化的一种优化方法，这种方法我们叫做梯度更新. </p>
+<ol>
+<li><p>(全量)梯度下降<br>$$<br>\theta=\theta-\eta\nabla_\theta J(\theta)<br>$$</p>
+</li>
+<li><p>随机梯度下降<br>$$<br>\theta=\theta-\eta\nabla_\theta J(\theta;x^{(i)},y^{(i)})<br>$$</p>
+</li>
+<li><p>小批量梯度下降<br>$$<br>\theta=\theta-\eta\nabla_\theta J(\theta;x^{(i:i+n)},y^{(i:i+n)})<br>$$</p>
+</li>
+<li><p>引入动量的梯度下降<br>$$<br>\begin{cases}<br>v_t=\gamma v_{t-1}+\eta \nabla_\theta J(\theta)  \<br>\theta=\theta-v_t<br>\end{cases}<br>$$</p>
+</li>
+<li><p>自适应学习率的Adagrad算法<br>$$<br>\begin{cases}<br>g_t= \nabla_\theta J(\theta)  \<br>\theta_{t+1}=\theta_{t,i}-\frac{\eta}{\sqrt{G_t+\varepsilon}} \cdot g_t<br>\end{cases}<br>$$</p>
+</li>
+<li><p>牛顿法<br>$$<br>\theta_{t+1}=\theta_t-H^{-1}\nabla_\theta J(\theta_t)<br>$$</p>
+<p> 其中:<br> $t$: 迭代的轮数</p>
+<p> $\eta$: 学习率</p>
+<p> $G_t$: 前t次迭代的梯度和</p>
+<p> $\varepsilon:$很小的数,防止除0错误</p>
+<p> $H$: 损失函数相当于$\theta$的Hession矩阵在$\theta_t$处的估计</p>
+</li>
+</ol>
+<hr>
+<h2 id="机器学习的评价指标"><a href="#机器学习的评价指标" class="headerlink" title="机器学习的评价指标"></a>机器学习的评价指标</h2><ol>
+<li>MSE(Mean Squared Error)<br>$$<br>MSE(y,f(x))=\frac{1}{N}\sum_{i=1}^{N}(y-f(x))^2<br>$$</li>
+<li>MAE(Mean Absolute Error)<br>$$<br>MSE(y,f(x))=\frac{1}{N}\sum_{i=1}^{N}|y-f(x)|<br>$$</li>
+<li>RMSE(Root Mean Squard Error)<br>$$<br>RMSE(y,f(x))=\frac{1}{1+MSE(y,f(x))}<br>$$</li>
+<li>Top-k准确率<br>$$<br>Top_k(y,pre_y)=\begin{cases}<br>1, {y \in pre_y}  \<br>0, {y \notin pre_y}<br>\end{cases}<br>$$</li>
+<li>混淆矩阵</li>
+</ol>
+<p>混淆矩阵|Predicted as Positive|Predicted as Negative<br>|:-:|:-:|:-:|<br>|Labeled as Positive|True Positive(TP)|False Negative(FN)|<br>|Labeled as Negative|False Positive(FP)|True Negative(TN)|</p>
+<ul>
+<li><p>真正例(True Positive, TP):真实类别为正例, 预测类别为正例</p>
+</li>
+<li><p>假负例(False Negative, FN): 真实类别为正例, 预测类别为负例</p>
+</li>
+<li><p>假正例(False Positive, FP): 真实类别为负例, 预测类别为正例 </p>
+</li>
+<li><p>真负例(True Negative, TN): 真实类别为负例, 预测类别为负例</p>
+</li>
+<li><p>真正率(True Positive Rate, TPR): 被预测为正的正样本数 / 正样本实际数<br>$$<br>TPR=\frac{TP}{TP+FN}<br>$$</p>
+</li>
+<li><p>假负率(False Negative Rate, FNR): 被预测为负的正样本数/正样本实际数<br>$$<br>FNR=\frac{FN}{TP+FN}<br>$$</p>
+</li>
+<li><p>假正率(False Positive Rate, FPR): 被预测为正的负样本数/负样本实际数，<br>$$<br>FPR=\frac{FP}{FP+TN}<br>$$</p>
+</li>
+<li><p>真负率(True Negative Rate, TNR): 被预测为负的负样本数/负样本实际数，<br>$$<br>TNR=\frac{TN}{FP+TN}<br>$$</p>
+</li>
+<li><p>准确率(Accuracy)<br>$$<br>ACC=\frac{TP+TN}{TP+FN+FP+TN}<br>$$</p>
+</li>
+<li><p>精准率<br>$$<br>P=\frac{TP}{TP+FP}<br>$$</p>
+</li>
+<li><p>召回率<br>$$<br>R=\frac{TP}{TP+FN}<br>$$</p>
+</li>
+<li><p>F1-Score<br>$$<br>\frac{2}{F_1}=\frac{1}{P}+\frac{1}{R}<br>$$</p>
+</li>
+<li><p><strong>ROC</strong></p>
+</li>
+</ul>
+<p>ROC曲线的横轴为“假正例率”，纵轴为“真正例率”. 以FPR为横坐标，TPR为纵坐标，那么ROC曲线就是改变各种阈值后得到的所有坐标点 (FPR,TPR) 的连线，画出来如下。红线是随机乱猜情况下的ROC，曲线越靠左上角，分类器越佳. </p>
+<ul>
+<li><strong>AUC(Area Under Curve)</strong></li>
+</ul>
+<p>AUC就是ROC曲线下的面积. 真实情况下，由于数据是一个一个的，阈值被离散化，呈现的曲线便是锯齿状的，当然数据越多，阈值分的越细，”曲线”越光滑. </p>
+<img src="https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=b9cb389a68d0f703f2bf9d8e69933a58/f11f3a292df5e0feaafde78c566034a85fdf7251.jpg">
+
+<p>用AUC判断分类器（预测模型）优劣的标准:</p>
+<ul>
+<li>AUC = 1 是完美分类器，采用这个预测模型时，存在至少一个阈值能得出完美预测。绝大多数预测的场合，不存在完美分类器.</li>
+<li>0.5 &lt; AUC &lt; 1，优于随机猜测。这个分类器（模型）妥善设定阈值的话，能有预测价值.</li>
+<li>AUC &lt; 0.5，比随机猜测还差；但只要总是反预测而行，就优于随机猜测.</li>
+</ul>
+<h2 id="机器学习模型选择"><a href="#机器学习模型选择" class="headerlink" title="机器学习模型选择"></a>机器学习模型选择</h2><ol>
+<li>交叉验证</li>
+</ol>
+<p>所有数据分为三部分：训练集、交叉验证集和测试集。交叉验证集不仅在选择模型时有用，在超参数选择、正则项参数 [公式] 和评价模型中也很有用。</p>
+<ol start="2">
+<li>k-折叠交叉验证</li>
+</ol>
+<ul>
+<li>假设训练集为S ，将训练集等分为k份:${S_1, S_2, …, S_k}$. </li>
+<li>然后每次从集合中拿出k-1份进行训练</li>
+<li>利用集合中剩下的那一份来进行测试并计算损失值</li>
+<li>最后得到k次测试得到的损失值，并选择平均损失值最小的模型</li>
+</ul>
+<ol start="3">
+<li>Bias与Variance，欠拟合与过拟合</li>
+</ol>
+<p><strong>欠拟合</strong>一般表示模型对数据的表现能力不足，通常是模型的复杂度不够，并且Bias高，训练集的损失值高，测试集的损失值也高.</p>
+<p><strong>过拟合</strong>一般表示模型对数据的表现能力过好，通常是模型的复杂度过高，并且Variance高，训练集的损失值低，测试集的损失值高.</p>
+<img src="https://pic3.zhimg.com/80/v2-e20cd1183ec930a3edc94b30274be29e_hd.jpg">
+
+<img src="https://pic1.zhimg.com/80/v2-22287dec5b6205a5cd45cf6c24773aac_hd.jpg">
+
+<ol start="4">
+<li>解决方法</li>
+</ol>
+<ul>
+<li>增加训练样本: 解决高Variance情况</li>
+<li>减少特征维数: 解决高Variance情况</li>
+<li>增加特征维数: 解决高Bias情况</li>
+<li>增加模型复杂度: 解决高Bias情况</li>
+<li>减小模型复杂度: 解决高Variance情况</li>
+</ul>
+<h2 id="机器学习参数调优"><a href="#机器学习参数调优" class="headerlink" title="机器学习参数调优"></a>机器学习参数调优</h2><ol>
+<li>网格搜索</li>
+</ol>
+<p>一种调参手段；穷举搜索：在所有候选的参数选择中，通过循环遍历，尝试每一种可能性，表现最好的参数就是最终的结果</p>
+<ol start="2">
+<li>随机搜索</li>
+</ol>
+<p>与网格搜索相比，随机搜索并未尝试所有参数值，而是从指定的分布中采样固定数量的参数设置。它的理论依据是，如果随即样本点集足够大，那么也可以找到全局的最大或最小值，或它们的近似值。通过对搜索范围的随机取样，随机搜索一般会比网格搜索要快一些。</p>
+<ol start="3">
+<li>贝叶斯优化算法</li>
+</ol>
+<p>贝叶斯优化用于机器学习调参由J. Snoek(2012)提出，主要思想是，给定优化的目标函数(广义的函数，只需指定输入和输出即可，无需知道内部结构以及数学性质)，通过不断地添加样本点来更新目标函数的后验分布(高斯过程,直到后验分布基本贴合于真实分布。简单的说，就是考虑了上一次参数的信息，从而更好的调整当前的参数。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎交流 1152214965@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>ML-Study</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">4.1k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="HopenX">HopenX</a></p>
+    <p><span class="copy-title">发布时间:</span>2020-02-06, 04:58:39</p>
+    <p><span class="copy-title">最后更新:</span>2020-02-06, 09:43:27</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/02/06/ML-Study/" title="ML-Study">https://hopenx.github.io/2020/02/06/ML-Study/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2020 HopenX</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#PAT','#机器学习',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+    .post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+
+</html>
