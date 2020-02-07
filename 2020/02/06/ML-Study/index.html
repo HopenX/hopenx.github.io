@@ -43,7 +43,7 @@
                 <a href="/" class="waves-effect waves-light">
                     <div>
                         
-                        <img src="./public/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                        <img src="/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/logo.png" class="logo-img" alt="LOGO">
                         
                         <span class="logo-span">HopenX</span>
                     </div>
@@ -142,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="./public/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">HopenX</div>
         <div class="logo-desc">
@@ -563,7 +563,7 @@
 <li>Bayesian Belief Network (BBN)</li>
 <li>Bayesian Network (BN)</li>
 </ol>
-<p>朴素贝叶斯基本公式：$P(A|B) = \frac{P(B|A)P(A)}{P(B)}$<br><img src="./images/loading.gif" data-original="https://i.imgur.com/O9FsXbG.png" alt=""></p>
+<p>朴素贝叶斯基本公式：$P(A|B) = \frac{P(B|A)P(A)}{P(B)}$<br><img src="/medias/loading.gif" data-original="https://i.imgur.com/O9FsXbG.png" alt=""></p>
 <h3 id="5-KNN-k-NearestNeighbor-K-最邻近算法"><a href="#5-KNN-k-NearestNeighbor-K-最邻近算法" class="headerlink" title="5. KNN (k-NearestNeighbor) K 最邻近算法"></a>5. KNN (k-NearestNeighbor) K 最邻近算法</h3><p>用于分类</p>
 <ol>
 <li>计算测试数据与各个训练数据之间的距离；</li>
@@ -572,16 +572,19 @@
 <li>确定前K个点所在类别的出现频率；</li>
 <li>返回前K个点中出现频率最高的类别作为测试数据的预测分类</li>
 </ol>
-<p><img src="./images/loading.gif" data-original="https://i.imgur.com/85vZVhC.png" alt=""></p>
+<p><img src="/medias/loading.gif" data-original="https://i.imgur.com/85vZVhC.png" alt=""></p>
 <h3 id="6-Clustering-Algorithm-聚类算法"><a href="#6-Clustering-Algorithm-聚类算法" class="headerlink" title="6. Clustering Algorithm 聚类算法"></a>6. Clustering Algorithm 聚类算法</h3><ol>
 <li>k-Means：选取平均值</li>
 <li>k-Medians：由选取平均值改为选取中位数</li>
 <li>Expectation Maximisation (EM)：有隐含随机变量的概率模型的参数的估计方法，它是一种无监督的算法</li>
-<li>Hierarchical Clustering 层次聚类：<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">(<span class="hljs-number">1</span>) 将每个对象看作一类，计算两两之间的最小距离；<br><br>(<span class="hljs-number">2</span>) 将距离最小的两个类合并成一个新类；<br><br>(<span class="hljs-number">3</span>) 重新计算新类与所有类之间的距离；<br><br>(<span class="hljs-number">4</span>) 重复(<span class="hljs-number">2</span>)、(<span class="hljs-number">3</span>)，直到所有类最后合并成一类。<br></code></pre></td></tr></table></figure>
-</li>
+<li>Hierarchical Clustering 层次聚类：<br>```<br>(1) 将每个对象看作一类，计算两两之间的最小距离；</li>
 </ol>
-<h3 id="7-K-means-算法"><a href="#7-K-means-算法" class="headerlink" title="7. K-means 算法"></a>7. K-means 算法</h3><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stata">选取k个初始质心(作为初始<span class="hljs-keyword">cluster</span>);<br><span class="hljs-keyword">repeat</span>:<br>    对每个样本点，计算得到距其最近的质心，将其类别标为该质心所对应的<span class="hljs-keyword">cluster</span>;<br>    重新计算k个cluser对应的质心;<br>until 质心不再发生变化<br></code></pre></td></tr></table></figure>
-<p><img src="./images/loading.gif" data-original="https://i.imgur.com/a6Sp3Ee.png" alt=""></p>
+<p>(2) 将距离最小的两个类合并成一个新类；</p>
+<p>(3) 重新计算新类与所有类之间的距离；</p>
+<p>(4) 重复(2)、(3)，直到所有类最后合并成一类。</p>
+<pre><code>
+### 7. K-means 算法
+</code></pre><p>选取k个初始质心(作为初始cluster);<br>repeat:<br>    对每个样本点，计算得到距其最近的质心，将其类别标为该质心所对应的cluster;<br>    重新计算k个cluser对应的质心;<br>until 质心不再发生变化<br>```<br><img src="/medias/loading.gif" data-original="https://i.imgur.com/a6Sp3Ee.png" alt=""></p>
 <h3 id="8-Random-Forest-随机森林"><a href="#8-Random-Forest-随机森林" class="headerlink" title="8. Random Forest 随机森林"></a>8. Random Forest 随机森林</h3><h3 id="9-Dimensionality-Reduction-Algorithms-降维算法"><a href="#9-Dimensionality-Reduction-Algorithms-降维算法" class="headerlink" title="9. Dimensionality Reduction Algorithms 降维算法"></a>9. Dimensionality Reduction Algorithms 降维算法</h3><h3 id="10-Gradient-Boosting-algorithms-梯度提升算法"><a href="#10-Gradient-Boosting-algorithms-梯度提升算法" class="headerlink" title="10. Gradient Boosting algorithms 梯度提升算法"></a>10. Gradient Boosting algorithms 梯度提升算法</h3><ol>
 <li>GBM</li>
 <li>XGBoost</li>
@@ -691,7 +694,7 @@ R=\frac{TP}{TP+FN}</script></li>
 <li><strong>AUC(Area Under Curve)</strong></li>
 </ul>
 <p>AUC就是ROC曲线下的面积. 真实情况下，由于数据是一个一个的，阈值被离散化，呈现的曲线便是锯齿状的，当然数据越多，阈值分的越细，”曲线”越光滑. </p>
-<p><img src="./images/loading.gif" data-original="https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=b9cb389a68d0f703f2bf9d8e69933a58/f11f3a292df5e0feaafde78c566034a85fdf7251.jpg"></p>
+<p><img src="/medias/loading.gif" data-original="https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=b9cb389a68d0f703f2bf9d8e69933a58/f11f3a292df5e0feaafde78c566034a85fdf7251.jpg"></p>
 <p>用AUC判断分类器（预测模型）优劣的标准:</p>
 <ul>
 <li>AUC = 1 是完美分类器，采用这个预测模型时，存在至少一个阈值能得出完美预测。绝大多数预测的场合，不存在完美分类器.</li>
@@ -716,8 +719,8 @@ R=\frac{TP}{TP+FN}</script></li>
 </ol>
 <p><strong>欠拟合</strong>一般表示模型对数据的表现能力不足，通常是模型的复杂度不够，并且Bias高，训练集的损失值高，测试集的损失值也高.</p>
 <p><strong>过拟合</strong>一般表示模型对数据的表现能力过好，通常是模型的复杂度过高，并且Variance高，训练集的损失值低，测试集的损失值高.</p>
-<p><img src="./images/loading.gif" data-original="https://pic3.zhimg.com/80/v2-e20cd1183ec930a3edc94b30274be29e_hd.jpg"></p>
-<p><img src="./images/loading.gif" data-original="https://pic1.zhimg.com/80/v2-22287dec5b6205a5cd45cf6c24773aac_hd.jpg"></p>
+<p><img src="/medias/loading.gif" data-original="https://pic3.zhimg.com/80/v2-e20cd1183ec930a3edc94b30274be29e_hd.jpg"></p>
+<p><img src="/medias/loading.gif" data-original="https://pic1.zhimg.com/80/v2-22287dec5b6205a5cd45cf6c24773aac_hd.jpg"></p>
 <ol>
 <li>解决方法</li>
 </ol>
@@ -935,10 +938,10 @@ R=\frac{TP}{TP+FN}</script></li>
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="./public/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="./public/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -979,7 +982,7 @@ R=\frac{TP}{TP+FN}</script></li>
                     <div class="card-image">
                         
                         
-                        <img src="./public/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/featureimages/19.jpg" class="responsive-img" alt="ML-Study">
+                        <img src="/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/featureimages/19.jpg" class="responsive-img" alt="ML-Study">
                         
                         <span class="card-title">ML-Study</span>
                     </div>
@@ -1031,7 +1034,7 @@ R=\frac{TP}{TP+FN}</script></li>
                     <div class="card-image">
                         
                         
-                        <img src="./public/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/featureimages/3.jpg" class="responsive-img" alt="djy">
+                        <img src="/medias/loading.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/medias/featureimages/3.jpg" class="responsive-img" alt="djy">
                         
                         <span class="card-title">djy</span>
                     </div>
@@ -1216,7 +1219,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">8.1k</span>&nbsp;字
+                class="white-color">5.9k</span>&nbsp;字
             
             
             
