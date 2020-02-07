@@ -474,7 +474,43 @@
     </div>
 </div>
                     
+                    
+                    
+                        
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/libs/aplayer/APlayer.min.css">
+<div class="music-player">
+    
+    <div class="title center-align">
+        <i class="fas fa-music"></i>&nbsp;&nbsp;听听音乐
+    </div>
+    
+    <div class="row">
+        <div class="col l8 offset-l2 m10 offset-m1 s12">
+            <div id="aplayer" class="music"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/libs/aplayer/APlayer.min.js"></script>
+<script>
+$(function () {
+    new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: 'false' === 'true',
+        autoplay: 'false' === 'true',
+        theme: '#42b983',
+        loop: 'all',
+        order: 'list',
+        preload: 'auto',
+        volume: Number('0.7'),
+        listFolded: 'false' === 'true',
+        listMaxHeight: '',
+        audio: eval([{"name":"五月雨变奏电音","artist":"AnimeVibe","url":"http://antiserver.kuwo.cn/anti.s?useless=/resource/&format=mp3&rid=MUSIC_72467330&response=res&type=convert_url&","cover":"https://i.loli.net/2020/02/07/E653OQtzrMVBAjG.jpg"},{"name":"As If It's Your Last","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/As%20If%20It's%20Your%20Last.mp3","cover":"https://i.loli.net/2020/02/07/xLsCjbmZYTr9EDu.jpg"},{"name":"BOOMBAYAH","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/BOOMBAYAH.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"DDU-DU DDU-DU","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/DDU-DU%20DDU-DU%20(%E1%84%84%E1%85%AE%E1%84%83%E1%85%AE%E1%84%84%E1%85%AE%E1%84%83%E1%85%AE).mp3","cover":"https://i.loli.net/2020/02/07/Y9lGZ1FBpn7iUob.jpg"},{"name":"Don't Know What To Do","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/Don't%20Know%20What%20To%20Do.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"Forever Young","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/Forever%20Young.mp3","cover":"https://i.loli.net/2020/02/07/Y9lGZ1FBpn7iUob.jpg"},{"name":"Kick It","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/Kick%20It.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"Kill This Love","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/Kill%20This%20Love.mp3","cover":"https://i.loli.net/2020/02/07/Y9lGZ1FBpn7iUob.jpg"},{"name":"PLAYING WITH FIRE","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/PLAYING%20WITH%20FIRE.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"Really","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/Really.mp3","cover":"https://i.loli.net/2020/02/07/Y9lGZ1FBpn7iUob.jpg"},{"name":"STAY","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/STAY.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"See U Later","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/See%20U%20Later.mp3","cover":"https://i.loli.net/2020/02/07/Y9lGZ1FBpn7iUob.jpg"},{"name":"WHISTLE","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/WHISTLE.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"Hope Not","artist":"Blackpink","url":"https://blog-1301229230.cos.ap-chengdu.myqcloud.com/BLACKPINK/%E1%84%8B%E1%85%A1%E1%84%82%E1%85%B5%E1%84%80%E1%85%B5%E1%86%AF%20(Hope%20Not).mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"}])
+    });
+});
+</script>
+                            site.data site.data.musics theme.music.fixed
                     
 
                     
