@@ -557,14 +557,21 @@
 <li>k-Means：选取平均值</li>
 <li>k-Medians：由选取平均值改为选取中位数</li>
 <li>Expectation Maximisation (EM)：有隐含随机变量的概率模型的参数的估计方法，它是一种无监督的算法</li>
-<li>Hierarchical Clustering 层次聚类：<br>```<br>(1) 将每个对象看作一类，计算两两之间的最小距离；</li>
+<li>Hierarchical Clustering 层次聚类：<br>算法如下<br>```c++<br>(1) 将每个对象看作一类，计算两两之间的最小距离；</li>
 </ol>
 <p>(2) 将距离最小的两个类合并成一个新类；</p>
 <p>(3) 重新计算新类与所有类之间的距离；</p>
 <p>(4) 重复(2)、(3)，直到所有类最后合并成一类。</p>
 <pre><code>
 ### 7. K-means 算法
-</code></pre><p>选取k个初始质心(作为初始cluster);<br>repeat:<br>    对每个样本点，计算得到距其最近的质心，将其类别标为该质心所对应的cluster;<br>    重新计算k个cluser对应的质心;<br>until 质心不再发生变化<br>```<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/09/VLCReWo92QXSNP4.jpg" alt="VLCReWo92QXSNP4"></p>
+算法如下：
+```c++
+选取k个初始质心(作为初始cluster);
+repeat:
+    对每个样本点，计算得到距其最近的质心，将其类别标为该质心所对应的cluster;
+    重新计算k个cluser对应的质心;
+until 质心不再发生变化
+</code></pre><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/09/VLCReWo92QXSNP4.jpg" alt="VLCReWo92QXSNP4"></p>
 <h3 id="8-Random-Forest-随机森林"><a href="#8-Random-Forest-随机森林" class="headerlink" title="8. Random Forest 随机森林"></a>8. Random Forest 随机森林</h3><h3 id="9-Dimensionality-Reduction-Algorithms-降维算法"><a href="#9-Dimensionality-Reduction-Algorithms-降维算法" class="headerlink" title="9. Dimensionality Reduction Algorithms 降维算法"></a>9. Dimensionality Reduction Algorithms 降维算法</h3><h3 id="10-Gradient-Boosting-algorithms-梯度提升算法"><a href="#10-Gradient-Boosting-algorithms-梯度提升算法" class="headerlink" title="10. Gradient Boosting algorithms 梯度提升算法"></a>10. Gradient Boosting algorithms 梯度提升算法</h3><ol>
 <li>GBM</li>
 <li>XGBoost</li>
