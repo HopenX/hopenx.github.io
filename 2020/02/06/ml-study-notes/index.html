@@ -26,7 +26,7 @@
     
     <script src="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io/libs/jquery/jquery.min.js"></script>
     
-<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-vs.css" type="text/css"></head>
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
 
 
 <body>
@@ -438,7 +438,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.2k
+                    4.1k
                 </div>
                 
 
@@ -557,11 +557,14 @@
 <li>k-Means：选取平均值</li>
 <li>k-Medians：由选取平均值改为选取中位数</li>
 <li>Expectation Maximisation (EM)：有隐含随机变量的概率模型的参数的估计方法，它是一种无监督的算法</li>
-<li>Hierarchical Clustering 层次聚类：<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre class=" language-hljs angelscript">(<span class="hljs-number">1</span>) 将每个对象看作一类，计算两两之间的最小距离；<br><br>(<span class="hljs-number">2</span>) 将距离最小的两个类合并成一个新类；<br><br>(<span class="hljs-number">3</span>) 重新计算新类与所有类之间的距离；<br><br>(<span class="hljs-number">4</span>) 重复(<span class="hljs-number">2</span>)、(<span class="hljs-number"><code class="language-hljs angelscript">(<span class="hljs-number">1</span>) 将每个对象看作一类，计算两两之间的最小距离；<br><br>(<span class="hljs-number">2</span>) 将距离最小的两个类合并成一个新类；<br><br>(<span class="hljs-number">3</span>) 重新计算新类与所有类之间的距离；<br><br>(<span class="hljs-number">4</span>) 重复(<span class="hljs-number">2</span>)、(<span class="hljs-number">3</span>)，直到所有类最后合并成一类。<br></code></pre></td></tr></table></figure>
-</li>
+<li>Hierarchical Clustering 层次聚类：<br>```<br>(1) 将每个对象看作一类，计算两两之间的最小距离；</li>
 </ol>
-<h3 id="7-K-means-算法"><a href="#7-K-means-算法" class="headerlink" title="7. K-means 算法"></a>7. K-means 算法</h3><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre class=" language-hljs stata">选取k个初始质心(作为初始<span class="hljs-keyword">cluster</span>);<br><span class="hljs-keyword">repeat</span>:<br>    对每个样本点，计算得到距其最近的质心，将其类别标为该质心所对应的<span class="hljs-keyword"><code class="language-hljs stata">选取k个初始质心(作为初始<span class="hljs-keyword">cluster</span>);<br><span class="hljs-keyword">repeat</span>:<br>    对每个样本点，计算得到距其最近的质心，将其类别标为该质心所对应的<span class="hljs-keyword">cluster</span>;<br>    重新计算k个cluser对应的质心;<br>until 质心不再发生变化<br></code></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.imgur.com/a6Sp3Ee.png" alt=""></p>
+<p>(2) 将距离最小的两个类合并成一个新类；</p>
+<p>(3) 重新计算新类与所有类之间的距离；</p>
+<p>(4) 重复(2)、(3)，直到所有类最后合并成一类。</p>
+<pre><code>
+### 7. K-means 算法
+</code></pre><p>选取k个初始质心(作为初始cluster);<br>repeat:<br>    对每个样本点，计算得到距其最近的质心，将其类别标为该质心所对应的cluster;<br>    重新计算k个cluser对应的质心;<br>until 质心不再发生变化<br>```<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.imgur.com/a6Sp3Ee.png" alt=""></p>
 <h3 id="8-Random-Forest-随机森林"><a href="#8-Random-Forest-随机森林" class="headerlink" title="8. Random Forest 随机森林"></a>8. Random Forest 随机森林</h3><h3 id="9-Dimensionality-Reduction-Algorithms-降维算法"><a href="#9-Dimensionality-Reduction-Algorithms-降维算法" class="headerlink" title="9. Dimensionality Reduction Algorithms 降维算法"></a>9. Dimensionality Reduction Algorithms 降维算法</h3><h3 id="10-Gradient-Boosting-algorithms-梯度提升算法"><a href="#10-Gradient-Boosting-algorithms-梯度提升算法" class="headerlink" title="10. Gradient Boosting algorithms 梯度提升算法"></a>10. Gradient Boosting algorithms 梯度提升算法</h3><ol>
 <li>GBM</li>
 <li>XGBoost</li>
@@ -1196,7 +1199,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">9.7k</span>&nbsp;字
+                class="white-color">6.1k</span>&nbsp;字
             
             
             
