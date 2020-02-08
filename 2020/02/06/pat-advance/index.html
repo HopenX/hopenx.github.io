@@ -522,7 +522,7 @@ if(sum < 0) sum = 0;  //如果全负则为 0，根据题目要求不要漏情况
 <h3 id="2-分析-2"><a href="#2-分析-2" class="headerlink" title="2. 分析"></a>2. 分析</h3><p>通用函数<code>cal(string str, int radix)</code>把任意进制的数转换为 10 进制数<br>在使用搜索遍历，找到另一个数对应的进制</p>
 <h3 id="3-个人代码-3"><a href="#3-个人代码-3" class="headerlink" title="3.个人代码"></a>3.个人代码</h3><p><a href="https://pintia.cn/problem-sets/994805342720868352/problems/994805507225665536" target="_blank" rel="noopener">PTA-1010</a></p>
 <p>转换函数</p>
-<pre class=" language-lang-c&#39;p&#39;p"><code class="language-lang-c&#39;p&#39;p">long long cal(string str, long long radix){
+<pre class=" language-lang-cpp"><code class="language-lang-cpp">long long cal(string str, long long radix){
     long long target=0, bak = 1;
     reverse(str.begin(), str.end());
     for (char c : str) {
