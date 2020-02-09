@@ -4,8 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="hexo-experience, HopenX">
-    <meta name="description" content="hexo-experience | HopenX">
+    <meta name="keywords" content="Hexo 踩坑记录, HopenX">
+    <meta name="description" content="Hexo 踩坑记录Hexo 作一个优秀的博客框架，本人也是一直参考着网上零零碎碎的博文一步步搭建的，中间遇到不少坑。每次做一个稍大的项目都要经历这种折腾，今后决定把这些经验记录下来沉淀，有未完成的也留给以后思考。
+1. git 分支未知出错">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>hexo-experience | HopenX</title>
+    <title>Hexo 踩坑记录 | HopenX</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/awesome/css/all.css">
@@ -285,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">hexo-experience</h1>
+                    <h1 class="description center-align post-title">Hexo 踩坑记录</h1>
                 </div>
             </div>
         </div>
@@ -424,12 +425,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/hexo/">
+                                <span class="chip bg-color">hexo</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
+                                前端
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -447,7 +461,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    272
                 </div>
                 
 
@@ -465,7 +479,31 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h1 id="Hexo-踩坑记录"><a href="#Hexo-踩坑记录" class="headerlink" title="Hexo 踩坑记录"></a>Hexo 踩坑记录</h1><p>Hexo 作一个优秀的博客框架，本人也是一直参考着网上零零碎碎的博文一步步搭建的，中间遇到不少坑。每次做一个稍大的项目都要经历这种折腾，今后决定把这些经验记录下来沉淀，有未完成的也留给以后思考。</p>
+<h3 id="1-git-分支未知出错"><a href="#1-git-分支未知出错" class="headerlink" title="1. git 分支未知出错"></a>1. git 分支未知出错</h3><p>修改 matery.css 的时候总是没法同步到 <a href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io" target="_blank" rel="noopener">https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io</a>… 的远端，后来发现存在分支的问题，于是在主题的 config.yml 中添加一个 @master:</p>
+<pre class=" language-lang-yml"><code class="language-lang-yml">jsDelivr:
+  url: https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master
+</code></pre>
+<p>更改的内容部分可以生效，但仍然有一些冥顽不化的配色，本地已经渲染出来了，远端 jsdelivr 死活不改变，加了 @master 也不变，于是直接在 post/post-detail.ejs 页面中添加 css 代码强行修改:</p>
+<pre class=" language-lang-css"><code class="language-lang-css"><style type="text/css">
+    #articleContent a {
+        color: #267871; !important;
+    }
+    #artDetail .post-cate a {
+        color: #267871; !important;
+    }
+    blockquote {
+        border-left: 5px solid #267871; !important;
+    }
+    #artDetail .reprint a {
+        color: #267871; !important;
+    }
+</style>
+
+<!-- 文章内容详情 -->
+</code></pre>
+<p>挖个坑，希望今后可以好好研究一下 git</p>
+
             </div>
             <hr/>
 
@@ -527,7 +565,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/hexo/">
+                                    <span class="chip bg-color">hexo</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -700,15 +742,16 @@
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/5.jpg" class="responsive-img" alt="hexo-experience">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/1.jpg" class="responsive-img" alt="Hexo 踩坑记录">
                         
-                        <span class="card-title">hexo-experience</span>
+                        <span class="card-title">Hexo 踩坑记录</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            Hexo 踩坑记录Hexo 作一个优秀的博客框架，本人也是一直参考着网上零零碎碎的博文一步步搭建的，中间遇到不少坑。每次做一个稍大的项目都要经历这种折腾，今后决定把这些经验记录下来沉淀，有未完成的也留给以后思考。
+1. git 分支未知出错
                         
                     </div>
                     <div class="publish-info">
@@ -717,13 +760,25 @@
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            HopenX
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
+                                    前端
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/hexo/">
+                        <span class="chip bg-color">hexo</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -920,7 +975,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">6.2k</span>&nbsp;字
+                class="white-color">6.5k</span>&nbsp;字
             
             
             
