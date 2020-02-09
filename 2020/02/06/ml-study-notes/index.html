@@ -417,6 +417,8 @@
 
 </style>
 
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/css/prism.css">
+
 <!-- 文章内容详情 -->
 <div id="artDetail">
     <div class="card">
@@ -669,7 +671,29 @@ Top_k(y,pre_y)=\begin{cases}
 \end{cases}</script></li>
 <li>混淆矩阵</li>
 </ol>
-<p>混淆矩阵|Predicted as Positive|Predicted as Negative<br>|:-:|:-:|:-:|<br>|Labeled as Positive|True Positive(TP)|False Negative(FN)|<br>|Labeled as Negative|False Positive(FP)|True Negative(TN)|</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">混淆矩阵</th>
+<th style="text-align:center">Predicted as Positive</th>
+<th style="text-align:center">Predicted as Negative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Labeled as Positive</td>
+<td style="text-align:center">True Positive(TP)</td>
+<td style="text-align:center">False Negative(FN)</td>
+</tr>
+<tr>
+<td style="text-align:center">Labeled as Negative</td>
+<td style="text-align:center">False Positive(FP)</td>
+<td style="text-align:center">True Negative(TN)</td>
+</tr>
+</tbody>
+</table>
+</div>
 <ul>
 <li>真正例(True Positive, TP):真实类别为正例, 预测类别为正例</li>
 <li>假负例(False Negative, FN): 真实类别为正例, 预测类别为负例</li>
@@ -1074,6 +1098,8 @@ R=\frac{TP}{TP+FN}</script></li>
 
 <!-- 代码块功能依赖 -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/codeBlock/codeBlockFuction.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/js/prism.js"></script>
 
 <!-- 代码语言 -->
 
