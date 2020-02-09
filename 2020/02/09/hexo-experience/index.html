@@ -21,12 +21,14 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/aos/aos.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/animate/animate.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/css/highlight/styles/vs2015.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/css/matery.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/css/my.css">
     
     <script src="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/jquery/jquery.min.js"></script>
     
 <meta name="generator" content="Hexo 4.2.0"></head>
+
 
 
 <body>
@@ -417,6 +419,9 @@
 
 </style>
 
+<script src="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
 <!-- 文章内容详情 -->
 <div id="artDetail">
     <div class="card">
@@ -471,11 +476,11 @@
             <div id="articleContent">
                 <h1 id="Hexo-踩坑记录"><a href="#Hexo-踩坑记录" class="headerlink" title="Hexo 踩坑记录"></a>Hexo 踩坑记录</h1><p>Hexo 作一个优秀的博客框架，本人也是一直参考着网上零零碎碎的博文一步步搭建的，中间遇到不少坑。每次做一个稍大的项目都要经历这种折腾，今后决定把这些经验记录下来沉淀，有未完成的也留给以后思考。</p>
 <h3 id="1-git-分支未知出错"><a href="#1-git-分支未知出错" class="headerlink" title="1. git 分支未知出错"></a>1. git 分支未知出错</h3><p>修改 matery.css 的时候总是没法同步到 <a href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io" target="_blank" rel="noopener">https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io</a>… 的远端，后来发现存在分支的问题，于是在主题的 config.yml 中添加一个 @master:</p>
-<pre class="line-numbers language-lang-yml"><code class="language-lang-yml">jsDelivr:
+<pre><code class="lang-yml">jsDelivr:
   url: https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</code></pre>
 <p>更改的内容部分可以生效，但仍然有一些冥顽不化的配色，本地已经渲染出来了，远端 jsdelivr 死活不改变，加了 @master 也不变，于是直接在 post/post-detail.ejs 页面中添加 css 代码强行修改:</p>
-<pre class="line-numbers language-lang-css"><code class="language-lang-css">
+<pre><code class="lang-css">
 #articleContent a {
     color: #267871; !important;
 }
@@ -488,7 +493,7 @@ blockquote {
 #artDetail .reprint a {
     color: #267871; !important;
 }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>挖个坑，希望今后可以好好研究一下 git</p>
 <h3 id="2-Hexo-无法解析代码块"><a href="#2-Hexo-无法解析代码块" class="headerlink" title="2. Hexo 无法解析代码块"></a>2. Hexo 无法解析代码块</h3><p>比如上面的 css 代码块，Hexo 在解析的时候会把它识别成网页 css 的内容，最后没有显示，只能主动适应 Hexo 这种方式：</p>
 <ol>
@@ -961,7 +966,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">6.6k</span>&nbsp;字
+                class="white-color">9.1k</span>&nbsp;字
             
             
             
@@ -1060,6 +1065,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </footer>
 
 <div class="progress-bar"></div>
+
+<script src="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 
     <!-- 搜索遮罩框 -->
