@@ -475,20 +475,19 @@
   url: https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master
 </code></pre>
 <p>更改的内容部分可以生效，但仍然有一些冥顽不化的配色，本地已经渲染出来了，远端 jsdelivr 死活不改变，加了 @master 也不变，于是直接在 post/post-detail.ejs 页面中添加 css 代码强行修改:</p>
-<pre class=" language-lang-css"><code class="language-lang-css">    <style type="text/css">
-        #articleContent a {
-            color: #267871; !important;
-        }
-        #artDetail .post-cate a {
-            color: #267871; !important;
-        }
-        blockquote {
-            border-left: 5px solid #267871; !important;
-        }
-        #artDetail .reprint a {
-            color: #267871; !important;
-        }
-    </style>
+<pre class=" language-lang-css"><code class="language-lang-css">
+#articleContent a {
+    color: #267871; !important;
+}
+#artDetail .post-cate a {
+    color: #267871; !important;
+}
+blockquote {
+    border-left: 5px solid #267871; !important;
+}
+#artDetail .reprint a {
+    color: #267871; !important;
+}
 
 <!-- 文章内容详情 -->
 </code></pre>
