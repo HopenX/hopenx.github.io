@@ -92,7 +92,7 @@ hr {
 }
 
 blockquote {
-    border-left: 5px solid #42b983;
+    border-left: 5px solid #267871;
     padding: 1rem 0.8rem 0.2rem 0.8rem;
     color: #666;
     background-color: rgba(66, 185, 131, .1);
@@ -883,7 +883,7 @@ article a {
 
 article a:hover {
     font-weight: bold;
-    color: #42b983;
+    color: #267871;
     text-decoration: underline;
 }
 
@@ -1066,7 +1066,7 @@ article .article-tags .chip {
     border-radius: 15px;
     margin-right: 5px;
     margin-bottom: 2px;
-    color: #42b983;
+    color: #267871;
     background: #fff;
     border: 1px solid;
     transition: all 0.6s ease-in-out;
@@ -1074,17 +1074,17 @@ article .article-tags .chip {
 
 #artDetail .tag_share .article-tag .chip:hover {
     color: #fff;
-    background: #42b983;
+    background: #267871;
 }
 
 #artDetail .post-cate {
     float: right;
-    color: #42b983;
+    color: #267871;
 }
 
 #artDetail .post-cate a {
     padding-right: 5px;
-    color: #42b983;
+    color: #267871;
     font-weight: 500;
 }
 
@@ -1103,7 +1103,7 @@ article .article-tags .chip {
 
 #artDetail .post-info .post-category:hover {
     font-weight: bold;
-    color: #42b983;
+    color: #267871;
     text-decoration: underline;
 }
 
@@ -1163,7 +1163,7 @@ article .article-tags .chip {
 
 #artDetail .reprint a {
     font-size: 1.05rem;
-    color: #42b983;
+    color: #267871;
     font-weight: 500;
 }
 
@@ -1179,7 +1179,7 @@ article .article-tags .chip {
 
 #articleContent a {
     padding: 0 2px;
-    color: #42b983;
+    color: #267871;
     font-weight: 500;
     text-decoration: underline;
     word-wrap: break-word;
@@ -1599,7 +1599,7 @@ thead {
 }
 
 .post-statis .statis .count a {
-    color: #42b983;
+    color: #267871;
 }
 
 .post-statis .statis .name {
@@ -1864,7 +1864,7 @@ footer .copy-right {
 
 .search-result-list .search-result-title {
     font-size: 1.4rem;
-    color: #42b983;
+    color: #267871;
 }
 
 .search-result-list li {
