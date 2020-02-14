@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="分类, HopenX">
-    <meta name="description" content="分类 | HopenX">
+    <meta name="keywords" content="HopenX">
+    <meta name="description" content="HopenX">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>分类 | HopenX</title>
+    <title>HopenX</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/awesome/css/all.css">
@@ -283,6 +283,7 @@
 
 
 
+    
     <div class="bg-cover pd-header about-cover">
     <div class="container">
     <div class="row">
@@ -324,111 +325,296 @@
     </div>
 </div>
 
+
 <main class="content">
 
     
+    <div id="indexCard" class="index-card">
+        <div class="container ">
+            <div class="card">
+                <div class="card-content">
+                    
+                        <div class="dream">
+    
+    <div class="title center-align">
+        <i class="far fa-lightbulb"></i>&nbsp;&nbsp;我的梦想
+    </div>
+    
+    <div class="row">
+        <div class="col l8 offset-l2 m10 offset-m1 s10 offset-s1 center-align text">
+            不是每个人都应该像我这样去建造一座水晶大教堂，但是每个人都应该拥有自己的梦想，设计自己的梦想，追求自己的梦想，实现自己的梦想。梦想是生命的灵魂，是心灵的灯塔，是引导人走向成功的信仰。有了崇高的梦想，只要矢志不渝地追求，梦想就会成为现实，奋斗就会变成壮举，生命就会创造奇迹。——罗伯·舒乐
+        </div>
+    </div>
+</div>
+                    
+                    
+                        
 
-<div id="category-cloud" class="container chip-container">
-    <div class="card">
-        <div class="card-content">
-            <div class="tag-title center-align">
-                <i class="fas fa-bookmark"></i>&nbsp;&nbsp;文章分类
-            </div>
-            <div class="tag-chips">
-                
-                
-                
-                <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" title="机器学习: 5">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            style="background-color: #F9EBEA;">机器学习
-                        <span class="tag-length">5</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E6%95%B0%E5%AD%A6/" title="数学: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            style="background-color: #F5EEF8;">数学
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E7%AE%97%E6%B3%95/" title="算法: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            style="background-color: #D5F5E3;">算法
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-            </div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/aplayer/APlayer.min.css">
+<div class="music-player">
+    
+    <div class="title center-align">
+        <i class="fas fa-music"></i>&nbsp;&nbsp;听听音乐
+    </div>
+    
+    <div class="row">
+        <div class="col l8 offset-l2 m10 offset-m1 s12">
+            <div id="aplayer" class="music"></div>
         </div>
     </div>
 </div>
 
-    
-    <style type="text/css">
-    #category-radar {
-        width: 100%;
-        height: 360px;
-    }
-</style>
+<script src="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/aplayer/APlayer.min.js"></script>
+<script>
+$(function () {
+    new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: 'false' === 'true',
+        autoplay: 'false' === 'true',
+        theme: '#267871',
+        loop: 'all',
+        order: 'list',
+        preload: 'auto',
+        volume: Number('0.7'),
+        listFolded: 'false' === 'true',
+        listMaxHeight: '',
+        audio: eval([{"name":"五月雨变奏电音","artist":"AnimeVibe","url":"http://antiserver.kuwo.cn/anti.s?useless=/resource/&format=mp3&rid=MUSIC_72467330&response=res&type=convert_url&","cover":"https://i.loli.net/2020/02/07/E653OQtzrMVBAjG.jpg"},{"name":"私奔","artist":"Yico Zeng","url":"http://www.170mv.com/kw/antiserver.kuwo.cn/anti.s?rid=MUSIC_45243116&response=res&format=mp3|aac&type=convert_url&br=128kmp3&agent=iPhone&callback=getlink&jpcallback=getlink.mp3","cover":"https://i.loli.net/2020/02/07/eA7sC9uUBLb8GkK.png"},{"name":"As If It's Your Last","artist":"Blackpink","url":"http://other.web.ri01.sycdn.kuwo.cn/76e2e039cb63a3861c5328cb126ca913/5e3d7c49/resource/n3/42/43/2882669447.mp3","cover":"https://i.loli.net/2020/02/07/xLsCjbmZYTr9EDu.jpg"},{"name":"BOOMBAYAH","artist":"Blackpink","url":"http://ip.h5.nf01.sycdn.kuwo.cn/335e7c5212a45f91176c71b9103a111a/5e3d79ae/resource/n1/0/31/610295492.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"DDU-DU DDU-DU","artist":"Blackpink","url":"http://61.155.99.45:88/sp.sycdn.kuwo.cn/afebfb4fd201693975a14c0689eacc59/5e3d79fa/resource/n3/92/15/2359993344.mp3","cover":"https://i.loli.net/2020/02/07/Y9lGZ1FBpn7iUob.jpg"},{"name":"Don't Know What To Do","artist":"Blackpink","url":"http://www.170mv.com/kw/antiserver.kuwo.cn/anti.s?rid=MUSIC_67149059&response=res&format=mp3|aac&type=convert_url&br=128kmp3&agent=iPhone&callback=getlink&jpcallback=getlink.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"Forever Young","artist":"Blackpink","url":"http://sv.sycdn.kuwo.cn/4642b46448aec57ecee3f1685c50e7a9/5e3d7a9b/resource/n3/53/39/1777379838.mp3","cover":"https://i.loli.net/2020/02/07/Y9lGZ1FBpn7iUob.jpg"},{"name":"PLAYING WITH FIRE","artist":"Blackpink","url":"http://sv.sycdn.kuwo.cn/d3d6c0d47e7a2677dbd730f83a3162c4/5e3d7ae4/resource/n2/61/97/458824319.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"Really","artist":"Blackpink","url":"http://ip.h5.nf01.sycdn.kuwo.cn/51c49527c6e9a6013b461f9755206b15/5e3d798a/resource/n2/82/99/2659526038.mp3","cover":"https://i.loli.net/2020/02/07/Y9lGZ1FBpn7iUob.jpg"},{"name":"STAY","artist":"Blackpink","url":"http://ip.h5.ri01.sycdn.kuwo.cn/371d0c6a6794917546c1cc4f765d3ce4/5e3d7961/resource/n3/30/26/3349144422.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"See U Later","artist":"Blackpink","url":"http://ip.h5.nf01.sycdn.kuwo.cn/963eef0515ec2eea82b8040eea8b9c18/5e3d7975/resource/n2/93/40/3293637713.mp3","cover":"https://i.loli.net/2020/02/07/Y9lGZ1FBpn7iUob.jpg"},{"name":"WHISTLE","artist":"Blackpink","url":"http://ip.h5.rh01.sycdn.kuwo.cn/d8d0f81a334ea6bf8891a4877b5d54c9/5e3d799e/resource/n3/67/69/444068172.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"},{"name":"Hope Not","artist":"Blackpink","url":"http://61.155.99.45:88/sp.sycdn.kuwo.cn/91b97c89e8ba3894166a895b30fa685b/5e3d7a2a/resource/n2/32/30/1777356863.mp3","cover":"https://i.loli.net/2020/02/07/eVD76MRntq4uw9x.jpg"}])
+    });
+});
+</script>
 
-<div class="container" data-aos="fade-up">
-    <div class="card">
-        <div id="category-radar" class="card-content"></div>
+                    
+
+                    
+
+                    
+                    <div id="recommend-sections" class="recommend">
+                        
+
+
+
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    
+
+    
+
+    <!-- 所有文章卡片 -->
+    <article id="articles" class="container articles">
+        <div class="row article-row">
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2020/02/07/math-notes/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/16.jpg" class="responsive-img" alt="数学基础备忘录">
+                            
+                            <span class="card-title">数学基础备忘录</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                一些基础的公式，方便自己查用
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-07
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%95%B0%E5%AD%A6/" class="post-category">
+                                    数学
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/math/">
+                            <span class="chip bg-color">math</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2020/02/06/ml-study-notes/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/6.jpg" class="responsive-img" alt="机器学习概述">
+                            
+                            <span class="card-title">机器学习概述</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                机器学习概述，常见的机器学习算法概览，包括监督学习和非监督学习，损失函数，优化方法，评价指标，参数调优的基本概念
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-06
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    机器学习
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+                            <span class="chip bg-color">机器学习</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2020/02/06/pat-advance/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/3.jpg" class="responsive-img" alt="PAT-甲级 做题笔记">
+                            
+                            <span class="card-title">PAT-甲级 做题笔记</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                PAT-Advanced Level 重点题目分类记录，对于夯实数据结构和算法基础有很重要的帮助
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-06
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E7%AE%97%E6%B3%95/" class="post-category">
+                                    算法
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/PAT/">
+                            <span class="chip bg-color">PAT</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2020/02/02/hello-world/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/21.jpg" class="responsive-img" alt="欢迎来到 Hexo">
+                            
+                            <span class="card-title">欢迎来到 Hexo</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                本博客采用 Hexo 快速搭建，也欢迎大家上手使用 Hexo，选择自己喜欢的主题，省时省力，工具齐全，生态优越，可扩展性好
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-02
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                HopenX
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+        </div>
+    </article>
+
+</main>
+
+
+<div class="container paging">
+    <div class="row">
+        <div class="col s6 m4 l4">
+            
+            <a href="/"
+               class="left btn-floating btn-large waves-effect waves-light bg-color">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            
+        </div>
+        <div class="page-info col m4 l4 hide-on-small-only">
+            <div class="center-align b-text-gray">2 / 2</div>
+        </div>
+        <div class="col s6 m4 l4">
+            
+            <a class="right btn-floating btn-large disabled">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            
+        </div>
     </div>
 </div>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/echarts/echarts.min.js"></script>
-<script type="text/javascript">
-    let radarChart = echarts.init(document.getElementById('category-radar'));
 
-    
-
-    let option = {
-        title: {
-            left: 'center',
-            text: '文章分类雷达图',
-            textStyle: {
-                fontWeight: 500,
-                fontSize: 22
-            }
-        },
-        tooltip: {},
-        radar: {
-            name: {
-                textStyle: {
-                    color: '#3C4858'
-                }
-            },
-            indicator: [{"name":"机器学习","max":6},{"name":"数学","max":6},{"name":"算法","max":6}],
-            nameGap: 5,
-            center: ['50%','55%'],
-            radius: '66%'
-        },
-        series: [{
-            type: 'radar',
-            color: ['#3ecf8e'],
-            itemStyle: {normal: {areaStyle: {type: 'default'}}},
-            data : [
-                {
-                    value : [5,1,1],
-                    name : '文章分类数量'
-                }
-            ]
-        }]
-    };
-
-    radarChart.setOption(option);
-</script>
-    
-
-</main>
 
 
     <footer class="page-footer bg-color">
