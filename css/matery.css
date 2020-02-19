@@ -134,10 +134,18 @@ pre {
     box-shadow: 20px 0 #ffbd2e, 40px 0 #27c93f;
 }
 
+@font-face {
+    font-family: 'Source Code Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Source Code Pro'), local('SourceCodePro-Regular'), url('//cdn.kesci.com/fonts/mrl8jkM18OlOQN8JLgasDxM0YzuT7MdOe03otPbuUS0.woff') format('woff'), url('//cdn.kesci.com/fonts/mrl8jkM18OlOQN8JLgasD9V_2ngZ8dMf8fLgjYEouxg.woff2') format('woff2');
+}
+
 code {
     padding: 1px 5px;
     top: 13px !important;
-    font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier, monospace;
+    /*font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier, monospace;*/
+    font-family: 'Source Code Pro';
     font-size: 0.91rem;
     color: #e96900;
     background-color: #f8f8f8;
