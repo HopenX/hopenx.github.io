@@ -756,7 +756,7 @@ output, state = encoder(X)
 output.shape, len(state), state[0].shape, state[1].shape  # len(state)=2 表示包含了记忆细胞和隐层状态两个部分
 </code></pre>
 <pre><code>(torch.Size([7, 4, 16]), 2, torch.Size([2, 4, 16]), torch.Size([2, 4, 16]))
-</code></pre><h1 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h1><pre><code class="lang-python">class Seq2SeqDecoder(d2l.Decoder):
+</code></pre><h3 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h3><pre><code class="lang-python">class Seq2SeqDecoder(d2l.Decoder):
     def __init__(self, vocab_size, embed_size, num_hiddens, num_layers,
                  dropout=0, **kwargs):
         super(Seq2SeqDecoder, self).__init__(**kwargs)

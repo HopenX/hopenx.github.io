@@ -524,8 +524,11 @@
 <script type="math/tex; mode=display">
 P(w_1, w_2, \ldots, w_T).</script><p>本节我们介绍基于统计的语言模型，主要是$n$元语法（$n$-gram）。在后续内容中，我们将会介绍基于神经网络的语言模型。</p>
 <h2 id="语言模型-1"><a href="#语言模型-1" class="headerlink" title="语言模型"></a>语言模型</h2><p>假设序列$w_1, w_2, \ldots, w_T$中的每个词是依次生成的，我们有</p>
-<p>(\begin{aligned} P\left(w_{1}, w_{2}, \ldots, w_{T}\right) &amp;=\prod_{t=1}^{T} P\left(w_{t} | w_{1}, \ldots, w_{t-1}\right) \\ &amp;=P\left(w_{1}\right) P\left(w_{2} | w_{1}\right) \cdots P\left(w_{T} | w_{1} w_{2} \cdots w_{T-1}\right) \end{aligned})</p>
-<p>例如，一段含有4个词的文本序列的概率</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+P\left(w_{1}, w_{2}, \ldots, w_{T}\right) &=\prod_{t=1}^{T} P\left(w_{t} | w_{1}, \ldots, w_{t-1}\right) \\
+&=P\left(w_{1}\right) P\left(w_{2} | w_{1}\right) \cdots P\left(w_{T} | w_{1} w_{2} \cdots w_{T-1}\right)
+\end{aligned}</script><p>例如，一段含有4个词的文本序列的概率</p>
 <script type="math/tex; mode=display">
 P(w_1, w_2, w_3, w_4) =  P(w_1) P(w_2 \mid w_1) P(w_3 \mid w_1, w_2) P(w_4 \mid w_1, w_2, w_3).</script><p>语言模型的参数就是词的概率以及给定前几个词情况下的条件概率。设训练数据集为一个大型文本语料库，如维基百科的所有条目，词的概率可以通过该词在训练数据集中的相对词频来计算，例如，$w_1$的概率可以计算为：</p>
 <script type="math/tex; mode=display">\hat P(w_1) = \frac{n(w_1)}{n}</script><p>其中$n(w_1)$为语料库中以$w_1$作为第一个词的文本的数量，$n$为语料库中文本的总数量。</p>
@@ -535,8 +538,11 @@ P(w_1, w_2, w_3, w_4) =  P(w_1) P(w_2 \mid w_1) P(w_3 \mid w_1, w_2) P(w_4 \mid 
 <h2 id="n元语法"><a href="#n元语法" class="headerlink" title="n元语法"></a>n元语法</h2><p>序列长度增加，计算和存储多个词共同出现的概率的复杂度会呈指数级增加。$n$元语法通过马尔可夫假设简化模型，<code>马尔科夫假设</code>是指一个词的出现<code>只与前面n个词相关</code>，即$n$阶马尔可夫链（Markov chain of order $n$），如果$n=1$，那么有$P(w_3 \mid w_1, w_2) = P(w_3 \mid w_2)$。基于$n-1$阶马尔可夫链，我们可以将语言模型改写为</p>
 <script type="math/tex; mode=display">
 P(w_1, w_2, \ldots, w_T) = \prod_{t=1}^T P(w_t \mid w_{t-(n-1)}, \ldots, w_{t-1}) .</script><p>以上也叫<code>n元语法</code>（$n$-grams），它是基于<code>n - 1阶马尔可夫链</code>的概率语言模型。例如，当$n=2$时，含有4个词的文本序列的概率就可以改写为：</p>
-<p>(\begin{aligned} P\left(w_{1}, w_{2}, w_{3}, w_{4}\right) &amp;=P\left(w_{1}\right) P\left(w_{2} | w_{1}\right) P\left(w_{3} | w_{1}, w_{2}\right) P\left(w_{4} | w_{1}, w_{2}, w_{3}\right) \\ &amp;=P\left(w_{1}\right) P\left(w_{2} | w_{1}\right) P\left(w_{3} | w_{2}\right) P\left(w_{4} | w_{3}\right) \end{aligned})</p>
-<p>当$n$分别为1、2和3时，我们将其分别称作一元语法（unigram）、二元语法（bigram）和三元语法（trigram）。例如，长度为4的序列$w_1, w_2, w_3, w_4$在一元语法、二元语法和三元语法中的概率分别为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+P\left(w_{1}, w_{2}, w_{3}, w_{4}\right) &=P\left(w_{1}\right) P\left(w_{2} | w_{1}\right) P\left(w_{3} | w_{1}, w_{2}\right) P\left(w_{4} | w_{1}, w_{2}, w_{3}\right) \\
+&=P\left(w_{1}\right) P\left(w_{2} | w_{1}\right) P\left(w_{3} | w_{2}\right) P\left(w_{4} | w_{3}\right)
+\end{aligned}</script><p>当$n$分别为1、2和3时，我们将其分别称作一元语法（unigram）、二元语法（bigram）和三元语法（trigram）。例如，长度为4的序列$w_1, w_2, w_3, w_4$在一元语法、二元语法和三元语法中的概率分别为</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 P(w_1, w_2, w_3, w_4) &=  P(w_1) P(w_2) P(w_3) P(w_4) ,\\

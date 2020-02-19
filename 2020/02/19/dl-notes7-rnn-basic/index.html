@@ -526,7 +526,7 @@
 <li>循环神经网络 <code>RNN</code> 的参数就是上述的三个权重和两个偏置，并且在沿着时间训练（参数的更新），参数的数量没有发生变化，仅仅是上述的参数的值在更新。循环神经网络可以看作是沿着时间维度上的权值共享</li>
 <li>卷积神经网络 <code>CNN</code> 中，一个卷积核通过在特征图上滑动进行卷积，是空间维度的权值共享。在卷积神经网络中通过控制特征图的数量来控制每一层模型的复杂度，而循环神经网络是通过控制W_xh和W_hh中h的维度来控制模型的复杂度。</li>
 </ul>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5jkm0v44i.png?imageView2/0/w/640/h/640" alt="Image Name"></p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://s2.ax1x.com/2020/02/19/3VcEfH.png" alt="RNN 模型"></p>
 <h2 id="一个batch的数据的表示"><a href="#一个batch的数据的表示" class="headerlink" title="一个batch的数据的表示"></a>一个batch的数据的表示</h2><ul>
 <li>如何将一个batch的数据转换成时间步数个（批量大小，词典大小）的矩阵？</li>
 <li>每个字符都是一个词典大小的向量(<code>one-hot 表示法</code>)，每个样本是时间步数个序列，每个batch是批量大小个样本</li>

@@ -520,10 +520,10 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="深度卷积神经网络（AlexNet）"><a href="#深度卷积神经网络（AlexNet）" class="headerlink" title="深度卷积神经网络（AlexNet）"></a>深度卷积神经网络（AlexNet）</h1><p>LeNet:  在大的真实数据集上的表现并不尽如⼈意。<br>1.神经网络计算复杂。<br>2.还没有⼤量深⼊研究参数初始化和⾮凸优化算法等诸多领域。  </p>
+                <h1 id="深度卷积神经网络"><a href="#深度卷积神经网络" class="headerlink" title="深度卷积神经网络"></a>深度卷积神经网络</h1><p>LeNet:  在大的真实数据集上的表现并不尽如⼈意。<br>1.神经网络计算复杂。<br>2.还没有⼤量深⼊研究参数初始化和⾮凸优化算法等诸多领域。  </p>
 <p>机器学习的特征提取:手工定义的特征提取函数<br>神经网络的特征提取：通过学习得到数据的多级表征，并逐级表⽰越来越抽象的概念或模式。  </p>
 <p>神经网络发展的限制:数据、硬件</p>
-<h3 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h3><p>首次证明了学习到的特征可以超越⼿⼯设计的特征，从而⼀举打破计算机视觉研究的前状。<br><strong>特征：</strong></p>
+<h2 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h2><p>首次证明了学习到的特征可以超越⼿⼯设计的特征，从而⼀举打破计算机视觉研究的前状。<br><strong>特征：</strong></p>
 <ol>
 <li>8层变换，其中有5层卷积和2层全连接隐藏层，以及1个全连接输出层。</li>
 <li>将sigmoid激活函数改成了更加简单的ReLU激活函数。<br> ReLu函数的好处：缓解梯度消失，导数计算更快，收敛快，负数的时候梯度为 0，有正则化，稀疏化的作用</li>
@@ -534,12 +534,11 @@
 <p>计算示例（第一层）：(224-11)/4 + 1 = 54 这一层输出的宽和高就是 54，通道数是 96</p>
 <p>下一层 (54-3)/2 +1 = 26</p>
 <p>下一层 (26+4-5)/1 + 1 =26<br>…</p>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/d9UtZ2CpjrIbiyV.png" alt="d9UtZ2CpjrIbiyV"></p>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5kv4gpx88.png?imageView2/0/w/640/h/640" alt="Image Name"></p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/d9UtZ2CpjrIbiyV.png" alt="计算公式"></p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5kv4gpx88.png?imageView2/0/w/640/h/640" alt="LeNet 和 AlexNet 对比"></p>
 <pre><code class="lang-python">#考虑到本代码中的模型过大，CPU 训练较慢，需要 GPU
 #我们还将代码上传了一份到 https://www.kaggle.com/boyuai/boyu-d2l-modernconvolutionalnetwork
 #如希望提前使用gpu运行请至kaggle。
-
 
 import time
 import torch
@@ -657,11 +656,8 @@ d2l.train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epo
 epoch 1, loss 0.4997, train acc 0.812, test acc 0.865, time 3995.5 sec
 </code></pre><p>cpu 特别慢，明显不如 cuda(gpu)</p>
 <p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/U1pLjfKmEd8IAnu.png" alt="AlexNet 结果"></p>
-<h1 id="使用重复元素的网络（VGG）"><a href="#使用重复元素的网络（VGG）" class="headerlink" title="使用重复元素的网络（VGG）"></a>使用重复元素的网络（VGG）</h1><p>AlexNet：比较死板，很难扩展<br>VGG：通过重复使⽤简单的基础块来构建深度模型。（不同的 VGG 结构是一样的，但参数可能不一样）<br>Block:数个相同的填充为1、窗口形状为$3\times 3$的卷积层,接上一个步幅为2、窗口形状为$2\times 2$的最大池化层（图中写错）<br>卷积层保持输入的高和宽不变，而池化层则对其减半。</p>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5l6vut7h1.png?imageView2/0/w/640/h/640" alt="Image Name"></p>
-<pre><code class="lang-python">
-
-</code></pre>
+<h2 id="使用重复元素的网络（VGG）"><a href="#使用重复元素的网络（VGG）" class="headerlink" title="使用重复元素的网络（VGG）"></a>使用重复元素的网络（VGG）</h2><p>AlexNet：比较死板，很难扩展<br>VGG：通过重复使⽤简单的基础块来构建深度模型。（不同的 VGG 结构是一样的，但参数可能不一样）<br>Block:数个相同的填充为1、窗口形状为$3\times 3$的卷积层,接上一个步幅为2、窗口形状为$2\times 2$的最大池化层（图中写错）<br>卷积层保持输入的高和宽不变，而池化层则对其减半。</p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5l6vut7h1.png?imageView2/0/w/640/h/640" alt=""></p>
 <h3 id="VGG11的简单实现"><a href="#VGG11的简单实现" class="headerlink" title="VGG11的简单实现"></a>VGG11的简单实现</h3><pre><code class="lang-python">
 def vgg_block(num_convs, in_channels, out_channels): #卷积层个数，输入通道数，输出通道数
     blk = []
@@ -769,7 +765,7 @@ lr, num_epochs = 0.001, 5
 optimizer = torch.optim.Adam(net.parameters(), lr=lr)
 d2l.train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epochs)
 </code></pre>
-<h1 id="⽹络中的⽹络（NiN）"><a href="#⽹络中的⽹络（NiN）" class="headerlink" title="⽹络中的⽹络（NiN）"></a>⽹络中的⽹络（NiN）</h1><p>LeNet、AlexNet和VGG：先以由卷积层构成的模块充分抽取空间特征，再以由<code>全连接层</code>构成的模块来输出分类结果。 </p>
+<h2 id="⽹络中的⽹络（NiN）"><a href="#⽹络中的⽹络（NiN）" class="headerlink" title="⽹络中的⽹络（NiN）"></a>⽹络中的⽹络（NiN）</h2><p>LeNet、AlexNet和VGG：先以由卷积层构成的模块充分抽取空间特征，再以由<code>全连接层</code>构成的模块来输出分类结果。 </p>
 <p>NiN：</p>
 <ul>
 <li><code>串联</code>多个由卷积层和“全连接”层构成的小⽹络来构建⼀个深层⽹络。（小模块组装起来）</li>
@@ -854,7 +850,7 @@ optimizer = torch.optim.Adam(net.parameters(), lr=lr)
 d2l.train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epochs)
 </code></pre>
 <p>NiN重复使⽤由卷积层和代替全连接层的1×1卷积层构成的NiN块来构建深层⽹络。<br>NiN去除了容易造成过拟合的全连接输出层，而是将其替换成输出通道数等于标签类别数 的NiN块和全局平均池化层。<br>NiN的以上设计思想影响了后⾯⼀系列卷积神经⽹络的设计。  </p>
-<h1 id="GoogLeNet"><a href="#GoogLeNet" class="headerlink" title="GoogLeNet"></a>GoogLeNet</h1><ol>
+<h2 id="GoogLeNet"><a href="#GoogLeNet" class="headerlink" title="GoogLeNet"></a>GoogLeNet</h2><ol>
 <li>由Inception基础块组成。  </li>
 <li>Inception块相当于⼀个有4条线路的⼦⽹络（并行线路）。它通过不同窗口形状的卷积层和最⼤池化层来并⾏抽取信息，并使⽤<strong>「1×1卷积层」</strong> <strong>「减少通道数从而降低模型复杂度」</strong>。   </li>
 <li>可以⾃定义的超参数是每个层的输出通道数，我们以此来控制模型复杂度。 </li>
@@ -867,7 +863,7 @@ d2l.train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epo
 <li>NiN 使⽤全局平均池化层对每个通道中所有元素求平均并直接⽤于分类, 由NiN block组成</li>
 <li>GooLeNet 通过不同窗口形状的卷积层和最⼤池化层来并⾏抽取信息, 由Inception组成</li>
 </ul>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5l6uortw.png?imageView2/0/w/640/h/640" alt="Image Name"></p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5l6uortw.png?imageView2/0/w/640/h/640" alt="Inception"></p>
 <pre><code class="lang-python">
 class Inception(nn.Module):
     # c1 - c4为每条线路里的层的输出通道数
@@ -894,7 +890,7 @@ class Inception(nn.Module):
 </code></pre>
 <h3 id="GoogLeNet模型"><a href="#GoogLeNet模型" class="headerlink" title="GoogLeNet模型"></a>GoogLeNet模型</h3><p>完整模型结构 （中间的并联是若干个 Inception）</p>
 <p>最后一层，它可以确保经过 Global AvgPool 后输出的形状为 [batch_size, num_of_channels, 1, 1]。<br>当输入图像的尺寸发生变化时，可以发挥作用</p>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5l6x0fyyn.png?imageView2/0/w/640/h/640" alt="Image Name"></p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5l6x0fyyn.png?imageView2/0/w/640/h/640" alt="完整GoogLeNet模型"></p>
 <pre><code class="lang-python">b1 = nn.Sequential(nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3),  # 抽取特征，减小宽高
                    nn.ReLU(),
                    nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
