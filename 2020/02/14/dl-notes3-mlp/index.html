@@ -423,6 +423,20 @@
         background: #f8f8f8;
     }
 
+    .code-area::after {
+        content: " ";
+        position: absolute;
+        border-radius: 50%;
+        /*background: #ff5f56;*/
+        width: 12px;
+        height: 12px;
+        top: 0;
+        left: 12px;
+        margin-top: 12px;
+        /*-webkit-box-shadow: 20px 0 #ffbd2e, 40px 0 #27c93f;*/
+        /*box-shadow: 20px 0 #ffbd2e, 40px 0 #27c93f;*/
+    }
+
     @font-face {
         font-family: 'Menlo';
         font-style: normal;
@@ -433,6 +447,7 @@
     code{
         font-family: 'Menlo';
     }
+    
 
 </style>
 
@@ -687,7 +702,9 @@ epoch 2, loss 0.0019, train acc 0.821, test acc 0.806
 epoch 3, loss 0.0017, train acc 0.841, test acc 0.805
 epoch 4, loss 0.0015, train acc 0.855, test acc 0.834
 epoch 5, loss 0.0014, train acc 0.866, test acc 0.840
-</code></pre>
+</code></pre><h2 id="练习题"><a href="#练习题" class="headerlink" title="练习题"></a>练习题</h2><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/amdb6W3tQBRyuXE.png" alt=""></p>
+<p>256x256x1000 + 1000x10 = 65546000</p>
+
             </div>
             <hr/>
 
@@ -1162,7 +1179,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">34.4k</span>&nbsp;字
+                class="white-color">52.8k</span>&nbsp;字
             
             
             

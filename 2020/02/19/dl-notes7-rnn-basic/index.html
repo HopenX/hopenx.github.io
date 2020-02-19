@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="动手深度学习(四):过拟合与欠拟合, HopenX">
-    <meta name="description" content="简要介绍过拟合 over-fitting 和欠拟合 under-fitting 是机器学习中常见的两种问题, 以及对应的解决方法">
+    <meta name="keywords" content="动手深度学习(七):循环神经网络 RNN 基础, HopenX">
+    <meta name="description" content="简要介绍 RNN 的原理, one-hot 表示法, 困惑度评价指标, RNN 从零开始的实现">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>动手深度学习(四):过拟合与欠拟合 | HopenX</title>
+    <title>动手深度学习(七):循环神经网络 RNN 基础 | HopenX</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/awesome/css/all.css">
@@ -287,12 +287,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">动手深度学习(四):过拟合与欠拟合</h1>
+                    <h1 class="description center-align post-title">动手深度学习(七):循环神经网络 RNN 基础</h1>
                 </div>
             </div>
         </div>
@@ -468,6 +468,10 @@
                                 <span class="chip bg-color">深度学习</span>
                             </a>
                         
+                            <a href="/tags/NLP/">
+                                <span class="chip bg-color">NLP</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -489,7 +493,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-02-14
+                    2020-02-19
                 </div>
                 
 
@@ -498,7 +502,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.2k
+                    5.9k
                 </div>
                 
 
@@ -516,343 +520,398 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="过拟合、欠拟合及其解决方案"><a href="#过拟合、欠拟合及其解决方案" class="headerlink" title="过拟合、欠拟合及其解决方案"></a>过拟合、欠拟合及其解决方案</h1><ol>
-<li>过拟合、欠拟合的概念</li>
-<li>权重衰减</li>
-<li>丢弃法</li>
-</ol>
-<h1 id="模型选择、过拟合和欠拟合"><a href="#模型选择、过拟合和欠拟合" class="headerlink" title="模型选择、过拟合和欠拟合"></a>模型选择、过拟合和欠拟合</h1><h2 id="训练误差和泛化误差"><a href="#训练误差和泛化误差" class="headerlink" title="训练误差和泛化误差"></a>训练误差和泛化误差</h2><p>在解释上述现象之前，我们需要区分训练误差（training error）和泛化误差（generalization error）。通俗来讲，前者指模型在训练数据集上表现出的误差，后者指模型在任意一个测试数据样本上表现出的误差的期望，并常常通过测试数据集上的误差来近似。计算训练误差和泛化误差可以使用之前介绍过的损失函数，例如线性回归用到的平方损失函数和softmax回归用到的交叉熵损失函数。</p>
-<p>机器学习模型应关注降低泛化误差。</p>
-<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><h3 id="验证数据集"><a href="#验证数据集" class="headerlink" title="验证数据集"></a>验证数据集</h3><p>从严格意义上讲，测试集只能在所有超参数和模型参数选定后使用一次。不可以使用测试数据选择模型，如调参。由于无法从训练误差估计泛化误差，因此也不应只依赖训练数据选择模型。鉴于此，我们可以预留一部分在训练数据集和测试数据集以外的数据来进行模型选择。这部分数据被称为验证数据集，简称验证集（validation set）。例如，我们可以从给定的训练集中随机选取一小部分作为验证集，而将剩余部分作为真正的训练集。</p>
-<h3 id="K折交叉验证"><a href="#K折交叉验证" class="headerlink" title="K折交叉验证"></a>K折交叉验证</h3><p>由于验证数据集不参与模型训练，当训练数据不够用时，预留大量的验证数据显得太奢侈。一种改善的方法是K折交叉验证（K-fold cross-validation）。在K折交叉验证中，我们把原始训练数据集分割成K个不重合的子数据集，然后我们做K次模型训练和验证。每一次，我们使用一个子数据集验证模型，并使用其他K-1个子数据集来训练模型。在这K次训练和验证中，每次用来验证模型的子数据集都不同。最后，我们对这K次训练误差和验证误差分别求平均。</p>
-<h2 id="过拟合和欠拟合"><a href="#过拟合和欠拟合" class="headerlink" title="过拟合和欠拟合"></a>过拟合和欠拟合</h2><p>接下来，我们将探究模型训练中经常出现的两类典型问题：</p>
+                <h1 id="循环神经网络"><a href="#循环神经网络" class="headerlink" title="循环神经网络"></a>循环神经网络</h1><p>本节介绍循环神经网络，下图展示了如何基于循环神经网络实现语言模型。我们的目的是基于当前的输入与过去的输入序列，预测序列的下一个字符。循环神经网络引入一个隐藏变量$H$，用$H_{t}$表示$H$在时间步$t$的值。$H_{t}$的计算基于$X_{t}$和$H_{t-1}$，可以认为$H_{t}$记录了到当前字符为止的序列信息，利用$H_{t}$对序列的下一个字符进行预测。</p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p>W_xh: 状态-输入权重<br>W_hh: 状态-状态权重<br>W_hq: 状态-输出权重<br>b_h: 隐藏层的偏置<br>b_q: 输出层的偏置</p>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ul>
+<li>循环神经网络 <code>RNN</code> 的参数就是上述的三个权重和两个偏置，并且在沿着时间训练（参数的更新），参数的数量没有发生变化，仅仅是上述的参数的值在更新。循环神经网络可以看作是沿着时间维度上的权值共享</li>
+<li>卷积神经网络 <code>CNN</code> 中，一个卷积核通过在特征图上滑动进行卷积，是空间维度的权值共享。在卷积神经网络中通过控制特征图的数量来控制每一层模型的复杂度，而循环神经网络是通过控制W_xh和W_hh中h的维度来控制模型的复杂度。</li>
+</ul>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5jkm0v44i.png?imageView2/0/w/640/h/640" alt="Image Name"></p>
+<h2 id="一个batch的数据的表示"><a href="#一个batch的数据的表示" class="headerlink" title="一个batch的数据的表示"></a>一个batch的数据的表示</h2><ul>
+<li>如何将一个batch的数据转换成时间步数个（批量大小，词典大小）的矩阵？</li>
+<li>每个字符都是一个词典大小的向量(<code>one-hot 表示法</code>)，每个样本是时间步数个序列，每个batch是批量大小个样本</li>
+<li>第一个{批量大小，词典大小}的矩阵：取出一个批量样本中<code>每个序列的第一个字符</code>，并将每个字符展开成词典大小的向量，就形成了第一个时间步所表示的矩阵</li>
+<li>第二个{批量大小，词典大小}的矩阵：取出一个批量样本中<code>每个序列的第二个字符</code>，并将每个字符展开成词典大小的向量，就形成了第二个时间步所表示的矩阵</li>
+<li>最后就形成了时间步个{批量大小，词典大小}的矩阵. 1个 batch = <code>step * batch_size * vocab_size</code> ，这也就是每个batch最后的形式</li>
+</ul>
+<h2 id="隐藏状态的初始化"><a href="#隐藏状态的初始化" class="headerlink" title="隐藏状态的初始化"></a>隐藏状态的初始化</h2><ul>
+<li>随机采样时：每次迭代都需要重新初始化隐藏状态（每个epoch有很多词迭代，每次迭代都需要进行初始化，因为对于随机采样的样本中只有一个批量内的数据是连续的）</li>
+<li>相邻采样时：如果是相邻采样，则说明前后两个batch的数据是连续的，所以在训练每个batch的时候只需要更新一次（也就是说模型在一个epoch中的迭代不需要重新初始化隐藏状态）</li>
+</ul>
+<h2 id="循环神经网络的构造"><a href="#循环神经网络的构造" class="headerlink" title="循环神经网络的构造"></a>循环神经网络的构造</h2><p>我们先看循环神经网络的具体构造。假设$\boldsymbol{X}_t \in \mathbb{R}^{n \times d}$是时间步$t$的小批量输入（其批量大小为 𝑛 ，输入个数为 𝑑），$\boldsymbol{H}_t  \in \mathbb{R}^{n \times h}$是该时间步的隐藏变量，则：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{H}_t = \phi(\boldsymbol{X}_t \boldsymbol{W}_{xh} + \boldsymbol{H}_{t-1} \boldsymbol{W}_{hh}  + \boldsymbol{b}_h).</script><p>其中，$\boldsymbol{W}_{xh} \in \mathbb{R}^{d \times h}$，$\boldsymbol{W}_{hh} \in \mathbb{R}^{h \times h}$，$\boldsymbol{b}_{h} \in \mathbb{R}^{1 \times h}$，$\phi$函数是<code>非线性激活函数</code>。由于引入了$\boldsymbol{H}_{t-1} \boldsymbol{W}_{hh}$，$H_{t}$能够捕捉截至当前时间步的序列的历史信息，就像是神经网络当前时间步的状态或记忆一样。由于$H_{t}$的计算基于$H_{t-1}$，上式的计算是循环的，使用循环计算的网络即<code>循环神经网络</code>（recurrent neural network）。</p>
+<p>在时间步$t$，输出层的输出为：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{O}_t = \boldsymbol{H}_t \boldsymbol{W}_{hq} + \boldsymbol{b}_q.</script><p>其中$\boldsymbol{W}_{hq} \in \mathbb{R}^{h \times q}$，$\boldsymbol{b}_q \in \mathbb{R}^{1 \times q}$。<br>（h 是由上一层隐藏层的神经元个数决定的，q 是自己的输出个数）</p>
+<h2 id="从零开始实现循环神经网络"><a href="#从零开始实现循环神经网络" class="headerlink" title="从零开始实现循环神经网络"></a>从零开始实现循环神经网络</h2><p>我们先尝试从零开始实现一个基于字符级循环神经网络的语言模型，这里我们使用周杰伦的歌词作为语料，首先我们读入数据：</p>
+<pre><code class="lang-python">import torch
+import torch.nn as nn
+import time
+import math
+import sys
+sys.path.append(&quot;/home/kesci/input&quot;)
+import d2l_jay9460 as d2l
+(corpus_indices, char_to_idx, idx_to_char, vocab_size) = d2l.load_data_jay_lyrics()
+device = torch.device(&#39;cuda&#39; if torch.cuda.is_available() else &#39;cpu&#39;)
+</code></pre>
+<h3 id="one-hot向量"><a href="#one-hot向量" class="headerlink" title="one-hot向量"></a>one-hot向量</h3><p>我们需要将字符表示成向量，这里采用one-hot向量。假设词典大小是$N$，每次字符对应一个从$0$到$N-1$的唯一的索引，则该字符的向量是一个长度为$N$的向量，若字符的索引是$i$，则该向量的第$i$个位置为$1$，其他位置为$0$。下面分别展示了索引为0和2的one-hot向量，向量长度等于词典大小 vocab_size。</p>
+<pre><code class="lang-python">def one_hot(x, n_class, dtype=torch.float32):
+    result = torch.zeros(x.shape[0], n_class, dtype=dtype, device=x.device)  # shape: (n, n_class)
+    result.scatter_(1, x.long().view(-1, 1), 1)  # result[i, x[i, 0]] = 1
+    return result
+
+# one-hot 每个人携带整个序列，但是只标记自己
+print(vocab_size)
+x = torch.tensor([0, 2])
+x_one_hot = one_hot(x, vocab_size)
+print(x_one_hot)
+print(x_one_hot.shape)
+print(x_one_hot.sum(axis=1))
+</code></pre>
+<pre><code>1027
+tensor([[1., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 1.,  ..., 0., 0., 0.]])
+torch.Size([2, 1027])
+tensor([1., 1.])
+</code></pre><p>我们每次采样的小批量的形状是（批量大小, 时间步数）。下面的函数将这样的小批量变换成数个形状为（批量大小, 词典大小）的矩阵，矩阵个数等于时间步数。也就是说，时间步$t$的输入为$\boldsymbol{X}_t \in \mathbb{R}^{n \times d}$，其中$n$为批量大小，$d$为词向量大小，即one-hot向量长度（词典大小）。</p>
+<pre><code class="lang-python">def to_onehot(X, n_class):  
+    # X 相当于小批量，批量大小即行数n，时间步数即列数d, n_class 相当于字典大小，即单词个数 vocab_size
+    # 每次传给 one_hot 参数，X[:, i]表示第 i 列所有行，每次两行，0/5, 1/6... n_class 即 vocab_size
+    # 对每一列进行 one_hot, 最后返回的一个三维 tensor
+    # one_hot(X[:, i] 为 [tensor([0, 5]), tensor([1, 6]), tensor([2, 7]), tensor([3, 8]), tensor([4, 9])]
+    return [one_hot(X[:, i], n_class) for i in range(X.shape[1])]
+
+X = torch.arange(10).view(2, 5) #此处批量大小为 2，时间步数为 5
+inputs = to_onehot(X, vocab_size)
+print(X)
+print(inputs)
+# 上面是一行一组x = torch.tensor([0, 2]), x只有一行，这里是两个一组，因为 X 有两行
+</code></pre>
+<h3 id="初始化模型参数"><a href="#初始化模型参数" class="headerlink" title="初始化模型参数"></a>初始化模型参数</h3><pre><code class="lang-python">num_inputs, num_hiddens, num_outputs = vocab_size, 256, vocab_size
+# num_inputs: d
+# num_hiddens: h, 隐藏单元的个数256, 是超参数
+# num_outputs: q
+
+def get_params():
+    def _one(shape): # 对给定的 shape 进行随机初始化
+        param = torch.zeros(shape, device=device, dtype=torch.float32)
+        nn.init.normal_(param, 0, 0.01)
+        return torch.nn.Parameter(param)
+
+    # 隐藏层参数
+    W_xh = _one((num_inputs, num_hiddens))
+    W_hh = _one((num_hiddens, num_hiddens))
+    b_h = torch.nn.Parameter(torch.zeros(num_hiddens, device=device))
+    # 输出层参数
+    W_hq = _one((num_hiddens, num_outputs))
+    b_q = torch.nn.Parameter(torch.zeros(num_outputs, device=device))
+    return (W_xh, W_hh, b_h, W_hq, b_q)
+</code></pre>
+<h3 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h3><p>函数<code>rnn</code>用循环的方式依次完成循环神经网络每个时间步的计算。</p>
+<pre><code class="lang-python">def rnn(inputs, state, params):
+    # inputs和outputs皆为num_steps个形状为(batch_size, vocab_size)的矩阵
+    W_xh, W_hh, b_h, W_hq, b_q = params
+    H, = state   # 状态可能有多个，先定义成一个元组
+    outputs = []
+    for X in inputs:
+        H = torch.tanh(torch.matmul(X, W_xh) + torch.matmul(H, W_hh) + b_h)  # 根据公式
+        Y = torch.matmul(H, W_hq) + b_q
+        outputs.append(Y)
+    return outputs, (H,)   # 可能会使用相邻采样，当前的状态(H,)就可以作为下一个状态的初始值
+</code></pre>
+<p>函数init_rnn_state初始化隐藏变量，这里的返回值是一个元组。</p>
+<pre><code class="lang-python">def init_rnn_state(batch_size, num_hiddens, device):
+    return (torch.zeros((batch_size, num_hiddens), device=device), )
+</code></pre>
+<p>做个简单的测试来观察输出结果的个数（时间步数），以及第一个时间步的输出层输出的形状和隐藏状态的形状。</p>
+<pre><code class="lang-python"># print(X.shape)  # 输入批量，批量大小是 2，时间步数是 5
+# print(num_hiddens) # 隐藏单元个数 256
+# print(vocab_size)  # 字典大小 1027
+state = init_rnn_state(X.shape[0], num_hiddens, device)  # 初始化状态
+inputs = to_onehot(X.to(device), vocab_size)
+params = get_params()
+outputs, state_new = rnn(inputs, state, params)  # 把 one_hot 形式的 X 作为 inputs 输入进去
+# print(len(inputs), inputs[0].shape)   # 5 torch.Size([2, 1027])
+# print(len(outputs), outputs[0].shape) # 5 torch.Size([2, 1027])
+# print(len(state), state[0].shape)     # 1 torch.Size([2, 256])
+# print(len(state_new), state_new[0].shape) # 1 torch.Size([2, 256])  都是 2 行 256 列
+</code></pre>
+<h3 id="裁剪梯度"><a href="#裁剪梯度" class="headerlink" title="裁剪梯度"></a>裁剪梯度</h3><p>循环神经网络中较容易出现梯度衰减或梯度爆炸，这会导致网络几乎无法训练。<code>裁剪梯度</code>（clip gradient）是一种应对<code>梯度爆炸</code>的方法。假设我们把所有模型参数的梯度拼接成一个向量 $\boldsymbol{g}$，并设裁剪的阈值是$\theta$。裁剪后的梯度</p>
+<script type="math/tex; mode=display">
+ \min\left(\frac{\theta}{\|\boldsymbol{g}\|}, 1\right)\boldsymbol{g}</script><p>的$L_2$范数不超过$\theta$。</p>
+<pre><code class="lang-python">def grad_clipping(params, theta, device):
+    norm = torch.tensor([0.0], device=device)
+    for param in params:
+        norm += (param.grad.data ** 2).sum()
+    norm = norm.sqrt().item()
+    if norm &gt; theta:  # 如果不够 1，就乘上一个数
+        for param in params:
+            param.grad.data *= (theta / norm)
+</code></pre>
+<h3 id="定义预测函数"><a href="#定义预测函数" class="headerlink" title="定义预测函数"></a>定义预测函数</h3><p>以下函数基于前缀<code>prefix</code>（含有数个字符的字符串）来预测接下来的<code>num_chars</code>个字符。这个函数稍显复杂，其中我们将循环神经单元<code>rnn</code>设置成了函数参数，这样在后面小节介绍其他循环神经网络时能重复使用这个函数。</p>
+<pre><code class="lang-python">def predict_rnn(prefix, num_chars, rnn, params, init_rnn_state,  # 给定 prefix，预测接下来的 num_chars
+                num_hiddens, vocab_size, device, idx_to_char, char_to_idx):
+    state = init_rnn_state(1, num_hiddens, device)
+    output = [char_to_idx[prefix[0]]]   # output记录prefix加上预测的num_chars个字符
+    for t in range(num_chars + len(prefix) - 1):
+        # 将上一时间步的输出作为当前时间步的输入
+        X = to_onehot(torch.tensor([[output[-1]]], device=device), vocab_size)
+        # 计算输出和更新隐藏状态
+        (Y, state) = rnn(X, state, params)
+        # 下一个时间步的输入是prefix里的字符(还在初始态）, 或者当前的最佳预测字符（计算出了 Y）
+        if t &lt; len(prefix) - 1:
+            output.append(char_to_idx[prefix[t + 1]])
+        else:
+            output.append(Y[0].argmax(dim=1).item())
+    return &#39;&#39;.join([idx_to_char[i] for i in output])
+</code></pre>
+<p>我们先测试一下<code>predict_rnn</code>函数。我们将根据前缀“分开”创作长度为10个字符（不考虑前缀长度）的一段歌词。因为模型参数为随机值，所以预测结果也是随机的。</p>
+<pre><code class="lang-python">predict_rnn(&#39;分开&#39;, 10, rnn, params, init_rnn_state, num_hiddens, vocab_size,
+            device, idx_to_char, char_to_idx)
+</code></pre>
+<pre><code>&#39;分开潮养每霜敌刺母张暴欢&#39;
+</code></pre><h3 id="困惑度"><a href="#困惑度" class="headerlink" title="困惑度"></a>困惑度</h3><p>我们通常使用<code>困惑度</code>（perplexity）来评价语言模型的好坏。回忆一下“softmax回归”一节中交叉熵损失函数的定义。困惑度是对交叉熵损失函数做指数运算后得到的值。特别地，</p>
 <ul>
-<li>一类是模型无法得到较低的训练误差，我们将这一现象称作欠拟合（underfitting）；</li>
-<li>另一类是模型的训练误差远小于它在测试数据集上的误差，我们称该现象为过拟合（overfitting）。<br>在实践中，我们要尽可能同时应对欠拟合和过拟合。虽然有很多因素可能导致这两种拟合问题，在这里我们重点讨论两个因素：模型复杂度和训练数据集大小。</li>
+<li><code>最佳</code>情况下，模型总是把标签类别的概率预测为1，此时困惑度为1；  （困惑度就是预测概率的倒数）</li>
+<li><code>最坏</code>情况下，模型总是把标签类别的概率预测为0，此时困惑度为正无穷；</li>
+<li><code>基线</code>情况下，模型总是预测所有类别的概率都相同，此时困惑度为类别个数。</li>
 </ul>
-<h3 id="模型复杂度"><a href="#模型复杂度" class="headerlink" title="模型复杂度"></a>模型复杂度</h3><p>为了解释模型复杂度，我们以多项式函数拟合为例。给定一个由标量数据特征$x$和对应的标量标签$y$组成的训练数据集，多项式函数拟合的目标是找一个$K$阶多项式函数</p>
-<script type="math/tex; mode=display">
- \hat{y} = b + \sum_{k=1}^K x^k w_k</script><p>来近似 $y$。在上式中，$w_k$是模型的权重参数，$b$是偏差参数。与线性回归相同，多项式函数拟合也使用平方损失函数。特别地，一阶多项式函数拟合又叫线性函数拟合。</p>
-<p>给定训练数据集，模型复杂度和误差之间的关系：</p>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5jc27wxoj.png?imageView2/0/w/960/h/960" alt="Image Name"></p>
-<h3 id="训练数据集大小"><a href="#训练数据集大小" class="headerlink" title="训练数据集大小"></a>训练数据集大小</h3><p>影响欠拟合和过拟合的另一个重要因素是训练数据集的大小。一般来说，如果训练数据集中样本数过少，特别是比模型参数数量（按元素计）更少时，过拟合更容易发生。此外，泛化误差不会随训练数据集里样本数量增加而增大。因此，在计算资源允许的范围之内，我们通常希望训练数据集大一些，特别是在模型复杂度较高时，例如层数较多的深度学习模型。</p>
-<h1 id="多项式函数拟合实验"><a href="#多项式函数拟合实验" class="headerlink" title="多项式函数拟合实验"></a>多项式函数拟合实验</h1><pre><code class="lang-python">%matplotlib inline
-import torch
-import numpy as np
-import sys
-sys.path.append(&quot;/home/kesci/input&quot;)
-import d2lzh1981 as d2l
-print(torch.__version__)
-</code></pre>
-<pre><code>1.3.0
-</code></pre><h2 id="初始化模型参数"><a href="#初始化模型参数" class="headerlink" title="初始化模型参数"></a>初始化模型参数</h2><pre><code class="lang-python">n_train, n_test, true_w, true_b = 100, 100, [1.2, -3.4, 5.6], 5
-features = torch.randn((n_train + n_test, 1))
-poly_features = torch.cat((features, torch.pow(features, 2), torch.pow(features, 3)), 1) 
-labels = (true_w[0] * poly_features[:, 0] + true_w[1] * poly_features[:, 1]
-          + true_w[2] * poly_features[:, 2] + true_b)
-labels += torch.tensor(np.random.normal(0, 0.01, size=labels.size()), dtype=torch.float)
-</code></pre>
-<pre><code class="lang-python">features[:2], poly_features[:2], labels[:2]
-</code></pre>
-<pre><code>(tensor([[-0.8589],
-         [-0.2534]]), tensor([[-0.8589,  0.7377, -0.6335],
-         [-0.2534,  0.0642, -0.0163]]), tensor([-2.0794,  4.4039]))
-</code></pre><h2 id="定义、训练和测试模型"><a href="#定义、训练和测试模型" class="headerlink" title="定义、训练和测试模型"></a>定义、训练和测试模型</h2><pre><code class="lang-python">def semilogy(x_vals, y_vals, x_label, y_label, x2_vals=None, y2_vals=None,
-             legend=None, figsize=(3.5, 2.5)):
-    # d2l.set_figsize(figsize)
-    d2l.plt.xlabel(x_label)
-    d2l.plt.ylabel(y_label)
-    d2l.plt.semilogy(x_vals, y_vals)
-    if x2_vals and y2_vals:
-        d2l.plt.semilogy(x2_vals, y2_vals, linestyle=&#39;:&#39;)
-        d2l.plt.legend(legend)
-</code></pre>
-<pre><code class="lang-python">num_epochs, loss = 100, torch.nn.MSELoss()
+<p>显然，任何一个有效模型的困惑度必须小于类别个数。在本例中，困惑度必须<code>小于</code>词典大小<code>vocab_size</code>。</p>
+<h3 id="定义模型训练函数"><a href="#定义模型训练函数" class="headerlink" title="定义模型训练函数"></a>定义模型训练函数</h3><p>跟之前章节的模型训练函数相比，这里的模型训练函数有以下几点不同：</p>
+<ol>
+<li>使用困惑度评价模型。</li>
+<li>在迭代模型参数前裁剪梯度。</li>
+<li>对时序数据采用不同采样方法将导致隐藏状态初始化的不同。</li>
+</ol>
+<pre><code class="lang-python">def train_and_predict_rnn(rnn, get_params, init_rnn_state, num_hiddens,
+                          vocab_size, device, corpus_indices, idx_to_char,
+                          char_to_idx, is_random_iter, num_epochs, num_steps,
+                          lr, clipping_theta, batch_size, pred_period,
+                          pred_len, prefixes):
+    if is_random_iter:
+        data_iter_fn = d2l.data_iter_random  # 随机采样
+    else:
+        data_iter_fn = d2l.data_iter_consecutive # 相邻采样
+    params = get_params()
+    loss = nn.CrossEntropyLoss()
 
-def fit_and_plot(train_features, test_features, train_labels, test_labels):
-    # 初始化网络模型
-    net = torch.nn.Linear(train_features.shape[-1], 1)
-    # 通过Linear文档可知，pytorch已经将参数初始化了，所以我们这里就不手动初始化了
+    for epoch in range(num_epochs):
+        if not is_random_iter:  # 如使用相邻采样，在epoch开始时初始化隐藏状态
+            state = init_rnn_state(batch_size, num_hiddens, device)
+        l_sum, n, start = 0.0, 0, time.time()
+        data_iter = data_iter_fn(corpus_indices, batch_size, num_steps, device)
+        for X, Y in data_iter:
+            if is_random_iter:  # 如使用随机采样，在每个小批量更新前初始化隐藏状态
+                state = init_rnn_state(batch_size, num_hiddens, device)
+            else:  # 否则需要使用detach函数从计算图分离隐藏状态
+                for s in state:
+                    s.detach_()  # detach_()将返回的向量从创建它的计算图中分离出来，后面就不再对它求梯度了
+            # inputs是num_steps个形状为(batch_size, vocab_size)的矩阵
+            inputs = to_onehot(X, vocab_size)
+            # outputs有num_steps个形状为(batch_size, vocab_size)的矩阵
+            (outputs, state) = rnn(inputs, state, params)  # 前向计算
+            # 拼接之后形状为(num_steps * batch_size, vocab_size)
+            outputs = torch.cat(outputs, dim=0)
+            # Y的形状是(batch_size, num_steps)，转置后再变成形状为
+            # (num_steps * batch_size,)的向量，这样跟输出的行一一对应
+            y = torch.flatten(Y.T)
+            # 使用交叉熵损失计算平均分类误差
+            l = loss(outputs, y.long())
 
-    # 设置批量大小
-    batch_size = min(10, train_labels.shape[0])    
-    dataset = torch.utils.data.TensorDataset(train_features, train_labels)      # 设置数据集
-    train_iter = torch.utils.data.DataLoader(dataset, batch_size, shuffle=True) # 设置获取数据方式
-
-    optimizer = torch.optim.SGD(net.parameters(), lr=0.01)                      # 设置优化函数，使用的是随机梯度下降优化
-    train_ls, test_ls = [], []
-    for _ in range(num_epochs):
-        for X, y in train_iter:                                                 # 取一个批量的数据
-            l = loss(net(X), y.view(-1, 1))                                     # 输入到网络中计算输出，并和标签比较求得损失函数
-            optimizer.zero_grad()                                               # 梯度清零，防止梯度累加干扰优化
-            l.backward()                                                        # 求梯度
-            optimizer.step()                                                    # 迭代优化函数，进行参数优化
-        train_labels = train_labels.view(-1, 1)
-        test_labels = test_labels.view(-1, 1)
-        train_ls.append(loss(net(train_features), train_labels).item())         # 将训练损失保存到train_ls中
-        test_ls.append(loss(net(test_features), test_labels).item())            # 将测试损失保存到test_ls中
-    print(&#39;final epoch: train loss&#39;, train_ls[-1], &#39;test loss&#39;, test_ls[-1])    
-    semilogy(range(1, num_epochs + 1), train_ls, &#39;epochs&#39;, &#39;loss&#39;,
-             range(1, num_epochs + 1), test_ls, [&#39;train&#39;, &#39;test&#39;])
-    print(&#39;weight:&#39;, net.weight.data,
-          &#39;\nbias:&#39;, net.bias.data)
-</code></pre>
-<h2 id="三阶多项式函数拟合（正常）"><a href="#三阶多项式函数拟合（正常）" class="headerlink" title="三阶多项式函数拟合（正常）"></a>三阶多项式函数拟合（正常）</h2><pre><code class="lang-python">fit_and_plot(poly_features[:n_train, :], poly_features[n_train:, :], labels[:n_train], labels[n_train:])
-</code></pre>
-<pre><code>final epoch: train loss 8887.298828125 test loss 1145.94287109375
-weight: tensor([[-8.5120, 19.0351, 12.8616]]) 
-bias: tensor([-5.4607])
-</code></pre><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/CD685B472B744329A1CFC47C9F0B5E89/q5jf5azjcn.png"></p>
-<h2 id="线性函数拟合（欠拟合）"><a href="#线性函数拟合（欠拟合）" class="headerlink" title="线性函数拟合（欠拟合）"></a>线性函数拟合（欠拟合）</h2><pre><code class="lang-python">fit_and_plot(features[:n_train, :], features[n_train:, :], labels[:n_train], labels[n_train:])
-</code></pre>
-<pre><code>final epoch: train loss 781.689453125 test loss 329.79852294921875
-weight: tensor([[26.8753]]) 
-bias: tensor([6.1426])
-</code></pre><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/33AD626DA0B94DB7A28D47697312B45D/q5jf5al2tv.png"></p>
-<h2 id="训练样本不足（过拟合）"><a href="#训练样本不足（过拟合）" class="headerlink" title="训练样本不足（过拟合）"></a>训练样本不足（过拟合）</h2><pre><code class="lang-python">fit_and_plot(poly_features[0:2, :], poly_features[n_train:, :], labels[0:2], labels[n_train:])
-</code></pre>
-<pre><code>final epoch: train loss 6.23520565032959 test loss 409.9844665527344
-weight: tensor([[ 0.9729, -0.9612,  0.7259]]) 
-bias: tensor([1.6334])
-</code></pre><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/AB13F65A70A9484788F8004E427EC290/q5jf5bd11u.png"></p>
-<h1 id="权重衰减"><a href="#权重衰减" class="headerlink" title="权重衰减"></a>权重衰减</h1><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>权重衰减等价于 $L_2$ 范数正则化（regularization）。正则化通过为模型损失函数添加惩罚项使学出的模型参数值较小，是应对过拟合的常用手段。</p>
-<h2 id="L2-范数正则化（regularization）"><a href="#L2-范数正则化（regularization）" class="headerlink" title="L2 范数正则化（regularization）"></a>L2 范数正则化（regularization）</h2><p>$L_2$范数正则化在模型原损失函数基础上添加$L_2$范数惩罚项，从而得到训练所需要最小化的函数。$L_2$范数惩罚项指的是模型权重参数每个元素的平方和与一个正的常数的乘积。以线性回归中的线性回归损失函数为例</p>
-<script type="math/tex; mode=display">
- \ell(w_1, w_2, b) = \frac{1}{n} \sum_{i=1}^n \frac{1}{2}\left(x_1^{(i)} w_1 + x_2^{(i)} w_2 + b - y^{(i)}\right)^2</script><p>其中$w_1, w_2$是权重参数，$b$是偏差参数，样本$i$的输入为$x_1^{(i)}, x_2^{(i)}$，标签为$y^{(i)}$，样本数为$n$。将权重参数用向量$\boldsymbol{w} = [w_1, w_2]$表示，带有$L_2$范数惩罚项的新损失函数为</p>
-<script type="math/tex; mode=display">
-\ell(w_1, w_2, b) + \frac{\lambda}{2n} |\boldsymbol{w}|^2,</script><p>其中超参数$\lambda &gt; 0$。当权重参数均为0时，惩罚项最小。当$\lambda$较大时，惩罚项在损失函数中的比重较大，这通常会使学到的权重参数的元素较接近0。当$\lambda$设为0时，惩罚项完全不起作用。上式中$L_2$范数平方$|\boldsymbol{w}|^2$展开后得到$w_1^2 + w_2^2$。<br>有了$L_2$范数惩罚项后，在小批量随机梯度下降中，我们将线性回归一节中权重$w_1$和$w_2$的迭代方式更改为</p>
-<script type="math/tex; mode=display">
- \begin{aligned} w_1 &\leftarrow \left(1- \frac{\eta\lambda}{|\mathcal{B}|} \right)w_1 - \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}}x_1^{(i)} \left(x_1^{(i)} w_1 + x_2^{(i)} w_2 + b - y^{(i)}\right),\\ w_2 &\leftarrow \left(1- \frac{\eta\lambda}{|\mathcal{B}|} \right)w_2 - \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}}x_2^{(i)} \left(x_1^{(i)} w_1 + x_2^{(i)} w_2 + b - y^{(i)}\right). \end{aligned}</script><p>可见，$L_2$范数正则化令权重$w_1$和$w_2$先自乘小于1的数，再减去不含惩罚项的梯度。因此，$L_2$范数正则化又叫权重衰减。权重衰减通过惩罚绝对值较大的模型参数为需要学习的模型增加了限制，这可能对过拟合有效。</p>
-<h2 id="高维线性回归实验从零开始的实现"><a href="#高维线性回归实验从零开始的实现" class="headerlink" title="高维线性回归实验从零开始的实现"></a>高维线性回归实验从零开始的实现</h2><p>下面，我们以高维线性回归为例来引入一个过拟合问题，并使用权重衰减来应对过拟合。设数据样本特征的维度为$p$。对于训练数据集和测试数据集中特征为$x_1, x_2, \ldots, x_p$的任一样本，我们使用如下的线性函数来生成该样本的标签：</p>
-<script type="math/tex; mode=display">
- y = 0.05 + \sum_{i = 1}^p 0.01x_i + \epsilon</script><p>其中噪声项$\epsilon$服从均值为0、标准差为0.01的正态分布。为了较容易地观察过拟合，我们考虑高维线性回归问题，如设维度$p=200$；同时，我们特意把训练数据集的样本数设低，如20。</p>
-<pre><code class="lang-python">%matplotlib inline
-import torch
-import torch.nn as nn
-import numpy as np
-import sys
-sys.path.append(&quot;/home/kesci/input&quot;)
-import d2lzh1981 as d2l
-
-print(torch.__version__)
-</code></pre>
-<pre><code>1.3.0
-</code></pre><h2 id="初始化模型参数-1"><a href="#初始化模型参数-1" class="headerlink" title="初始化模型参数"></a>初始化模型参数</h2><p>与前面观察过拟合和欠拟合现象的时候相似，在这里不再解释。</p>
-<pre><code class="lang-python">n_train, n_test, num_inputs = 20, 100, 200
-true_w, true_b = torch.ones(num_inputs, 1) * 0.01, 0.05
-
-features = torch.randn((n_train + n_test, num_inputs))
-labels = torch.matmul(features, true_w) + true_b
-labels += torch.tensor(np.random.normal(0, 0.01, size=labels.size()), dtype=torch.float)
-train_features, test_features = features[:n_train, :], features[n_train:, :]
-train_labels, test_labels = labels[:n_train], labels[n_train:]
-</code></pre>
-<pre><code class="lang-python"># 定义参数初始化函数，初始化模型参数并且附上梯度
-def init_params():
-    w = torch.randn((num_inputs, 1), requires_grad=True)
-    b = torch.zeros(1, requires_grad=True)
-    return [w, b]
-</code></pre>
-<h2 id="定义L2范数惩罚项"><a href="#定义L2范数惩罚项" class="headerlink" title="定义L2范数惩罚项"></a>定义L2范数惩罚项</h2><pre><code class="lang-python">def l2_penalty(w):
-    return (w**2).sum() / 2
-</code></pre>
-<h2 id="定义训练和测试"><a href="#定义训练和测试" class="headerlink" title="定义训练和测试"></a>定义训练和测试</h2><pre><code class="lang-python">batch_size, num_epochs, lr = 1, 100, 0.003
-net, loss = d2l.linreg, d2l.squared_loss
-
-dataset = torch.utils.data.TensorDataset(train_features, train_labels)
-train_iter = torch.utils.data.DataLoader(dataset, batch_size, shuffle=True)
-
-def fit_and_plot(lambd):
-    w, b = init_params()
-    train_ls, test_ls = [], []
-    for _ in range(num_epochs):
-        for X, y in train_iter:
-            # 添加了L2范数惩罚项
-            l = loss(net(X, w, b), y) + lambd * l2_penalty(w)
-            l = l.sum()
-
-            if w.grad is not None:
-                w.grad.data.zero_()
-                b.grad.data.zero_()
+            # 梯度清0
+            if params[0].grad is not None:
+                for param in params:
+                    param.grad.data.zero_()
             l.backward()
-            d2l.sgd([w, b], lr, batch_size)
-        train_ls.append(loss(net(train_features, w, b), train_labels).mean().item())
-        test_ls.append(loss(net(test_features, w, b), test_labels).mean().item())
-    d2l.semilogy(range(1, num_epochs + 1), train_ls, &#39;epochs&#39;, &#39;loss&#39;,
-                 range(1, num_epochs + 1), test_ls, [&#39;train&#39;, &#39;test&#39;])
-    print(&#39;L2 norm of w:&#39;, w.norm().item())
-</code></pre>
-<h2 id="观察过拟合"><a href="#观察过拟合" class="headerlink" title="观察过拟合"></a>观察过拟合</h2><pre><code class="lang-python">fit_and_plot(lambd=0)
-</code></pre>
-<pre><code>L2 norm of w: 11.6444091796875
-</code></pre><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/C27406AAA0FD41C6801D55ED4B25D5EA/q5jf5cs7lp.svg"></p>
-<h2 id="使用权重衰减"><a href="#使用权重衰减" class="headerlink" title="使用权重衰减"></a>使用权重衰减</h2><pre><code class="lang-python">fit_and_plot(lambd=3)
-</code></pre>
-<pre><code>L2 norm of w: 0.04063604772090912
-</code></pre><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/0770D8C23B8144C59D13D24390E471F0/q5jf5d4mwp.svg"></p>
-<h2 id="简洁实现"><a href="#简洁实现" class="headerlink" title="简洁实现"></a>简洁实现</h2><pre><code class="lang-python">def fit_and_plot_pytorch(wd):
-    # 对权重参数衰减。权重名称一般是以weight结尾
-    net = nn.Linear(num_inputs, 1)
-    nn.init.normal_(net.weight, mean=0, std=1)
-    nn.init.normal_(net.bias, mean=0, std=1)
-    optimizer_w = torch.optim.SGD(params=[net.weight], lr=lr, weight_decay=wd) # 对权重参数衰减
-    optimizer_b = torch.optim.SGD(params=[net.bias], lr=lr)  # 不对偏差参数衰减
+            grad_clipping(params, clipping_theta, device)  # 裁剪梯度
+            d2l.sgd(params, lr, 1)  # 因为误差已经取过均值，梯度不用再做平均
+            l_sum += l.item() * y.shape[0]
+            n += y.shape[0]
 
-    train_ls, test_ls = [], []
-    for _ in range(num_epochs):
-        for X, y in train_iter:
-            l = loss(net(X), y).mean()
-            optimizer_w.zero_grad()
-            optimizer_b.zero_grad()
-
-            l.backward()
-
-            # 对两个optimizer实例分别调用step函数，从而分别更新权重和偏差
-            optimizer_w.step()
-            optimizer_b.step()
-        train_ls.append(loss(net(train_features), train_labels).mean().item())
-        test_ls.append(loss(net(test_features), test_labels).mean().item())
-    d2l.semilogy(range(1, num_epochs + 1), train_ls, &#39;epochs&#39;, &#39;loss&#39;,
-                 range(1, num_epochs + 1), test_ls, [&#39;train&#39;, &#39;test&#39;])
-    print(&#39;L2 norm of w:&#39;, net.weight.data.norm().item())
+        if (epoch + 1) % pred_period == 0:
+            print(&#39;epoch %d, perplexity %f, time %.2f sec&#39; % (
+                epoch + 1, math.exp(l_sum / n), time.time() - start))
+            for prefix in prefixes:
+                print(&#39; -&#39;, predict_rnn(prefix, pred_len, rnn, params, init_rnn_state,
+                    num_hiddens, vocab_size, device, idx_to_char, char_to_idx))
 </code></pre>
-<pre><code class="lang-python">fit_and_plot_pytorch(0)
+<h3 id="训练模型并创作歌词"><a href="#训练模型并创作歌词" class="headerlink" title="训练模型并创作歌词"></a>训练模型并创作歌词</h3><p>现在我们可以训练模型了。首先，设置模型超参数。我们将根据前缀“分开”和“不分开”分别创作长度为50个字符（不考虑前缀长度）的一段歌词。我们每过50个迭代周期便根据当前训练的模型创作一段歌词。</p>
+<pre><code class="lang-python">num_epochs, num_steps, batch_size, lr, clipping_theta = 250, 35, 32, 1e2, 1e-2
+pred_period, pred_len, prefixes = 50, 50, [&#39;分开&#39;, &#39;不分开&#39;]
 </code></pre>
-<pre><code>L2 norm of w: 13.361410140991211
-</code></pre><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/525D01167F0E40509495588D6B0A0FB9/q5jf5e5i21.svg"></p>
-<pre><code class="lang-python">fit_and_plot_pytorch(3)
+<p>下面采用随机采样训练模型并创作歌词。</p>
+<pre><code class="lang-python">train_and_predict_rnn(rnn, get_params, init_rnn_state, num_hiddens,
+                      vocab_size, device, corpus_indices, idx_to_char,
+                      char_to_idx, True, num_epochs, num_steps, lr,
+                      clipping_theta, batch_size, pred_period, pred_len,
+                      prefixes)
 </code></pre>
-<pre><code>L2 norm of w: 0.051789578050374985
-</code></pre><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/3FAACA854B9545A8ADADDEB6EE17A680/q5jf5fa51u.svg"></p>
-<h1 id="丢弃法"><a href="#丢弃法" class="headerlink" title="丢弃法"></a>丢弃法</h1><p>多层感知机中神经网络图描述了一个单隐藏层的多层感知机。其中输入个数为4，隐藏单元个数为5，且隐藏单元$h_i$（$i=1, \ldots, 5$）的计算表达式为</p>
-<script type="math/tex; mode=display">
- h_i = \phi\left(x_1 w_{1i} + x_2 w_{2i} + x_3 w_{3i} + x_4 w_{4i} + b_i\right)</script><p>这里$\phi$是激活函数，$x_1, \ldots, x_4$是输入，隐藏单元$i$的权重参数为$w_{1i}, \ldots, w_{4i}$，偏差参数为$b_i$。当对该隐藏层使用丢弃法时，该层的隐藏单元将有一定概率被丢弃掉。设丢弃概率为$p$，那么有$p$的概率$h_i$会被清零，有$1-p$的概率$h_i$会除以$1-p$做拉伸。丢弃概率是丢弃法的超参数。具体来说，设随机变量$\xi_i$为0和1的概率分别为$p$和$1-p$。使用丢弃法时我们计算新的隐藏单元$h_i’$</p>
-<script type="math/tex; mode=display">
- h_i' = \frac{\xi_i}{1-p} h_i</script><p>由于$E(\xi_i) = 1-p$，因此</p>
-<script type="math/tex; mode=display">
- E(h_i') = \frac{E(\xi_i)}{1-p}h_i = h_i</script><p>即丢弃法不改变其输入的期望值。让我们对之前多层感知机的神经网络中的隐藏层使用丢弃法，一种可能的结果如图所示，其中$h_2$和$h_5$被清零。这时输出值的计算不再依赖$h_2$和$h_5$，在反向传播时，与这两个隐藏单元相关的权重的梯度均为0。由于在训练中隐藏层神经元的丢弃是随机的，即$h_1, \ldots, h_5$都有可能被清零，输出层的计算无法过度依赖$h_1, \ldots, h_5$中的任一个，从而在训练模型时起到正则化的作用，并可以用来应对过拟合。在测试模型时，我们为了拿到更加确定性的结果，一般不使用丢弃法</p>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5jd69in3m.png?imageView2/0/w/960/h/960" alt="Image Name"></p>
-<h2 id="丢弃法从零开始的实现"><a href="#丢弃法从零开始的实现" class="headerlink" title="丢弃法从零开始的实现"></a>丢弃法从零开始的实现</h2><pre><code class="lang-python">%matplotlib inline
-import torch
-import torch.nn as nn
-import numpy as np
-import sys
-sys.path.append(&quot;/home/kesci/input&quot;)
-import d2lzh1981 as d2l
-
-print(torch.__version__)
+<pre><code>epoch 50, perplexity 71.093786, time 0.76 sec
+ - 分开 我不要再想你 我知要这 我的让我心能 不要我 别子我 别子我 别子我 别子我 别子我 别子我 别子
+ - 不分开 我不要这生你 我知想这 我的让我心能 不要我 别子我 别子我 别子我 别子我 别子我 别子我 别子
+epoch 100, perplexity 9.897621, time 0.71 sec
+ - 分开 我想想好生活 不知 是你 却不 痛箭  穿什么 如果我遇起头 有话去对医药 说哼 我不 我不 我不
+ - 不分开永 我不想再想 我不 我不 我不要 爱情走的太快就像龙卷风 不能不让我疯狂的可爱女人 坏坏的让我疯狂
+epoch 150, perplexity 2.847206, time 0.77 sec
+ - 分开 还默法 一步两步三步四步望著天 看星星 一颗两颗三颗四颗 连成线背著背默默许下心愿 看远方的星是否
+ - 不分开吗 我不能再想 我不 我不 我不要 爱情走的太快就像龙卷风 不能承受我已无处可躲 我不想再想 我不能
+epoch 200, perplexity 1.564534, time 0.72 sec
+ - 分开 有想都 教拳脚武术的老板 练铁沙掌 耍杨家枪 在伤子中夫我妈愿知错搞错  爱 用着星的对笑下想通 
+ - 不分开想 我不能再想 我不 我不 我不能 爱情走的太快就像龙卷风 不能承受我已无处可躲 我不要再想 我不要
+epoch 250, perplexity 1.311809, time 0.72 sec
+ - 分开 那切都上一步四步望透的 为吸走 一颗两颗三颗四颗 连成线背著背 游荡在蓝安排的雨 随时准备来袭 我
+ - 不分开简简的胖女巫 用拉丁文念咒语啦啦呜 她养的黑猫笑起来像哭 啦啦啦呜 静满村枪 在人笑功 我一定带我妈
+</code></pre><p>接下来采用相邻采样训练模型并创作歌词。</p>
+<pre><code class="lang-python">train_and_predict_rnn(rnn, get_params, init_rnn_state, num_hiddens,
+                      vocab_size, device, corpus_indices, idx_to_char,
+                      char_to_idx, False, num_epochs, num_steps, lr,
+                      clipping_theta, batch_size, pred_period, pred_len,
+                      prefixes)
 </code></pre>
-<pre><code>1.3.0
-</code></pre><pre><code class="lang-python">def dropout(X, drop_prob):
-    X = X.float()
-    assert 0 &lt;= drop_prob &lt;= 1
-    keep_prob = 1 - drop_prob
-    # 这种情况下把全部元素都丢弃
-    if keep_prob == 0:
-        return torch.zeros_like(X)
-    mask = (torch.rand(X.shape) &lt; keep_prob).float()
-
-    return mask * X / keep_prob
-</code></pre>
-<pre><code class="lang-python">X = torch.arange(16).view(2, 8)
-dropout(X, 0)
-</code></pre>
-<pre><code>tensor([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.],
-        [ 8.,  9., 10., 11., 12., 13., 14., 15.]])
-</code></pre><pre><code class="lang-python">dropout(X, 0.5)
-</code></pre>
-<pre><code>tensor([[ 0.,  0.,  0.,  6.,  8., 10.,  0., 14.],
-        [ 0.,  0., 20.,  0.,  0.,  0., 28.,  0.]])
-</code></pre><pre><code class="lang-python">dropout(X, 1.0)
-</code></pre>
-<pre><code>tensor([[0., 0., 0., 0., 0., 0., 0., 0.],
-        [0., 0., 0., 0., 0., 0., 0., 0.]])
-</code></pre><pre><code class="lang-python"># 参数的初始化
-num_inputs, num_outputs, num_hiddens1, num_hiddens2 = 784, 10, 256, 256
-
-W1 = torch.tensor(np.random.normal(0, 0.01, size=(num_inputs, num_hiddens1)), dtype=torch.float, requires_grad=True)
-b1 = torch.zeros(num_hiddens1, requires_grad=True)
-W2 = torch.tensor(np.random.normal(0, 0.01, size=(num_hiddens1, num_hiddens2)), dtype=torch.float, requires_grad=True)
-b2 = torch.zeros(num_hiddens2, requires_grad=True)
-W3 = torch.tensor(np.random.normal(0, 0.01, size=(num_hiddens2, num_outputs)), dtype=torch.float, requires_grad=True)
-b3 = torch.zeros(num_outputs, requires_grad=True)
-
-params = [W1, b1, W2, b2, W3, b3]
-</code></pre>
-<pre><code class="lang-python">drop_prob1, drop_prob2 = 0.2, 0.5
-
-def net(X, is_training=True):
-    X = X.view(-1, num_inputs)
-    H1 = (torch.matmul(X, W1) + b1).relu()
-    if is_training:  # 只在训练模型时使用丢弃法
-        H1 = dropout(H1, drop_prob1)  # 在第一层全连接后添加丢弃层
-    H2 = (torch.matmul(H1, W2) + b2).relu()
-    if is_training:
-        H2 = dropout(H2, drop_prob2)  # 在第二层全连接后添加丢弃层
-    return torch.matmul(H2, W3) + b3
-</code></pre>
-<pre><code class="lang-python">def evaluate_accuracy(data_iter, net):
-    acc_sum, n = 0.0, 0
-    for X, y in data_iter:
-        if isinstance(net, torch.nn.Module):
-            net.eval() # 评估模式, 这会关闭dropout
-            acc_sum += (net(X).argmax(dim=1) == y).float().sum().item()
-            net.train() # 改回训练模式
-        else: # 自定义的模型
-            if(&#39;is_training&#39; in net.__code__.co_varnames): # 如果有is_training这个参数
-                # 将is_training设置成False
-                acc_sum += (net(X, is_training=False).argmax(dim=1) == y).float().sum().item() 
-            else:
-                acc_sum += (net(X).argmax(dim=1) == y).float().sum().item() 
-        n += y.shape[0]
-    return acc_sum / n
-</code></pre>
-<pre><code class="lang-python">num_epochs, lr, batch_size = 5, 100.0, 256  # 这里的学习率设置的很大，原因与之前相同。
-loss = torch.nn.CrossEntropyLoss()
-train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, root=&#39;/home/kesci/input/FashionMNIST2065&#39;)
-d2l.train_ch3(
-    net,
-    train_iter,
-    test_iter,
-    loss,
-    num_epochs,
-    batch_size,
-    params,
-    lr)
-</code></pre>
-<pre><code>epoch 1, loss 0.0046, train acc 0.549, test acc 0.704
-epoch 2, loss 0.0023, train acc 0.785, test acc 0.737
-epoch 3, loss 0.0019, train acc 0.825, test acc 0.834
-epoch 4, loss 0.0017, train acc 0.842, test acc 0.763
-epoch 5, loss 0.0016, train acc 0.848, test acc 0.813
-</code></pre><h2 id="简洁实现-1"><a href="#简洁实现-1" class="headerlink" title="简洁实现"></a>简洁实现</h2><pre><code class="lang-python">net = nn.Sequential(
-        d2l.FlattenLayer(),
-        nn.Linear(num_inputs, num_hiddens1),
-        nn.ReLU(),
-        nn.Dropout(drop_prob1),
-        nn.Linear(num_hiddens1, num_hiddens2), 
-        nn.ReLU(),
-        nn.Dropout(drop_prob2),
-        nn.Linear(num_hiddens2, 10)
-        )
-
-for param in net.parameters():
-    nn.init.normal_(param, mean=0, std=0.01)
-</code></pre>
-<pre><code class="lang-python">optimizer = torch.optim.SGD(net.parameters(), lr=0.5)
-d2l.train_ch3(net, train_iter, test_iter, loss, num_epochs, batch_size, None, None, optimizer)
-</code></pre>
-<pre><code>epoch 1, loss 0.0046, train acc 0.553, test acc 0.736
-epoch 2, loss 0.0023, train acc 0.785, test acc 0.803
-epoch 3, loss 0.0019, train acc 0.818, test acc 0.756
-epoch 4, loss 0.0018, train acc 0.835, test acc 0.829
-epoch 5, loss 0.0016, train acc 0.848, test acc 0.851
-</code></pre><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li><p>欠拟合现象：模型无法达到一个较低的误差</p>
-</li>
-<li><p>过拟合现象：训练误差较低但是泛化误差依然较高，二者相差较大</p>
-</li>
+<pre><code>epoch 50, perplexity 60.294393, time 0.74 sec
+ - 分开 我想要你想 我不要再想 我不要再想 我不要再想 我不要再想 我不要再想 我不要再想 我不要再想 我
+ - 不分开 我想要你 你有了 别不我的可爱女人 坏坏的让我疯狂的可爱女人 坏坏的让我疯狂的可爱女人 坏坏的让我
+epoch 100, perplexity 7.141162, time 0.72 sec
+ - 分开 我已要再爱 我不要再想 我不 我不 我不要再想 我不 我不 我不要 爱情我的见快就像龙卷风 离能开
+ - 不分开柳 你天黄一个棍 后知哈兮 快使用双截棍 哼哼哈兮 快使用双截棍 哼哼哈兮 快使用双截棍 哼哼哈兮 
+epoch 150, perplexity 2.090277, time 0.73 sec
+ - 分开 我已要这是你在著 不想我都做得到 但那个人已经不是我 没有你在 我却多难熬  没有你在我有多难熬多
+ - 不分开觉 你已经离 我想再好 这样心中 我一定带我 我的完空 不你是风 一一彩纵 在人心中 我一定带我妈走
+epoch 200, perplexity 1.305391, time 0.77 sec
+ - 分开 我已要这样牵看你的手 它一定实现它一定像现 载著你 彷彿载著阳光 不管到你留都是晴天 蝴蝶自在飞力
+ - 不分开觉 你已经离开我 不知不觉 我跟了这节奏 后知后觉 又过了一个秋 后知后觉 我该好好生活 我该好好生
+epoch 250, perplexity 1.230800, time 0.79 sec
+ - 分开 我不要 是你看的太快了悲慢 担心今手身会大早 其么我也睡不着  昨晚梦里你来找 我才  原来我只想
+ - 不分开觉 你在经离开我 不知不觉 你知了有节奏 后知后觉 后知了一个秋 后知后觉 我该好好生活 我该好好生
+</code></pre><h2 id="循环神经网络的-pytorch-简洁实现"><a href="#循环神经网络的-pytorch-简洁实现" class="headerlink" title="循环神经网络的 pytorch 简洁实现"></a>循环神经网络的 pytorch 简洁实现</h2><h3 id="定义模型-1"><a href="#定义模型-1" class="headerlink" title="定义模型"></a>定义模型</h3><p>我们使用Pytorch中的<code>nn.RNN</code>来构造循环神经网络。在本节中，我们主要关注<code>nn.RNN</code>的以下几个构造函数参数：</p>
+<ul>
+<li><code>input_size</code> - The number of expected features in the input x</li>
+<li><code>hidden_size</code> – The number of features in the hidden state h</li>
+<li><code>nonlinearity</code> – The non-linearity to use. Can be either ‘tanh’ or ‘relu’. Default: ‘tanh’</li>
+<li><code>batch_first</code> – If True, then the input and output tensors are provided as (batch_size, num_steps, input_size). Default: False</li>
 </ul>
+<p>这里的<code>batch_first</code>决定了输入的形状，我们使用默认的参数<code>False</code>，对应的输入形状是 (num_steps, batch_size, input_size)。</p>
+<p><code>forward</code>函数的参数为：</p>
+<ul>
+<li><code>input</code> of shape (num_steps, batch_size, input_size): tensor containing the features of the input sequence. （三维）</li>
+<li><code>h_0</code> of shape (num_layers * num_directions, batch_size, hidden_size): tensor containing the initial hidden state for each element in the batch. Defaults to zero if not provided. If the RNN is bidirectional, num_directions should be 2, else it should be 1. （<code>h_0</code>对应的是 RNN 中的初始 state）<br>（num_layers主要和深度 RNN 有关，num_directions主要和双向 RNN 有关，此处 <code>num_layers 乘以 num_directions</code> = 1）</li>
+</ul>
+<p><code>forward</code>函数的返回值是：</p>
+<ul>
+<li><code>output</code> of shape (num_steps, batch_size, num_directions * hidden_size): tensor containing the output features (h_t) from the last layer of the RNN, for each t.</li>
+<li><code>h_n</code> of shape (num_layers * num_directions, batch_size, hidden_size): tensor containing the hidden state for t = num_steps. （最后一个时间步，隐藏状态的值）</li>
+</ul>
+<p>现在我们构造一个<code>nn.RNN</code>实例，并用一个简单的例子来看一下输出的形状。</p>
+<pre><code class="lang-python">rnn_layer = nn.RNN(input_size=vocab_size, hidden_size=num_hiddens)
+num_steps, batch_size = 35, 2
+X = torch.rand(num_steps, batch_size, vocab_size)
+state = None
+Y, state_new = rnn_layer(X, state)
+print(Y.shape, state_new.shape)
+</code></pre>
+<pre><code>torch.Size([35, 2, 256]) torch.Size([1, 2, 256])
+</code></pre><p>我们定义一个完整的基于循环神经网络的语言模型。</p>
+<pre><code class="lang-python">class RNNModel(nn.Module):
+    def __init__(self, rnn_layer, vocab_size):
+        super(RNNModel, self).__init__()
+        self.rnn = rnn_layer  # 一个 rnn 实例，也可以是一个 LSTM 实例
+        self.hidden_size = rnn_layer.hidden_size * (2 if rnn_layer.bidirectional else 1) 
+        self.vocab_size = vocab_size
+        self.dense = nn.Linear(self.hidden_size, vocab_size)  #线性层作为输出层
+
+    def forward(self, inputs, state):
+        # inputs.shape: (batch_size, num_steps)
+        X = to_onehot(inputs, vocab_size)
+        X = torch.stack(X)  # X.shape: (num_steps, batch_size, vocab_size)
+        hiddens, state = self.rnn(X, state)
+        hiddens = hiddens.view(-1, hiddens.shape[-1])  # hiddens.shape: (num_steps * batch_size, hidden_size)
+        output = self.dense(hiddens)  # 用Linear线性函数作输出
+        return output, state
+</code></pre>
+<p>类似的，我们需要实现一个<code>预测函数</code>，与前面的区别在于前向计算和初始化隐藏状态。</p>
+<pre><code class="lang-python">def predict_rnn_pytorch(prefix, num_chars, model, vocab_size, device, idx_to_char,
+                      char_to_idx):
+    state = None
+    output = [char_to_idx[prefix[0]]]  # output记录prefix加上预测的num_chars个字符
+    for t in range(num_chars + len(prefix) - 1):
+        X = torch.tensor([output[-1]], device=device).view(1, 1)
+        (Y, state) = model(X, state)  # 前向计算不需要传入模型参数
+        if t &lt; len(prefix) - 1:
+            output.append(char_to_idx[prefix[t + 1]])
+        else:
+            output.append(Y.argmax(dim=1).item())
+    return &#39;&#39;.join([idx_to_char[i] for i in output])
+</code></pre>
+<p>使用权重为随机值的模型来预测一次。</p>
+<pre><code class="lang-python">model = RNNModel(rnn_layer, vocab_size).to(device)
+predict_rnn_pytorch(&#39;分开&#39;, 10, model, vocab_size, device, idx_to_char, char_to_idx)
+</code></pre>
+<pre><code>&#39;分开老忧忧老钩忧老忧忧老&#39;
+</code></pre><p>接下来实现<code>训练函数</code>，这里只使用了相邻采样。</p>
+<pre><code class="lang-python">def train_and_predict_rnn_pytorch(model, num_hiddens, vocab_size, device,
+                                corpus_indices, idx_to_char, char_to_idx,
+                                num_epochs, num_steps, lr, clipping_theta,
+                                batch_size, pred_period, pred_len, prefixes):
+    loss = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    model.to(device)
+    for epoch in range(num_epochs):
+        l_sum, n, start = 0.0, 0, time.time()
+        data_iter = d2l.data_iter_consecutive(corpus_indices, batch_size, num_steps, device) # 相邻采样
+        state = None
+        for X, Y in data_iter:
+            if state is not None:
+                # 使用detach函数从计算图分离隐藏状态
+                if isinstance (state, tuple): # LSTM, state:(h, c)  
+                    state[0].detach_()
+                    state[1].detach_()
+                else: 
+                    state.detach_()
+            (output, state) = model(X, state) # output.shape: (num_steps * batch_size, vocab_size)
+            y = torch.flatten(Y.T)
+            l = loss(output, y.long())
+
+            optimizer.zero_grad()
+            l.backward()
+            grad_clipping(model.parameters(), clipping_theta, device)
+            optimizer.step()
+            l_sum += l.item() * y.shape[0]
+            n += y.shape[0]
+
+
+        if (epoch + 1) % pred_period == 0:
+            print(&#39;epoch %d, perplexity %f, time %.2f sec&#39; % (
+                epoch + 1, math.exp(l_sum / n), time.time() - start))
+            for prefix in prefixes:
+                print(&#39; -&#39;, predict_rnn_pytorch(
+                    prefix, pred_len, model, vocab_size, device, idx_to_char,
+                    char_to_idx))
+</code></pre>
+<p>训练模型。</p>
+<pre><code class="lang-python">num_epochs, batch_size, lr, clipping_theta = 250, 32, 1e-3, 1e-2
+pred_period, pred_len, prefixes = 50, 50, [&#39;分开&#39;, &#39;不分开&#39;]
+train_and_predict_rnn_pytorch(model, num_hiddens, vocab_size, device,
+                            corpus_indices, idx_to_char, char_to_idx,
+                            num_epochs, num_steps, lr, clipping_theta,
+                            batch_size, pred_period, pred_len, prefixes)
+</code></pre>
+<pre><code>epoch 50, perplexity 10.107632, time 0.58 sec
+ - 分开 我不了口  一定 我的走  有一颗四颗 连成线背著背默默许下心愿 在小村外的溪边河口 默默默默 我
+ - 不分开 我想要你的手 我有多烦恼  说你你你不我  想要你的让我面红的可爱女人 坏坏的让我疯狂的可爱女人 
+epoch 100, perplexity 1.234571, time 0.56 sec
+ - 分开 我面心事 爱来一 蓝色眼睛的凯萨琳公主 专吃 有AB血型的公老鼠 恍恍惚惚 是谁的脚步 银制茶壶 
+ - 不分开 我没有话不想就多烦恼多难熬  说你再爸不会不 多想就这样没担你 我着你的想活 说想要你的微笑每天都
+epoch 150, perplexity 1.060467, time 0.57 sec
+ - 分开 我面心事 从来开 我妈妈没有你 我有多烦恼  没有你烦我有多烦恼多难熬  穿过云层 我试著努力向你
+ - 不分开 了没有多难过 是什么 干什么 我想想和你说你听的让我的听你就到 我想你说你 我不了口让她知道 就是
+epoch 200, perplexity 1.030212, time 0.64 sec
+ - 分开 我面心外 相来开  家庭你 你打我不要 想  穿什么 你就想一我 你这样打我妈 你跟你 没有 我不
+ - 不分开 了我不知不要 这样的甜蜜 让我开始想相 命和你当许在这里在听飞就一片 说有一个风慢的老斑鸠 印地安
+epoch 250, perplexity 1.020210, time 0.60 sec
+ - 分开 我面心仪 相来方 不知道这 杵水伊 坦堡 却只想你和汉堡 我想要你的微笑每天都能看到  我知道这里
+ - 不分开 了我水也睡活 我想多受就能再这样的节奏 谁都无可奈何 没有你以后 我灵魂失控 黑云在降落 我被它拖
+</code></pre><h2 id="练习题"><a href="#练习题" class="headerlink" title="练习题"></a>练习题</h2><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://s2.ax1x.com/2020/02/19/3VkgpT.png" alt=""></p>
 
             </div>
             <hr/>
@@ -878,7 +937,7 @@ epoch 5, loss 0.0016, train acc 0.848, test acc 0.851
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://hopenx.github.io/2020/02/14/dl-notes4-ov-und-fit/">https://hopenx.github.io/2020/02/14/dl-notes4-ov-und-fit/</a>
+                    <a href="https://hopenx.github.io/2020/02/19/dl-notes7-rnn-basic/">https://hopenx.github.io/2020/02/19/dl-notes7-rnn-basic/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -918,6 +977,10 @@ epoch 5, loss 0.0016, train acc 0.848, test acc 0.851
                             
                                 <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
                                     <span class="chip bg-color">深度学习</span>
+                                </a>
+                            
+                                <a href="/tags/NLP/">
+                                    <span class="chip bg-color">NLP</span>
                                 </a>
                             
                         </div>
@@ -1087,24 +1150,24 @@ epoch 5, loss 0.0016, train acc 0.848, test acc 0.851
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/02/19/dl-notes5-grad/">
+                <a href="/2020/02/20/dl-notes8-mach-trans/">
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/5.jpg" class="responsive-img" alt="动手深度学习(五):梯度消失、梯度爆炸">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/5.jpg" class="responsive-img" alt="动手深度学习(八):机器翻译简介">
                         
-                        <span class="card-title">动手深度学习(五):梯度消失、梯度爆炸</span>
+                        <span class="card-title">动手深度学习(八):机器翻译简介</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            深度模型有关数值稳定性的典型问题是消失（vanishing）和爆炸（explosion）, 当神经网络的层数较多时，模型的数值稳定性容易变差
+                            简要介绍机器翻译的基本任务与流程, Encoder-Decoder 模型, 集束搜索
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-19
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-20
                         </span>
                         <span class="publish-author">
                             
@@ -1125,6 +1188,10 @@ epoch 5, loss 0.0016, train acc 0.848, test acc 0.851
                         <span class="chip bg-color">深度学习</span>
                     </a>
                     
+                    <a href="/tags/NLP/">
+                        <span class="chip bg-color">NLP</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1136,24 +1203,24 @@ epoch 5, loss 0.0016, train acc 0.848, test acc 0.851
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/02/14/dl-notes3-mlp/">
+                <a href="/2020/02/19/dl-notes6-lang-model/">
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/8.jpg" class="responsive-img" alt="动手深度学习(三):多层感知机">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/11.jpg" class="responsive-img" alt="动手深度学习(六):语言模型">
                         
-                        <span class="card-title">动手深度学习(三):多层感知机</span>
+                        <span class="card-title">动手深度学习(六):语言模型</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            除了输入/输出层, 多层神经网络中引入了隐藏层, 以及一些常用的激活函数, ReLU, Sigmoid 等等
+                            简要介绍自然语言文本如何表示, n 元语法, 马尔科夫假设, 随机采样, 连续采样
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-19
                             </span>
                         <span class="publish-author">
                             
@@ -1172,6 +1239,10 @@ epoch 5, loss 0.0016, train acc 0.848, test acc 0.851
                     
                     <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
                         <span class="chip bg-color">深度学习</span>
+                    </a>
+                    
+                    <a href="/tags/NLP/">
+                        <span class="chip bg-color">NLP</span>
                     </a>
                     
                 </div>
