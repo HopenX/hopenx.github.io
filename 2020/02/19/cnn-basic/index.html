@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="动手深度学习(一):线性回归, HopenX">
-    <meta name="description" content="从神经网络的角度, 重新认识一下线性回归">
+    <meta name="keywords" content="卷积神经网络 CNN 基础, HopenX">
+    <meta name="description" content="简要介绍 CNN 的基础概念, 卷积, 池化, 互相关运算, 特征图与感受野, 步幅与填充, 输入输出通道">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>动手深度学习(一):线性回归 | HopenX</title>
+    <title>卷积神经网络 CNN 基础 | HopenX</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/awesome/css/all.css">
@@ -287,12 +287,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">动手深度学习(一):线性回归</h1>
+                    <h1 class="description center-align post-title">卷积神经网络 CNN 基础</h1>
                 </div>
             </div>
         </div>
@@ -460,7 +460,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-02-14
+                    2020-02-19
                 </div>
                 
 
@@ -469,7 +469,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.8k
+                    3.9k
                 </div>
                 
 
@@ -487,345 +487,198 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>主要内容包括：</p>
-<ol>
-<li>线性回归的基本要素</li>
-<li>线性回归模型从零开始的实现</li>
-<li>线性回归模型使用pytorch的简洁实现</li>
-</ol>
-<h2 id="线性回归的基本要素"><a href="#线性回归的基本要素" class="headerlink" title="线性回归的基本要素"></a>线性回归的基本要素</h2><h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>为了简单起见，这里我们假设价格只取决于房屋状况的两个因素，即面积（平方米）和房龄（年）。接下来我们希望探索价格与这两个因素的具体关系。线性回归假设输出与各个输入之间是线性关系:</p>
-<script type="math/tex; mode=display">
-\mathrm{price} = w_{\mathrm{area}} \cdot \mathrm{area} + w_{\mathrm{age}} \cdot \mathrm{age} + b</script><h3 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h3><p>我们通常收集一系列的真实数据，例如多栋房屋的真实售出价格和它们对应的面积和房龄。我们希望在这个数据上面寻找模型参数来使模型的预测价格与真实价格的误差最小。在机器学习术语里，该数据集被称为训练数据集（training data set）或训练集（training set），一栋房屋被称为一个样本（sample），其真实售出价格叫作标签（label），用来预测标签的两个因素叫作特征（feature）。特征用来表征样本的特点。</p>
-<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>在模型训练中，我们需要衡量价格预测值与真实值之间的误差。通常我们会选取一个非负数作为误差，且数值越小表示误差越小。一个常用的选择是平方函数。 它在评估索引为 $i$ 的样本误差的表达式为</p>
-<script type="math/tex; mode=display">
-l^{(i)}(\mathbf{w}, b) = \frac{1}{2} \left(\hat{y}^{(i)} - y^{(i)}\right)^2,</script><script type="math/tex; mode=display">
-L(\mathbf{w}, b) =\frac{1}{n}\sum_{i=1}^n l^{(i)}(\mathbf{w}, b) =\frac{1}{n} \sum_{i=1}^n \frac{1}{2}\left(\mathbf{w}^\top \mathbf{x}^{(i)} + b - y^{(i)}\right)^2.</script><h3 id="优化函数-随机梯度下降"><a href="#优化函数-随机梯度下降" class="headerlink" title="优化函数 - 随机梯度下降"></a>优化函数 - 随机梯度下降</h3><p>当模型和损失函数形式较为简单时，上面的误差最小化问题的解可以直接用公式表达出来。这类解叫作解析解（analytical solution）。本节使用的线性回归和平方误差刚好属于这个范畴。然而，大多数深度学习模型并没有解析解，只能通过优化算法有限次迭代模型参数来尽可能降低损失函数的值。这类解叫作数值解（numerical solution）。</p>
-<p>在求数值解的优化算法中，小批量随机梯度下降（mini-batch stochastic gradient descent）在深度学习中被广泛使用。它的算法很简单：先选取一组模型参数的初始值，如随机选取；接下来对参数进行多次迭代，使每次迭代都可能降低损失函数的值。在每次迭代中，先随机均匀采样一个由固定数目训练数据样本所组成的小批量（mini-batch）$\mathcal{B}$，然后求小批量中数据样本的平均损失有关模型参数的导数（梯度），最后用此结果与预先设定的一个正数的乘积作为模型参数在本次迭代的减小量。   </p>
-<script type="math/tex; mode=display">
-(\mathbf{w},b) \leftarrow (\mathbf{w},b) - \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \partial_{(\mathbf{w},b)} l^{(i)}(\mathbf{w},b)</script><p>学习率: $\eta$代表在每次优化中，能够学习的步长的大小<br>批量大小: $\mathcal{B}$是小批量计算中的批量大小batch size   </p>
-<p>总结一下，优化函数的有以下两个步骤：</p>
+                <h1 id="卷积神经网络基础"><a href="#卷积神经网络基础" class="headerlink" title="卷积神经网络基础"></a>卷积神经网络基础</h1><p>卷积本质上体现了<code>两种信号的时移累加</code>。</p>
+<p>本节我们介绍卷积神经网络的基础概念，主要是卷积层和池化层，并解释填充、步幅、输入通道和输出通道的含义。</p>
+<h2 id="二维卷积层"><a href="#二维卷积层" class="headerlink" title="二维卷积层"></a>二维卷积层</h2><p>本节介绍的是最常见的二维卷积层，常用于处理图像数据。</p>
+<h3 id="二维互相关运算"><a href="#二维互相关运算" class="headerlink" title="二维互相关运算"></a>二维互相关运算</h3><p>二维互相关（cross-correlation）运算的输入是一个二维输入数组和一个二维<code>核（kernel）数组</code>，输出也是一个二维数组，其中核数组通常称为<code>卷积核</code>或<code>过滤器</code>（filter）。卷积核的尺寸通常小于输入数组，卷积核在输入数组上滑动，在每个位置上，卷积核与该位置处的输入子数组按元素相乘并求和，得到输出数组中相应位置的元素。图1展示了一个互相关运算的例子，阴影部分分别是输入的第一个计算区域、核数组以及对应的输出。</p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/xTyKEpR7j6gVaHb.png" alt="二维互相关运算"></p>
+<p>下面我们用<code>corr2d</code>函数实现二维互相关运算，它接受输入数组<code>X</code>与核数组<code>K</code>，并输出数组<code>Y</code>。</p>
+<pre><code class="lang-python">import torch 
+import torch.nn as nn
+
+def corr2d(X, K):
+    H, W = X.shape
+    h, w = K.shape
+    Y = torch.zeros(H - h + 1, W - w + 1)
+    for i in range(Y.shape[0]):
+        for j in range(Y.shape[1]):
+            Y[i, j] = (X[i: i + h, j: j + w] * K).sum()
+    return Y
+</code></pre>
+<p>构造上图中的输入数组<code>X</code>、核数组<code>K</code>来验证二维互相关运算的输出。</p>
+<pre><code class="lang-python">X = torch.tensor([[0, 1, 2], [3, 4, 5], [6, 7, 8]])
+K = torch.tensor([[0, 1], [2, 3]])
+Y = corr2d(X, K)
+print(Y)
+</code></pre>
+<pre><code>tensor([[19., 25.],
+        [37., 43.]])
+</code></pre><h3 id="二维卷积层-1"><a href="#二维卷积层-1" class="headerlink" title="二维卷积层"></a>二维卷积层</h3><p>二维卷积层将输入和卷积核做互相关运算，并加上一个标量偏置来得到输出。卷积层的<code>模型参数</code>包括「卷积核」<code>self.weight</code>和「标量偏置」<code>self.bias</code>。</p>
 <ul>
-<li>(i)初始化模型参数，一般来说使用随机初始化；</li>
-<li>(ii)我们在数据上迭代多次，通过在负梯度方向移动参数来更新每个参数。</li>
+<li><p><code>nn.Parameter()</code>是 tensor 的子类，会为参数自动附上梯度，是可学习的</p>
+</li>
+<li><p><code>nn.Module</code>表示的模型中会维护一个参数集合，定义nn.Parameter()会自动把参数注册到 model 的参数集合中</p>
+</li>
 </ul>
-<h2 id="矢量计算"><a href="#矢量计算" class="headerlink" title="矢量计算"></a>矢量计算</h2><p>在模型训练或预测时，我们常常会同时处理多个数据样本并用到矢量计算。在介绍线性回归的矢量计算表达式之前，让我们先考虑对两个向量相加的两种方法。</p>
-<ol>
-<li>向量相加的一种方法是，将这两个向量按元素逐一做标量加法。</li>
-<li>向量相加的另一种方法是，将这两个向量直接做矢量加法。</li>
-</ol>
-<pre><code class="lang-python">import torch
-import time
-
-# init variable a, b as 1000 dimension vector
-n = 1000
-a = torch.ones(n)
-b = torch.ones(n)
-</code></pre>
-<pre><code class="lang-python"># define a timer class to record time
-class Timer(object):
-    &quot;&quot;&quot;Record multiple running times.&quot;&quot;&quot;
-    def __init__(self):
-        self.times = []
-        self.start()
-
-    def start(self):
-        # start the timer
-        self.start_time = time.time()
-
-    def stop(self):
-        # stop the timer and record time into a list
-        self.times.append(time.time() - self.start_time)
-        return self.times[-1]
-
-    def avg(self):
-        # calculate the average and return
-        return sum(self.times)/len(self.times)
-
-    def sum(self):
-        # return the sum of recorded time
-        return sum(self.times)
-</code></pre>
-<p>现在我们可以来测试了。首先将两个向量使用for循环按元素逐一做标量加法。</p>
-<pre><code class="lang-python">timer = Timer()
-c = torch.zeros(n)
-for i in range(n):
-    c[i] = a[i] + b[i]
-&#39;%.5f sec&#39; % timer.stop()
-</code></pre>
-<pre><code>&#39;0.01162 sec&#39;
-</code></pre><p>另外是使用torch来将两个向量直接做矢量加法：</p>
-<pre><code class="lang-python">timer.start()
-d = a + b
-&#39;%.5f sec&#39; % timer.stop()
-</code></pre>
-<pre><code>&#39;0.00027 sec&#39;
-</code></pre><p>结果很明显,后者比前者运算速度更快。因此，我们应该尽可能采用矢量计算，以提升计算效率。</p>
-<h2 id="线性回归模型从零开始的实现"><a href="#线性回归模型从零开始的实现" class="headerlink" title="线性回归模型从零开始的实现"></a>线性回归模型从零开始的实现</h2><pre><code class="lang-python"># import packages and modules
-%matplotlib inline
-import torch
-from IPython import display
-from matplotlib import pyplot as plt
-import numpy as np
-import random
-
-print(torch.__version__)
-</code></pre>
-<pre><code>1.3.0
-</code></pre><h3 id="生成数据集"><a href="#生成数据集" class="headerlink" title="生成数据集"></a>生成数据集</h3><p>使用线性模型来生成数据集，生成一个1000个样本的数据集，下面是用来生成数据的线性关系：</p>
-<script type="math/tex; mode=display">
-\mathrm{price} = w_{\mathrm{area}} \cdot \mathrm{area} + w_{\mathrm{age}} \cdot \mathrm{age} + b</script><pre><code class="lang-python"># set input feature number 
-num_inputs = 2
-# set example number
-num_examples = 1000
-
-# set true weight and bias in order to generate corresponded label
-true_w = [2, -3.4]
-true_b = 4.2
-
-features = torch.randn(num_examples, num_inputs,
-                      dtype=torch.float32)
-labels = true_w[0] * features[:, 0] + true_w[1] * features[:, 1] + true_b
-labels += torch.tensor(np.random.normal(0, 0.01, size=labels.size()),   # 不可能严格线性分布，加一个偏差
-                       dtype=torch.float32)
-</code></pre>
-<h3 id="使用图像来展示生成的数据"><a href="#使用图像来展示生成的数据" class="headerlink" title="使用图像来展示生成的数据"></a>使用图像来展示生成的数据</h3><pre><code class="lang-python">plt.scatter(features[:, 1].numpy(), labels.numpy(), 1)
-</code></pre>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/8E2E1E16060241C6A33E4CF1EC65DF1D/q5mgua7bvt.png"></p>
-<h3 id="读取数据集"><a href="#读取数据集" class="headerlink" title="读取数据集"></a>读取数据集</h3><pre><code class="lang-python">def data_iter(batch_size, features, labels):
-    num_examples = len(features)
-    indices = list(range(num_examples))
-    random.shuffle(indices)  # random read 10 samples 顺序打乱读取
-    for i in range(0, num_examples, batch_size):
-        # the last time may be not enough for a whole batch 防止越界
-        j = torch.LongTensor(indices[i: min(i + batch_size, num_examples)]) #每次跳跃 b_size
-        yield features.index_select(0, j), labels.index_select(0, j)   # 返回一个就退出
-</code></pre>
-<pre><code class="lang-python">batch_size = 10
-
-for X, y in data_iter(batch_size, features, labels):
-    print(X, &#39;\n&#39;, y)
-    break
-</code></pre>
-<pre><code>tensor([[ 0.6802, -0.1529],
-        [-1.1139, -1.0506],
-        [ 1.1355,  0.6313],
-        [ 0.9057,  1.4527],
-        [-0.7477, -0.4656],
-        [-0.4012, -0.1810],
-        [ 0.0038, -1.3701],
-        [-0.9438, -1.6571],
-        [ 0.4016,  0.4233],
-        [ 0.8824, -1.0067]]) 
- tensor([6.0793, 5.5343, 4.3112, 1.0657, 4.2856, 4.0040, 8.8709, 7.9642, 3.5696,
-        9.3887])
-</code></pre><h3 id="初始化模型参数"><a href="#初始化模型参数" class="headerlink" title="初始化模型参数"></a>初始化模型参数</h3><pre><code class="lang-python">w = torch.tensor(np.random.normal(0, 0.01, (num_inputs, 1)), dtype=torch.float32)
-b = torch.zeros(1, dtype=torch.float32)
-
-w.requires_grad_(requires_grad=True)  # 要求梯度
-b.requires_grad_(requires_grad=True)
-</code></pre>
-<pre><code>tensor([0.], requires_grad=True)
-</code></pre><h3 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h3><p>定义用来训练参数的训练模型：</p>
-<script type="math/tex; mode=display">
-\mathrm{price} = w_{\mathrm{area}} \cdot \mathrm{area} + w_{\mathrm{age}} \cdot \mathrm{age} + b</script><pre><code class="lang-python">def linreg(X, w, b):
-    return torch.mm(X, w) + b   # mm 相乘
-</code></pre>
-<h3 id="定义损失函数"><a href="#定义损失函数" class="headerlink" title="定义损失函数"></a>定义损失函数</h3><p>我们使用的是均方误差损失函数：</p>
-<script type="math/tex; mode=display">
-l^{(i)}(\mathbf{w}, b) = \frac{1}{2} \left(\hat{y}^{(i)} - y^{(i)}\right)^2,</script><pre><code class="lang-python">def squared_loss(y_hat, y): 
-    return (y_hat - y.view(y_hat.size())) ** 2 / 2   # view 表示数据相同，大小不同
-
-# s = squared_loss(2.33,3.14) + squared_loss(1.07,0.98) + squared_loss(1.23,1.32)
-y_hat = torch.tensor([[2.33],
-        [ 1.07],
-        [ 1.23]])
-y = torch.tensor([3.14, 0.98, 1.32])
-s = squared_loss(y_hat, y)
-print(s.mean())
-</code></pre>
-<pre><code>tensor(0.1121)
-</code></pre><h3 id="定义优化函数"><a href="#定义优化函数" class="headerlink" title="定义优化函数"></a>定义优化函数</h3><p>在这里优化函数使用的是小批量随机梯度下降：</p>
-<script type="math/tex; mode=display">
-(\mathbf{w},b) \leftarrow (\mathbf{w},b) - \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \partial_{(\mathbf{w},b)} l^{(i)}(\mathbf{w},b)</script><pre><code class="lang-python">def sgd(params, lr, batch_size): 
-    # params : [w, b]
-    for param in params:
-        # 在梯度的负方向累加一个值，达到优化的效果（趋于谷底）
-        param.data -= lr * param.grad / batch_size # ues .data to operate param without gradient track
-</code></pre>
-<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><p>当数据集、模型、损失函数和优化函数定义完了之后就可来准备进行模型的训练了。</p>
-<pre><code class="lang-python"># super parameters init
-lr = 0.03  # lr 学习率
-num_epochs = 5
-
-net = linreg
-loss = squared_loss
-
-# training
-for epoch in range(num_epochs):  # training repeats num_epochs times
-    # in each epoch, all the samples in dataset will be used once
-
-    # X is the feature and y is the label of a batch sample
-    for X, y in data_iter(batch_size, features, labels):
-        l = loss(net(X, w, b), y).sum()  
-        # calculate the gradient of batch sample loss 
-        l.backward()  
-        # using small batch random gradient descent to iter model parameters
-        sgd([w, b], lr, batch_size)  
-        # reset parameter gradient
-        w.grad.data.zero_()  # 每一次运算后都需要将上一次的梯度记录清空
-        b.grad.data.zero_()
-    train_l = loss(net(features, w, b), labels)
-    print(&#39;epoch %d, loss %f&#39; % (epoch + 1, train_l.mean().item()))
-</code></pre>
-<h2 id="线性回归模型使用pytorch的简洁实现"><a href="#线性回归模型使用pytorch的简洁实现" class="headerlink" title="线性回归模型使用pytorch的简洁实现"></a>线性回归模型使用pytorch的简洁实现</h2><pre><code class="lang-python">import torch
-from torch import nn
-import numpy as np
-torch.manual_seed(1)   # 同样的随机初始化种子,保证结果可以复现
-
-print(torch.__version__)
-torch.set_default_tensor_type(&#39;torch.FloatTensor&#39;)
-</code></pre>
-<pre><code>1.3.0
-</code></pre><h3 id="生成数据集-1"><a href="#生成数据集-1" class="headerlink" title="生成数据集"></a>生成数据集</h3><p>在这里生成数据集跟从零开始的实现中是完全一样的。</p>
-<pre><code class="lang-python">num_inputs = 2
-num_examples = 1000
-
-true_w = [2, -3.4]
-true_b = 4.2
-
-features = torch.tensor(np.random.normal(0, 1, (num_examples, num_inputs)), dtype=torch.float)
-labels = true_w[0] * features[:, 0] + true_w[1] * features[:, 1] + true_b
-labels += torch.tensor(np.random.normal(0, 0.01, size=labels.size()), dtype=torch.float)
-</code></pre>
-<h3 id="读取数据集-1"><a href="#读取数据集-1" class="headerlink" title="读取数据集"></a>读取数据集</h3><pre><code class="lang-python">import torch.utils.data as Data
-
-batch_size = 10
-
-# combine featues and labels of dataset
-dataset = Data.TensorDataset(features, labels)
-
-# put dataset into DataLoader
-data_iter = Data.DataLoader(
-    dataset=dataset,            # torch TensorDataset format
-    batch_size=batch_size,      # mini batch size
-    shuffle=True,               # whether shuffle the data or not
-    num_workers=2,              # read data in multithreading
-)
-</code></pre>
-<pre><code class="lang-python">for X, y in data_iter:
-    print(X, &#39;\n&#39;, y)
-    break
-</code></pre>
-<pre><code>tensor([[ 0.2134,  0.7981],
-        [-0.3899, -0.4544],
-        [ 1.4472, -1.2160],
-        [-0.7354,  1.2216],
-        [-1.3233,  0.6937],
-        [-0.2810,  0.5505],
-        [-1.6620, -0.1457],
-        [-0.7635,  0.7058],
-        [ 0.6079, -0.7497],
-        [ 0.4924, -0.1376]]) 
- tensor([ 1.9045,  4.9770, 11.2503, -1.4180, -0.8159,  1.7737,  1.3910,  0.2721,
-         7.9648,  5.6408])
-</code></pre><h3 id="定义模型-1"><a href="#定义模型-1" class="headerlink" title="定义模型"></a>定义模型</h3><pre><code class="lang-python">class LinearNet(nn.Module):
-    def __init__(self, n_feature):
-        super(LinearNet, self).__init__()      # call father function to init 
-        self.linear = nn.Linear(n_feature, 1)  # function prototype: `torch.nn.Linear(in_features, out_features, bias=True)`
+<pre><code class="lang-python">class Conv2D(nn.Module):
+    def __init__(self, kernel_size):  # kernel_size 卷积层的高和宽
+        super(Conv2D, self).__init__()
+        self.weight = nn.Parameter(torch.randn(kernel_size))
+        self.bias = nn.Parameter(torch.randn(1))
 
     def forward(self, x):
-        y = self.linear(x)
-        return y
+        return corr2d(x, self.weight) + self.bias  # 广播机制，每个位置加了同样一个偏置
+</code></pre>
+<p>下面我们看一个例子，我们构造一张$6 \times 8$的图像，中间4列为黑（0），其余为白（1），希望检测到颜色边缘。我们的标签是一个$6 \times 7$的二维数组，第2列是1（从1到0的边缘），第6列是-1（从0到1的边缘）。</p>
+<pre><code class="lang-python">X = torch.ones(6, 8)
+Y = torch.zeros(6, 7)
+X[:, 2: 6] = 0
+Y[:, 1] = 1
+Y[:, 5] = -1
+print(X)
+print(Y)
+</code></pre>
+<pre><code>tensor([[1., 1., 0., 0., 0., 0., 1., 1.],
+        [1., 1., 0., 0., 0., 0., 1., 1.],
+        [1., 1., 0., 0., 0., 0., 1., 1.],
+        [1., 1., 0., 0., 0., 0., 1., 1.],
+        [1., 1., 0., 0., 0., 0., 1., 1.],
+        [1., 1., 0., 0., 0., 0., 1., 1.]])
+tensor([[ 0.,  1.,  0.,  0.,  0., -1.,  0.],
+        [ 0.,  1.,  0.,  0.,  0., -1.,  0.],
+        [ 0.,  1.,  0.,  0.,  0., -1.,  0.],
+        [ 0.,  1.,  0.,  0.,  0., -1.,  0.],
+        [ 0.,  1.,  0.,  0.,  0., -1.,  0.],
+        [ 0.,  1.,  0.,  0.,  0., -1.,  0.]])
+</code></pre><p>我们希望学习一个$1 \times 2$卷积层，通过卷积层来检测颜色边缘。（因为计算边缘考虑的是同一行的相邻两个元素，1 行 2 列）</p>
+<pre><code class="lang-python">conv2d = Conv2D(kernel_size=(1, 2))
+step = 30
+lr = 0.01
+for i in range(step):
+    Y_hat = conv2d(X)
+    l = ((Y_hat - Y) ** 2).sum()
+    l.backward()
+    # 梯度下降
+    conv2d.weight.data -= lr * conv2d.weight.grad
+    conv2d.bias.data -= lr * conv2d.bias.grad
 
-net = LinearNet(num_inputs)
-print(net)
-</code></pre>
-<pre><code>LinearNet(
-  (linear): Linear(in_features=2, out_features=1, bias=True)
-)
-</code></pre><pre><code class="lang-python"># ways to init a multilayer network
-# method one
-net = nn.Sequential(   # 一个时序容器，Modules 会以他们传入的顺序被添加到容器中
-    nn.Linear(num_inputs, 1)
-    # other layers can be added here
-    )
+    # 梯度清零
+    conv2d.weight.grad.zero_()
+    conv2d.bias.grad.zero_()
+    if (i + 1) % 5 == 0:
+        print(&#39;Step %d, loss %.3f&#39; % (i + 1, l.item()))
 
-# method two
-net = nn.Sequential()
-net.add_module(&#39;linear&#39;, nn.Linear(num_inputs, 1))
-# net.add_module ......
+print(conv2d.weight.data)
+print(conv2d.bias.data)
+</code></pre>
+<pre><code>Step 5, loss 4.569
+Step 10, loss 0.949
+Step 15, loss 0.228
+Step 20, loss 0.060
+Step 25, loss 0.016
+Step 30, loss 0.004
+tensor([[ 1.0161, -1.0177]])
+tensor([0.0009])
+</code></pre><h3 id="互相关运算与卷积运算"><a href="#互相关运算与卷积运算" class="headerlink" title="互相关运算与卷积运算"></a>互相关运算与卷积运算</h3><p>卷积层得名于卷积运算，但卷积层中用到的并非卷积运算而是互相关运算。我们将核数组上下翻转、左右翻转，再与输入数组做互相关运算，这一过程就是卷积运算。由于卷积层的核数组是可学习的，所以使用互相关运算与使用卷积运算并无本质区别。</p>
+<h3 id="特征图与感受野"><a href="#特征图与感受野" class="headerlink" title="特征图与感受野"></a>特征图与感受野</h3><p>二维卷积层<strong>输出</strong>的二维数组可以看作是输入在空间维度（宽和高）上某一级的表征，也叫<strong>「特征图」（feature map）</strong>。影响元素$x$的前向计算的所有可能<strong>输入</strong>区域（可能大于输入的实际尺寸）叫做$x$的 <strong>「感受野」（receptive field）</strong>。</p>
+<p>以图1为例，输入中阴影部分的四个元素是输出中阴影部分元素的感受野。我们将图中形状为$2 \times 2$的输出记为$Y$，将$Y$与另一个形状为$2 \times 2$的核数组做互相关运算，输出单个元素$z$。那么，$z$在$Y$上的感受野包括$Y$的全部四个元素，在输入上的感受野包括其中全部9个元素。可见，我们可以通过更深的卷积神经网络使特征图中单个元素的感受野变得更加广阔，从而捕捉输入上更大尺寸的特征。</p>
+<p>堆叠加深，不同层的感受野不同，<code>越深越大</code></p>
+<h2 id="填充和步幅"><a href="#填充和步幅" class="headerlink" title="填充和步幅"></a>填充和步幅</h2><p>我们介绍卷积层的两个超参数，即填充和步幅，它们可以对给定形状的输入和卷积核改变输出形状。</p>
+<h3 id="填充"><a href="#填充" class="headerlink" title="填充"></a>填充</h3><p>填充（padding）是指在输入高和宽的两侧填充元素（通常是0元素），图2里我们在原输入高和宽的两侧分别添加了值为0的元素。</p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/qzCBiYL8nONrIds.png" alt="填充"></p>
+<p>图2 在输入的高和宽两侧分别填充了0元素的二维互相关计算</p>
+<p>如果原输入的高和宽是$n_h$和$n_w$，卷积核的高和宽是$k_h$和$k_w$，在高的两侧一共填充$p_h$行，在宽的两侧一共填充$p_w$列，则输出形状为：</p>
+<script type="math/tex; mode=display">(n_h+p_h-k_h+1)\times(n_w+p_w-k_w+1)</script><p>我们在卷积神经网络中使用奇数高宽的核，比如$3 \times 3$，$5 \times 5$的卷积核，对于高度（或宽度）为大小为$2 k + 1$的核，令步幅为1，在高（或宽）两侧选择大小为$k$的填充，便可保持输入与输出尺寸相同。</p>
+<h3 id="步幅"><a href="#步幅" class="headerlink" title="步幅"></a>步幅</h3><p>在互相关运算中，卷积核在输入数组上滑动，每次滑动的行数与列数即是步幅（stride）。此前我们使用的步幅都是1，图3展示了在高上步幅为3、在宽上步幅为2的二维互相关运算。</p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/r9cVRdxynqzvjbt.png" alt="步幅"></p>
+<p>图3 高和宽上步幅分别为3和2的二维互相关运算</p>
+<p>一般来说，当高上步幅为$s_h$，宽上步幅为$s_w$时，输出形状为：</p>
+<script type="math/tex; mode=display">\lfloor(n_h+p_h-k_h+s_h)/s_h\rfloor \times \lfloor(n_w+p_w-k_w+s_w)/s_w\rfloor</script><p>如果$p_h=k_h-1$，$p_w=k_w-1$，那么输出形状将简化为$\lfloor(n_h+s_h-1)/s_h\rfloor \times \lfloor(n_w+s_w-1)/s_w\rfloor$。更进一步，如果输入的高和宽能分别被高和宽上的步幅整除，那么输出形状将是$(n_h / s_h) \times (n_w/s_w)$。</p>
+<p>当$p_h = p_w = p$时，我们称填充为$p$；当$s_h = s_w = s$时，我们称步幅为$s$。</p>
+<h2 id="多输入通道和多输出通道"><a href="#多输入通道和多输出通道" class="headerlink" title="多输入通道和多输出通道"></a>多输入通道和多输出通道</h2><p>之前的输入和输出都是二维数组，但真实数据的维度经常更高。例如，彩色图像在高和宽2个维度外还有RGB（红、绿、蓝）3个颜色通道。假设彩色图像的高和宽分别是$h$和$w$（像素），那么它可以表示为一个$3 \times h \times w$的多维数组，我们将大小为3的这一维称为通道（channel）维。</p>
+<h3 id="多输入通道"><a href="#多输入通道" class="headerlink" title="多输入通道"></a>多输入通道</h3><p>卷积层的输入可以包含多个通道，图4展示了一个含2个输入通道的二维互相关计算的例子。（每层的输入和该层的核相乘，最后叠加成单维度输出，输出只有一个通道）</p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/NCjg1iDhPY8ItOF.png" alt="2 输入通道 1 输出通道"></p>
+<p>图4 含2个输入通道的互相关计算</p>
+<p>假设输入数据的通道数为$c_i$，卷积核形状为$k_h\times k_w$，我们为每个输入通道各分配一个形状为$k_h\times k_w$的核数组，将$c_i$个互相关运算的二维输出按通道相加，得到一个二维数组作为输出。我们把$c_i$个核数组在通道维上连结，即得到一个形状为$c_i\times k_h\times k_w$的卷积核。</p>
+<h3 id="多输出通道"><a href="#多输出通道" class="headerlink" title="多输出通道"></a>多输出通道</h3><p>卷积层的输出也可以包含多个通道，设卷积核输入通道数和输出通道数分别为$c_i$和$c_o$，高和宽分别为$k_h$和$k_w$。如果希望得到含多个通道的输出，我们可以为每个输出通道分别创建形状为$c_i\times k_h\times k_w$的核数组，将它们在输出通道维上连结（有加法计算），卷积核的形状即$c_o\times c_i\times k_h\times k_w$。<br>（如下图，3 个输入通道，2 个输出通道，中间有 6 个 $1 \times 1$ 的核数组。)</p>
+<p>对于输出通道的卷积核，我们提供这样一种理解，一个$c_i \times k_h \times k_w$的核数组可以提取某种局部特征，但是输入可能具有相当丰富的特征，我们需要有多个这样的$c_i \times k_h \times k_w$的核数组，不同的核数组提取的是不同的特征。</p>
+<h3 id="1x1卷积层"><a href="#1x1卷积层" class="headerlink" title="1x1卷积层"></a>1x1卷积层</h3><p>最后讨论形状为$1 \times 1$的卷积核，我们通常称这样的卷积运算为$1 \times 1$卷积，称包含这种卷积核的卷积层为$1 \times 1$卷积层。图5展示了使用输入通道数为3、输出通道数为2的$1\times 1$卷积核的互相关计算。</p>
+<p>$1\times 1$卷积层的作用与<code>全连接层</code>等价，相当于<code>矩阵乘法</code>。</p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/I8MX65oJvur3b7f.png" alt="2x3=6 个 1x1 卷积层"></p>
+<p>图5 1x1卷积核的互相关计算。输入和输出具有<code>相同的高和宽</code></p>
+<p>$1 \times 1$卷积核可在不改变高宽的情况下，<code>调整通道数</code>。$1 \times 1$卷积核不识别高和宽维度上相邻元素构成的模式，其主要计算发生在通道维上。假设我们将通道维当作特征维，将高和宽维度上的元素当成数据样本，那么$1\times 1$卷积层的作用与全连接层等价。</p>
+<h2 id="卷积层与全连接层的对比"><a href="#卷积层与全连接层的对比" class="headerlink" title="卷积层与全连接层的对比"></a>卷积层与全连接层的对比</h2><p>二维卷积层经常用于处理图像，与此前的全连接层相比，它主要有两个优势：</p>
+<ul>
+<li><p>一是全连接层把图像<code>展平</code>成一个向量，在输入图像上相邻的元素可能因为展平操作不再相邻，网络难以捕捉局部信息。而卷积层的设计，天然地具有提取局部信息的能力。</p>
+</li>
+<li><p>二是卷积层的参数量更少。不考虑偏置的情况下，一个形状为$(c_i, c_o, h, w)$的卷积核的参数量是$c_i \times c_o \times h \times w$，<code>与输入图像的宽高无关</code>。假如一个卷积层的输入和输出形状分别是$(c_1, h_1, w_1)$和$(c_2, h_2, w_2)$，如果要用全连接层进行连接，参数数量就是$c_1 \times c_2 \times h_1 \times w_1 \times h_2 \times w_2$。使用卷积层可以以较少的参数数量来处理更大的图像。</p>
+</li>
+</ul>
+<h2 id="卷积层的简洁实现"><a href="#卷积层的简洁实现" class="headerlink" title="卷积层的简洁实现"></a>卷积层的简洁实现</h2><p>我们使用Pytorch中的<code>nn.Conv2d</code>类来实现二维卷积层，主要关注以下几个构造函数参数：</p>
+<ul>
+<li><code>in_channels</code> (python:int) – Number of channels in the input imag  输入通道数</li>
+<li><code>out_channels</code> (python:int) – Number of channels produced by the convolution 输出通道数</li>
+<li><code>kernel_size</code> (python:int or tuple) – Size of the convolving kernel 卷积核大小，int 表示高和宽相等，元组表示不相等</li>
+<li><code>stride</code> (python:int or tuple, optional) – Stride of the convolution. Default: 1</li>
+<li><code>padding</code> (python:int or tuple, optional) – Zero-padding added to both sides of the input. Default: 0</li>
+<li><code>bias</code> (bool, optional) – If True, adds a learnable bias to the output. Default: True</li>
+</ul>
+<p><code>forward</code>函数的参数为一个四维张量，形状为$(N批量大小, C_{in}通道数， H_{in}高度, W_{in}宽度)$，返回值也是一个四维张量，形状为$(N, C_{out}, H_{out}, W_{out})$</p>
+<p>kernel_size（即卷积核大小）这是需要人为设定的参数，该参数是不需要学习的，当然大小不同，卷积结果也是不同的。经过大量实验表明，大多选用<code>1x1、3x3、5x5</code>等尺寸较小且长宽为奇数的卷积核。</p>
+<p>代码讲解</p>
+<pre><code class="lang-python">X = torch.rand(4, 2, 3, 5)
+print(X.shape)
 
-# method three
-from collections import OrderedDict
-net = nn.Sequential(OrderedDict([
-          (&#39;linear&#39;, nn.Linear(num_inputs, 1))
-          # ......
-        ]))
+conv2d = nn.Conv2d(in_channels=2, out_channels=3, kernel_size=(3, 5), stride=1, padding=(1, 2))
+Y = conv2d(X)
+print(&#39;Y.shape: &#39;, Y.shape)
+print(&#39;weight.shape: &#39;, conv2d.weight.shape)  # padding 和 size 刚好是 2k+1 的关系，所以 in 和 out 宽高不变
+print(&#39;bias.shape: &#39;, conv2d.bias.shape) 
 
-print(net[0].weight)
-print(net[0].bias)
-# print(net)
+# Y.shape:  torch.Size([4, 2, 3, 5])
+# Y.shape:  torch.Size([4, 3, 3, 5])
+# weight.shape:  torch.Size([3, 2, 3, 5])
+# bias.shape:  torch.Size([3])
 </code></pre>
-<pre><code>Parameter containing:
-tensor([[0.6652, 0.1260]], requires_grad=True)
-Parameter containing:
-tensor([0.5704], requires_grad=True)
-</code></pre><h3 id="初始化模型参数-1"><a href="#初始化模型参数-1" class="headerlink" title="初始化模型参数"></a>初始化模型参数</h3><pre><code class="lang-python">from torch.nn import init
+<h2 id="池化"><a href="#池化" class="headerlink" title="池化"></a>池化</h2><h3 id="二维池化层"><a href="#二维池化层" class="headerlink" title="二维池化层"></a>二维池化层</h3><p>池化层主要用于缓解卷积层对位置的过度敏感性。同卷积层一样，池化层每次对输入数据的一个固定形状窗口（又称池化窗口）中的元素计算输出，池化层直接计算池化窗口内元素的最大值或者平均值，该运算也分别叫做<code>最大池化</code>或<code>平均池化</code>。图6展示了池化窗口形状为$2\times 2$的最大池化。</p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/CpF4XrYOE3Z2qKc.png" alt="2x2 的最大池化"></p>
+<p>图6 池化窗口形状为 2 x 2 的最大池化</p>
+<p>二维平均池化的工作原理与二维最大池化类似，但将最大运算符替换成平均运算符。池化窗口形状为$p \times q$的池化层称为$p \times q$池化层，其中的池化运算叫作$p \times q$池化。</p>
+<p>池化层也可以在输入的高和宽两侧填充并调整窗口的移动步幅来改变输出形状。池化层填充和步幅与卷积层填充和步幅的工作机制一样。</p>
+<p>在处理多通道输入数据时，池化层对每个输入通道分别池化，但不会像卷积层那样将各通道的结果按通道相加。这意味着池化层的<code>输出通道数与输入通道数相等</code>。</p>
+<ul>
+<li><code>卷积与池化的区别</code>：<br>  池化层没有需要学习的特征<br>  卷积层用来学习识别某一种特征<br>  池化层的主要作用是降维<br>  卷积层当设置步长 &gt;1 时也可以用来完成降维的工作</li>
+</ul>
+<h3 id="池化层的简洁实现"><a href="#池化层的简洁实现" class="headerlink" title="池化层的简洁实现"></a>池化层的简洁实现</h3><p>我们使用Pytorch中的<code>nn.MaxPool2d</code>实现最大池化层，关注以下构造函数参数：</p>
+<ul>
+<li><code>kernel_size</code> – the size of the window to take a max over</li>
+<li><code>stride</code> – the stride of the window. Default value is kernel_size</li>
+<li><code>padding</code> – implicit zero padding to be added on both sides</li>
+</ul>
+<p><code>forward</code>函数的参数为一个四维张量，形状为$(N, C, H_{in}, W_{in})$，返回值也是一个四维张量，形状为$(N, C, H_{out}, W_{out})$，其中$N$是批量大小，$C, H, W$分别表示通道数、高度、宽度。</p>
+<p>代码讲解</p>
+<pre><code class="lang-python">X = torch.arange(32, dtype=torch.float32).view(1, 2, 4, 4)
+pool2d = nn.MaxPool2d(kernel_size=3, padding=1, stride=(2, 1))
+Y = pool2d(X)
+print(X)
+print(Y)
+</code></pre>
+<pre><code>tensor([[[[ 0.,  1.,  2.,  3.],
+          [ 4.,  5.,  6.,  7.],
+          [ 8.,  9., 10., 11.],
+          [12., 13., 14., 15.]],
 
-init.normal_(net[0].weight, mean=0.0, std=0.01)  # weight重新生成
-init.constant_(net[0].bias, val=0.0)  # bias[ 被赋值为 0
+         [[16., 17., 18., 19.],
+          [20., 21., 22., 23.],
+          [24., 25., 26., 27.],
+          [28., 29., 30., 31.]]]])
+tensor([[[[ 5.,  6.,  7.,  7.],
+          [13., 14., 15., 15.]],
 
-print(net[0].weight)
-print(net[0].bias)
-</code></pre>
-<pre><code>Parameter containing:
-tensor([[0.0016, 0.0029]], requires_grad=True)
-Parameter containing:
-tensor([0.], requires_grad=True)
-</code></pre><pre><code class="lang-python">for param in net.parameters():
-    print(param)  # param 就是上面的 weight 和 bias
-</code></pre>
-<pre><code>Parameter containing:
-tensor([[0.0016, 0.0029]], requires_grad=True)
-Parameter containing:
-tensor([0.], requires_grad=True)
-</code></pre><h3 id="定义损失函数-1"><a href="#定义损失函数-1" class="headerlink" title="定义损失函数"></a>定义损失函数</h3><pre><code class="lang-python">loss = nn.MSELoss()    # nn built-in squared loss function   采用计算 MSE 的 loss
-                       # function prototype: `torch.nn.MSELoss(size_average=None, reduce=None, reduction=&#39;mean&#39;)`
-</code></pre>
-<h3 id="定义优化函数-1"><a href="#定义优化函数-1" class="headerlink" title="定义优化函数"></a>定义优化函数</h3><pre><code class="lang-python">import torch.optim as optim
+         [[21., 22., 23., 23.],
+          [29., 30., 31., 31.]]]])
+</code></pre><p>平均池化层使用的是<code>nn.AvgPool2d</code>，使用方法与<code>nn.MaxPool2d</code>相同。</p>
 
-optimizer = optim.SGD(net.parameters(), lr=0.03)   # built-in random gradient descent function
-print(optimizer)  # function prototype: `torch.optim.SGD(params, lr=, momentum=0, dampening=0, weight_decay=0, nesterov=False)`
-</code></pre>
-<pre><code>SGD (
-Parameter Group 0
-    dampening: 0
-    lr: 0.03
-    momentum: 0
-    nesterov: False
-    weight_decay: 0
-)
-</code></pre><h3 id="训练-1"><a href="#训练-1" class="headerlink" title="训练"></a>训练</h3><pre><code class="lang-python">num_epochs = 3
-for epoch in range(1, num_epochs + 1):
-    for X, y in data_iter:
-        output = net(X)
-        l = loss(output, y.view(-1, 1))
-        optimizer.zero_grad() # reset gradient, equal to net.zero_grad()
-        l.backward()
-        optimizer.step()
-    print(&#39;epoch %d, loss: %f&#39; % (epoch, l.item()))
-</code></pre>
-<pre><code>epoch 1, loss: 0.000299
-epoch 2, loss: 0.000058
-epoch 3, loss: 0.000051
-</code></pre><pre><code class="lang-python"># result comparision
-dense = net[0]
-print(true_w, dense.weight.data)
-print(true_b, dense.bias.data)
-</code></pre>
-<pre><code>[2, -3.4] tensor([[ 2.0007, -3.3992]])
-4.2 tensor([4.1989])
-</code></pre>
             </div>
             <hr/>
 
@@ -850,7 +703,7 @@ print(true_b, dense.bias.data)
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://hopenx.github.io/2020/02/14/dl-notes1-lin-re/">https://hopenx.github.io/2020/02/14/dl-notes1-lin-re/</a>
+                    <a href="https://hopenx.github.io/2020/02/19/cnn-basic/">https://hopenx.github.io/2020/02/19/cnn-basic/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1055,29 +908,30 @@ print(true_b, dense.bias.data)
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/02/14/dl-notes2-softmax/">
+                <a href="/2020/02/19/cnn-basic/">
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/3.jpg" class="responsive-img" alt="动手深度学习(二):Softmax">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/1.jpg" class="responsive-img" alt="卷积神经网络 CNN 基础">
                         
-                        <span class="card-title">动手深度学习(二):Softmax</span>
+                        <span class="card-title">卷积神经网络 CNN 基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            将线性的模型用于离散的分类问题, 常用 softmax 函数
+                            简要介绍 CNN 的基础概念, 卷积, 池化, 互相关运算, 特征图与感受野, 步幅与填充, 输入输出通道
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-14
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-19
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1090,6 +944,7 @@ print(true_b, dense.bias.data)
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -1108,24 +963,24 @@ print(true_b, dense.bias.data)
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/02/14/dl-notes/">
+                <a href="/2020/02/19/mach-trans/">
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/3.jpg" class="responsive-img" alt="深度学习基础">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/15.jpg" class="responsive-img" alt="机器翻译简介">
                         
-                        <span class="card-title">深度学习基础</span>
+                        <span class="card-title">机器翻译简介</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            简要介绍深度学习的一些基本概念, 深度学习作为机器学习的分支, 有自己一套完整的体系
+                            简要介绍机器翻译的基本任务与流程, Encoder-Decoder 模型, 集束搜索
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-19
                             </span>
                         <span class="publish-author">
                             
@@ -1142,8 +997,8 @@ print(true_b, dense.bias.data)
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                        <span class="chip bg-color">深度学习</span>
+                    <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-NLP/">
+                        <span class="chip bg-color">深度学习, NLP</span>
                     </a>
                     
                 </div>

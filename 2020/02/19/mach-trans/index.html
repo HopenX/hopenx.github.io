@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="动手深度学习(一):线性回归, HopenX">
-    <meta name="description" content="从神经网络的角度, 重新认识一下线性回归">
+    <meta name="keywords" content="机器翻译简介, HopenX">
+    <meta name="description" content="简要介绍机器翻译的基本任务与流程, Encoder-Decoder 模型, 集束搜索">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>动手深度学习(一):线性回归 | HopenX</title>
+    <title>机器翻译简介 | HopenX</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/awesome/css/all.css">
@@ -292,7 +292,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">动手深度学习(一):线性回归</h1>
+                    <h1 class="description center-align post-title">机器翻译简介</h1>
                 </div>
             </div>
         </div>
@@ -435,8 +435,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                                <span class="chip bg-color">深度学习</span>
+                            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-NLP/">
+                                <span class="chip bg-color">深度学习, NLP</span>
                             </a>
                         
                     </div>
@@ -460,7 +460,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-02-14
+                    2020-02-19
                 </div>
                 
 
@@ -469,7 +469,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.8k
+                    4.1k
                 </div>
                 
 
@@ -487,345 +487,392 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>主要内容包括：</p>
-<ol>
-<li>线性回归的基本要素</li>
-<li>线性回归模型从零开始的实现</li>
-<li>线性回归模型使用pytorch的简洁实现</li>
+                <h1 id="机器翻译和数据集"><a href="#机器翻译和数据集" class="headerlink" title="机器翻译和数据集"></a>机器翻译和数据集</h1><p>机器翻译（MT）：将一段文本从一种语言自动翻译为另一种语言，用神经网络解决这个问题通常称为神经机器翻译（NMT）。<br>主要特征：输出是单词<code>序列</code>而不是单个单词。 输出序列的长度可能与源序列的长度<code>不同</code>。</p>
+<h2 id="机器翻译任务代码总结如下"><a href="#机器翻译任务代码总结如下" class="headerlink" title="机器翻译任务代码总结如下"></a>机器翻译任务代码总结如下</h2><h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><ol>
+<li><code>读取数据</code>，处理数据中的编码问题，并将无效的字符串删除</li>
+<li><code>分词</code>，分词的目的就是将字符串转换成单词组成的列表。目前有很多现成的分词工具可以直接使用，也可以直接按照空格进行分词(不推荐，因为分词不是很准确)</li>
+<li><code>建立词典</code>，将单词组成的列表编程单词id组成的列表，这里会得到如下几样东西<ol>
+<li>去重后词典，及其中单词对应的索引列表</li>
+<li>还可以得到给定索引找到其对应的单词的列表，以及给定单词得到对应索引的字典</li>
+<li>原始语料所有词对应的词典索引的列表</li>
 </ol>
-<h2 id="线性回归的基本要素"><a href="#线性回归的基本要素" class="headerlink" title="线性回归的基本要素"></a>线性回归的基本要素</h2><h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>为了简单起见，这里我们假设价格只取决于房屋状况的两个因素，即面积（平方米）和房龄（年）。接下来我们希望探索价格与这两个因素的具体关系。线性回归假设输出与各个输入之间是线性关系:</p>
-<script type="math/tex; mode=display">
-\mathrm{price} = w_{\mathrm{area}} \cdot \mathrm{area} + w_{\mathrm{age}} \cdot \mathrm{age} + b</script><h3 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h3><p>我们通常收集一系列的真实数据，例如多栋房屋的真实售出价格和它们对应的面积和房龄。我们希望在这个数据上面寻找模型参数来使模型的预测价格与真实价格的误差最小。在机器学习术语里，该数据集被称为训练数据集（training data set）或训练集（training set），一栋房屋被称为一个样本（sample），其真实售出价格叫作标签（label），用来预测标签的两个因素叫作特征（feature）。特征用来表征样本的特点。</p>
-<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>在模型训练中，我们需要衡量价格预测值与真实值之间的误差。通常我们会选取一个非负数作为误差，且数值越小表示误差越小。一个常用的选择是平方函数。 它在评估索引为 $i$ 的样本误差的表达式为</p>
-<script type="math/tex; mode=display">
-l^{(i)}(\mathbf{w}, b) = \frac{1}{2} \left(\hat{y}^{(i)} - y^{(i)}\right)^2,</script><script type="math/tex; mode=display">
-L(\mathbf{w}, b) =\frac{1}{n}\sum_{i=1}^n l^{(i)}(\mathbf{w}, b) =\frac{1}{n} \sum_{i=1}^n \frac{1}{2}\left(\mathbf{w}^\top \mathbf{x}^{(i)} + b - y^{(i)}\right)^2.</script><h3 id="优化函数-随机梯度下降"><a href="#优化函数-随机梯度下降" class="headerlink" title="优化函数 - 随机梯度下降"></a>优化函数 - 随机梯度下降</h3><p>当模型和损失函数形式较为简单时，上面的误差最小化问题的解可以直接用公式表达出来。这类解叫作解析解（analytical solution）。本节使用的线性回归和平方误差刚好属于这个范畴。然而，大多数深度学习模型并没有解析解，只能通过优化算法有限次迭代模型参数来尽可能降低损失函数的值。这类解叫作数值解（numerical solution）。</p>
-<p>在求数值解的优化算法中，小批量随机梯度下降（mini-batch stochastic gradient descent）在深度学习中被广泛使用。它的算法很简单：先选取一组模型参数的初始值，如随机选取；接下来对参数进行多次迭代，使每次迭代都可能降低损失函数的值。在每次迭代中，先随机均匀采样一个由固定数目训练数据样本所组成的小批量（mini-batch）$\mathcal{B}$，然后求小批量中数据样本的平均损失有关模型参数的导数（梯度），最后用此结果与预先设定的一个正数的乘积作为模型参数在本次迭代的减小量。   </p>
-<script type="math/tex; mode=display">
-(\mathbf{w},b) \leftarrow (\mathbf{w},b) - \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \partial_{(\mathbf{w},b)} l^{(i)}(\mathbf{w},b)</script><p>学习率: $\eta$代表在每次优化中，能够学习的步长的大小<br>批量大小: $\mathcal{B}$是小批量计算中的批量大小batch size   </p>
-<p>总结一下，优化函数的有以下两个步骤：</p>
-<ul>
-<li>(i)初始化模型参数，一般来说使用随机初始化；</li>
-<li>(ii)我们在数据上迭代多次，通过在负梯度方向移动参数来更新每个参数。</li>
-</ul>
-<h2 id="矢量计算"><a href="#矢量计算" class="headerlink" title="矢量计算"></a>矢量计算</h2><p>在模型训练或预测时，我们常常会同时处理多个数据样本并用到矢量计算。在介绍线性回归的矢量计算表达式之前，让我们先考虑对两个向量相加的两种方法。</p>
-<ol>
-<li>向量相加的一种方法是，将这两个向量按元素逐一做标量加法。</li>
-<li>向量相加的另一种方法是，将这两个向量直接做矢量加法。</li>
+</li>
+<li>对数据进行<code>padding操作</code>。基于rnn的Seq2Seq模型，可以处理任意长度，“变长数据的读入”基于rnn的机器翻译也并不需要固定长度。要<code>padding</code>，是因为像tf、pytorch这些框架要求一个batch的数据必须长度相等，不然会报错；要<code>截断</code>，设置最大的数据长度是因为decode的时候达到这个长度我们就停止；再一个原因就是为了加快计算，不然的话为了单个特别长的数据，batch中的其他数据都补成这么长，很慢。</li>
+<li><code>制作数据生成器</code>，但是需要注意的是对于翻译任务的数据格式，机器翻译的输入是一段文本序列，输出也是一段文本序列。</li>
 </ol>
-<pre><code class="lang-python">import torch
+<h3 id="Seq2Seq模型的构建"><a href="#Seq2Seq模型的构建" class="headerlink" title="Seq2Seq模型的构建"></a>Seq2Seq模型的构建</h3><ol>
+<li>先编码后解码的框架: 先对输入序列使用循环神经网络对他进行编码，编码成一个<code>向量</code>之后，再将编码得到的向量作为一个新的<code>解码循环神经网络</code>的隐藏状态的输入，进行解码，一次输出一个序列的元素，再将模型训练输出的序列元素与真实标签计算损失进行学习。</li>
+<li>词嵌入: 一般情况下输入到编码网络中的数据不是一个<code>onehot</code>向量而是经过了编码之后的向量，比如由<code>word2vec</code>技术，让编码后的向量由更加丰富的含义。</li>
+<li>在进行编码和解码的过程中数据都是以<code>时间步</code>展开，也就是(Seq_len,)这种形式的数据进行处理的</li>
+<li>对于编码与解码的循环神经网络，可以通过控制隐藏层的<code>层数</code>及每一层隐藏层神经元的<code>数量</code>来控制模型的复杂度</li>
+<li>编码部分，RNN的用0初始化隐含状态，最后的输出主要是隐藏状态, 编码RNN输出的隐含状态认为是其对应的编码向量</li>
+<li>解码器的整体形状与编码器是一样的，只不过解码器的模型的隐藏状态是<code>由编码器的输出的隐藏状态初始化</code>的。</li>
+</ol>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><ol>
+<li>解码器的输出是一个和词典维度相同的向量，其每个值对应与向量索引位置对应词的分数，一般是选择<code>分数最大</code>的那个词作为最终的输出。</li>
+<li>在计算损失函数之前，要把<code>padding去掉</code>，因为padding的部分不参与计算</li>
+</ol>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><ol>
+<li>解码器在测试的时候需要将模型的输出作为下一个时间步的输入</li>
+<li>Beam Search搜索算法。<ol>
+<li>假设预测的时候词典的大小为3，内容为a,b,c. <code>beam size</code>为2，解码的时候过程如下</li>
+<li>生成第一个词的时候，选择概率最大的两个词，假设为a,c.那么当前的两个序列就是a和c。</li>
+<li>生成第二个词的时候，将当前序列a和c，分别与此表中的所有词进行组合，得到新的6个序列aa ab ac ca cb cc,计算每个序列的得分，并选择得分最高的2个序列，作为新的当前序列，假如为aa cb </li>
+<li>后面不断重复这个过程，直到遇到结束符或者达到最大长度为止，最终输出得分最高的2个序列。</li>
+</ol>
+</li>
+</ol>
+<pre><code class="lang-python">import os
+os.listdir(&#39;/home/kesci/input/&#39;)
+</code></pre>
+<pre><code>[&#39;fraeng6506&#39;, &#39;d2l9528&#39;, &#39;d2l6239&#39;]
+</code></pre><pre><code class="lang-python">import sys
+sys.path.append(&#39;/home/kesci/input/d2l9528/&#39;)
+import collections
+import d2l
+import zipfile
+from d2l.data.base import Vocab
 import time
-
-# init variable a, b as 1000 dimension vector
-n = 1000
-a = torch.ones(n)
-b = torch.ones(n)
-</code></pre>
-<pre><code class="lang-python"># define a timer class to record time
-class Timer(object):
-    &quot;&quot;&quot;Record multiple running times.&quot;&quot;&quot;
-    def __init__(self):
-        self.times = []
-        self.start()
-
-    def start(self):
-        # start the timer
-        self.start_time = time.time()
-
-    def stop(self):
-        # stop the timer and record time into a list
-        self.times.append(time.time() - self.start_time)
-        return self.times[-1]
-
-    def avg(self):
-        # calculate the average and return
-        return sum(self.times)/len(self.times)
-
-    def sum(self):
-        # return the sum of recorded time
-        return sum(self.times)
-</code></pre>
-<p>现在我们可以来测试了。首先将两个向量使用for循环按元素逐一做标量加法。</p>
-<pre><code class="lang-python">timer = Timer()
-c = torch.zeros(n)
-for i in range(n):
-    c[i] = a[i] + b[i]
-&#39;%.5f sec&#39; % timer.stop()
-</code></pre>
-<pre><code>&#39;0.01162 sec&#39;
-</code></pre><p>另外是使用torch来将两个向量直接做矢量加法：</p>
-<pre><code class="lang-python">timer.start()
-d = a + b
-&#39;%.5f sec&#39; % timer.stop()
-</code></pre>
-<pre><code>&#39;0.00027 sec&#39;
-</code></pre><p>结果很明显,后者比前者运算速度更快。因此，我们应该尽可能采用矢量计算，以提升计算效率。</p>
-<h2 id="线性回归模型从零开始的实现"><a href="#线性回归模型从零开始的实现" class="headerlink" title="线性回归模型从零开始的实现"></a>线性回归模型从零开始的实现</h2><pre><code class="lang-python"># import packages and modules
-%matplotlib inline
 import torch
-from IPython import display
-from matplotlib import pyplot as plt
-import numpy as np
-import random
-
-print(torch.__version__)
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.utils import data
+from torch import optim
 </code></pre>
-<pre><code>1.3.0
-</code></pre><h3 id="生成数据集"><a href="#生成数据集" class="headerlink" title="生成数据集"></a>生成数据集</h3><p>使用线性模型来生成数据集，生成一个1000个样本的数据集，下面是用来生成数据的线性关系：</p>
-<script type="math/tex; mode=display">
-\mathrm{price} = w_{\mathrm{area}} \cdot \mathrm{area} + w_{\mathrm{age}} \cdot \mathrm{age} + b</script><pre><code class="lang-python"># set input feature number 
-num_inputs = 2
-# set example number
-num_examples = 1000
-
-# set true weight and bias in order to generate corresponded label
-true_w = [2, -3.4]
-true_b = 4.2
-
-features = torch.randn(num_examples, num_inputs,
-                      dtype=torch.float32)
-labels = true_w[0] * features[:, 0] + true_w[1] * features[:, 1] + true_b
-labels += torch.tensor(np.random.normal(0, 0.01, size=labels.size()),   # 不可能严格线性分布，加一个偏差
-                       dtype=torch.float32)
+<h3 id="数据预处理-1"><a href="#数据预处理-1" class="headerlink" title="数据预处理"></a>数据预处理</h3><p>将数据集清洗、转化为神经网络的输入minbatch</p>
+<pre><code class="lang-python">with open(&#39;/home/kesci/input/fraeng6506/fra.txt&#39;, &#39;r&#39;) as f:
+      raw_text = f.read()
+print(raw_text[0:1000])
 </code></pre>
-<h3 id="使用图像来展示生成的数据"><a href="#使用图像来展示生成的数据" class="headerlink" title="使用图像来展示生成的数据"></a>使用图像来展示生成的数据</h3><pre><code class="lang-python">plt.scatter(features[:, 1].numpy(), labels.numpy(), 1)
-</code></pre>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/8E2E1E16060241C6A33E4CF1EC65DF1D/q5mgua7bvt.png"></p>
-<h3 id="读取数据集"><a href="#读取数据集" class="headerlink" title="读取数据集"></a>读取数据集</h3><pre><code class="lang-python">def data_iter(batch_size, features, labels):
-    num_examples = len(features)
-    indices = list(range(num_examples))
-    random.shuffle(indices)  # random read 10 samples 顺序打乱读取
-    for i in range(0, num_examples, batch_size):
-        # the last time may be not enough for a whole batch 防止越界
-        j = torch.LongTensor(indices[i: min(i + batch_size, num_examples)]) #每次跳跃 b_size
-        yield features.index_select(0, j), labels.index_select(0, j)   # 返回一个就退出
-</code></pre>
-<pre><code class="lang-python">batch_size = 10
+<pre><code>Go.    Va !    CC-BY 2.0 (France) Attribution: tatoeba.org #2877272 (CM) &amp; #1158250 (Wittydev)
+Hi.    Salut !    CC-BY 2.0 (France) Attribution: tatoeba.org #538123 (CM) &amp; #509819 (Aiji)
+Hi.    Salut.    CC-BY 2.0 (France) Attribution: tatoeba.org #538123 (CM) &amp; #4320462 (gillux)
+Run!    Cours !    CC-BY 2.0 (France) Attribution: tatoeba.org #906328 (papabear) &amp; #906331 (sacredceltic)
+Run!    Courez !    CC-BY 2.0 (France) Attribution: tatoeba.org #906328 (papabear) &amp; #906332 (sacredceltic)
+Who?    Qui ?    CC-BY 2.0 (France) Attribution: tatoeba.org #2083030 (CK) &amp; #4366796 (gillux)
+Wow!    Ça alors !    CC-BY 2.0 (France) Attribution: tatoeba.org #52027 (Zifre) &amp; #374631 (zmoo)
+Fire!    Au feu !    CC-BY 2.0 (France) Attribution: tatoeba.org #1829639 (Spamster) &amp; #4627939 (sacredceltic)
+Help!    À l&#39;aide !    CC-BY 2.0 (France) Attribution: tatoeba.org #435084 (lukaszpp) &amp; #128430 (sysko)
+Jump.    Saute.    CC-BY 2.0 (France) Attribution: tatoeba.org #631038 (Shishir) &amp; #2416938 (Phoenix)
+Stop!    Ça suffit !    CC-BY 2.0 (France) Attribution: tato
+</code></pre><pre><code class="lang-python">def preprocess_raw(text):
+    text = text.replace(&#39;\u202f&#39;, &#39; &#39;).replace(&#39;\xa0&#39;, &#39; &#39;)
+    out = &#39;&#39;
+    for i, char in enumerate(text.lower()):
+        if char in (&#39;,&#39;, &#39;!&#39;, &#39;.&#39;) and i &gt; 0 and text[i-1] != &#39; &#39;:
+            out += &#39; &#39;
+        out += char
+    return out
 
-for X, y in data_iter(batch_size, features, labels):
-    print(X, &#39;\n&#39;, y)
+text = preprocess_raw(raw_text)
+print(text[0:1000])
+</code></pre>
+<pre><code>go .    va !    cc-by 2 .0 (france) attribution: tatoeba .org #2877272 (cm) &amp; #1158250 (wittydev)
+hi .    salut !    cc-by 2 .0 (france) attribution: tatoeba .org #538123 (cm) &amp; #509819 (aiji)
+hi .    salut .    cc-by 2 .0 (france) attribution: tatoeba .org #538123 (cm) &amp; #4320462 (gillux)
+run !    cours !    cc-by 2 .0 (france) attribution: tatoeba .org #906328 (papabear) &amp; #906331 (sacredceltic)
+run !    courez !    cc-by 2 .0 (france) attribution: tatoeba .org #906328 (papabear) &amp; #906332 (sacredceltic)
+who?    qui ?    cc-by 2 .0 (france) attribution: tatoeba .org #2083030 (ck) &amp; #4366796 (gillux)
+wow !    ça alors !    cc-by 2 .0 (france) attribution: tatoeba .org #52027 (zifre) &amp; #374631 (zmoo)
+fire !    au feu !    cc-by 2 .0 (france) attribution: tatoeba .org #1829639 (spamster) &amp; #4627939 (sacredceltic)
+help !    à l&#39;aide !    cc-by 2 .0 (france) attribution: tatoeba .org #435084 (lukaszpp) &amp; #128430 (sysko)
+jump .    saute .    cc-by 2 .0 (france) attribution: tatoeba .org #631038 (shishir) &amp; #2416938 (phoenix)
+stop !    ça suffit !    cc-b
+</code></pre><p>字符在计算机里是以编码的形式存在，我们通常所用的空格是 \x20 ，是在标准ASCII可见字符 0x20~0x7e 范围内。<br>而 \xa0 属于 latin1 （ISO/IEC_8859-1）中的扩展字符集字符，代表不间断空白符nbsp(non-breaking space)，超出gbk编码范围，是需要去除的特殊字符。再数据预处理的过程中，我们首先需要对数据进行清洗。</p>
+<h3 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h3><p>字符串—-单词组成的列表</p>
+<pre><code class="lang-python">num_examples = 50000
+source, target = [], []
+for i, line in enumerate(text.split(&#39;\n&#39;)):
+    if i &gt; num_examples:
+        break
+    parts = line.split(&#39;\t&#39;)
+    if len(parts) &gt;= 2:
+        source.append(parts[0].split(&#39; &#39;))
+        target.append(parts[1].split(&#39; &#39;))
+
+source[0:3], target[0:3]
+</code></pre>
+<pre><code>([[&#39;go&#39;, &#39;.&#39;], [&#39;hi&#39;, &#39;.&#39;], [&#39;hi&#39;, &#39;.&#39;]],
+ [[&#39;va&#39;, &#39;!&#39;], [&#39;salut&#39;, &#39;!&#39;], [&#39;salut&#39;, &#39;.&#39;]])
+</code></pre><pre><code class="lang-python">d2l.set_figsize()
+d2l.plt.hist([[len(l) for l in source], [len(l) for l in target]],label=[&#39;source&#39;, &#39;target&#39;])
+d2l.plt.legend(loc=&#39;upper right&#39;);
+</code></pre>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/t19DZi4dB2XOPEn.png" alt="分词结果"></p>
+<h3 id="建立词典"><a href="#建立词典" class="headerlink" title="建立词典"></a>建立词典</h3><p>单词组成的列表—-单词id组成的列表</p>
+<pre><code class="lang-python">def build_vocab(tokens):
+    tokens = [token for line in tokens for token in line]
+    return d2l.data.base.Vocab(tokens, min_freq=3, use_special_tokens=True)
+
+src_vocab = build_vocab(source)  # 4 个特殊字符，pad 补充 bos句开始 eos句结束 unk未知字符
+len(src_vocab)
+</code></pre>
+<pre><code>3789
+</code></pre><p><code>Vocab</code> 会进行词频统计, 从大到小排序<br><code>__len__</code> 返回长度<br><code>__getitem__</code> 返回单词对应的 id<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/3oBvEZdHYKXzwfg.png" alt="Vocab"></p>
+<h3 id="载入数据集"><a href="#载入数据集" class="headerlink" title="载入数据集"></a>载入数据集</h3><p>进行 pad 保证句子长度是一样的, 一个 batch 使用的同一个长度</p>
+<pre><code class="lang-python">def pad(line, max_len, padding_token):
+    if len(line) &gt; max_len:
+        return line[:max_len]
+    return line + [padding_token] * (max_len - len(line))
+pad(src_vocab[source[0]], 10, src_vocab.pad)
+</code></pre>
+<pre><code>[38, 4, 0, 0, 0, 0, 0, 0, 0, 0]
+</code></pre><p>首尾标注 <code>bos</code> 和 <code>eos</code></p>
+<pre><code class="lang-python">def build_array(lines, vocab, max_len, is_source):
+    lines = [vocab[line] for line in lines]
+    if not is_source:  # 如果是目标数据集，就要加一对首尾标注
+        lines = [[vocab.bos] + line + [vocab.eos] for line in lines]
+    array = torch.tensor([pad(line, max_len, vocab.pad) for line in lines])
+    valid_len = (array != vocab.pad).sum(1) #第一个维度
+    return array, valid_len
+</code></pre>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/LW4YMRvUpCA9ul6.png" alt="TensorDataset"></p>
+<pre><code class="lang-python">def load_data_nmt(batch_size, max_len): # This function is saved in d2l.
+    src_vocab, tgt_vocab = build_vocab(source), build_vocab(target)  # 先进行分词
+    src_array, src_valid_len = build_array(source, src_vocab, max_len, True)  # 构建源语言数组
+    tgt_array, tgt_valid_len = build_array(target, tgt_vocab, max_len, False) # 构建目标语言数组
+    train_data = data.TensorDataset(src_array, src_valid_len, tgt_array, tgt_valid_len) 
+    # TensorDataset 利用 assert 判断 4 个参数是不是一一对应的
+
+    train_iter = data.DataLoader(train_data, batch_size, shuffle=True)
+    return src_vocab, tgt_vocab, train_iter
+</code></pre>
+<p>X 是英语句子, Y 是法语句子</p>
+<pre><code class="lang-python">src_vocab, tgt_vocab, train_iter = load_data_nmt(batch_size=2, max_len=8)
+for X, X_valid_len, Y, Y_valid_len, in train_iter:
+    print(&#39;X =&#39;, X.type(torch.int32), &#39;\nValid lengths for X =&#39;, X_valid_len,
+        &#39;\nY =&#39;, Y.type(torch.int32), &#39;\nValid lengths for Y =&#39;, Y_valid_len)
     break
 </code></pre>
-<pre><code>tensor([[ 0.6802, -0.1529],
-        [-1.1139, -1.0506],
-        [ 1.1355,  0.6313],
-        [ 0.9057,  1.4527],
-        [-0.7477, -0.4656],
-        [-0.4012, -0.1810],
-        [ 0.0038, -1.3701],
-        [-0.9438, -1.6571],
-        [ 0.4016,  0.4233],
-        [ 0.8824, -1.0067]]) 
- tensor([6.0793, 5.5343, 4.3112, 1.0657, 4.2856, 4.0040, 8.8709, 7.9642, 3.5696,
-        9.3887])
-</code></pre><h3 id="初始化模型参数"><a href="#初始化模型参数" class="headerlink" title="初始化模型参数"></a>初始化模型参数</h3><pre><code class="lang-python">w = torch.tensor(np.random.normal(0, 0.01, (num_inputs, 1)), dtype=torch.float32)
-b = torch.zeros(1, dtype=torch.float32)
+<pre><code>X = tensor([[   5,   24,    3,    4,    0,    0,    0,    0],
+        [  12, 1388,    7,    3,    4,    0,    0,    0]], dtype=torch.int32) 
+Valid lengths for X = tensor([4, 5]) 
+Y = tensor([[   1,   23,   46,    3,    3,    4,    2,    0],
+        [   1,   15,  137,   27, 4736,    4,    2,    0]], dtype=torch.int32) 
+Valid lengths for Y = tensor([7, 7])
+</code></pre><h1 id="Encoder-Decoder"><a href="#Encoder-Decoder" class="headerlink" title="Encoder-Decoder"></a>Encoder-Decoder</h1><p> encoder：输入到隐藏状态<br> decoder：隐藏状态到输出</p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/7aEyZcGDVS1zXPU.png" alt="Encoder-Decoder"></p>
+<pre><code class="lang-python">class Encoder(nn.Module):
+    def __init__(self, **kwargs):
+        super(Encoder, self).__init__(**kwargs)
 
-w.requires_grad_(requires_grad=True)  # 要求梯度
-b.requires_grad_(requires_grad=True)
+    def forward(self, X, *args):
+        raise NotImplementedError
 </code></pre>
-<pre><code>tensor([0.], requires_grad=True)
-</code></pre><h3 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h3><p>定义用来训练参数的训练模型：</p>
-<script type="math/tex; mode=display">
-\mathrm{price} = w_{\mathrm{area}} \cdot \mathrm{area} + w_{\mathrm{age}} \cdot \mathrm{age} + b</script><pre><code class="lang-python">def linreg(X, w, b):
-    return torch.mm(X, w) + b   # mm 相乘
+<pre><code class="lang-python">class Decoder(nn.Module):
+    def __init__(self, **kwargs):
+        super(Decoder, self).__init__(**kwargs)
+
+    def init_state(self, enc_outputs, *args):
+        raise NotImplementedError
+
+    def forward(self, X, state):
+        raise NotImplementedError
 </code></pre>
-<h3 id="定义损失函数"><a href="#定义损失函数" class="headerlink" title="定义损失函数"></a>定义损失函数</h3><p>我们使用的是均方误差损失函数：</p>
-<script type="math/tex; mode=display">
-l^{(i)}(\mathbf{w}, b) = \frac{1}{2} \left(\hat{y}^{(i)} - y^{(i)}\right)^2,</script><pre><code class="lang-python">def squared_loss(y_hat, y): 
-    return (y_hat - y.view(y_hat.size())) ** 2 / 2   # view 表示数据相同，大小不同
+<pre><code class="lang-python">class EncoderDecoder(nn.Module):
+    def __init__(self, encoder, decoder, **kwargs):
+        super(EncoderDecoder, self).__init__(**kwargs)
+        self.encoder = encoder
+        self.decoder = decoder
 
-# s = squared_loss(2.33,3.14) + squared_loss(1.07,0.98) + squared_loss(1.23,1.32)
-y_hat = torch.tensor([[2.33],
-        [ 1.07],
-        [ 1.23]])
-y = torch.tensor([3.14, 0.98, 1.32])
-s = squared_loss(y_hat, y)
-print(s.mean())
+    def forward(self, enc_X, dec_X, *args):
+        enc_outputs = self.encoder(enc_X, *args)
+        dec_state = self.decoder.init_state(enc_outputs, *args)
+        return self.decoder(dec_X, dec_state)
 </code></pre>
-<pre><code>tensor(0.1121)
-</code></pre><h3 id="定义优化函数"><a href="#定义优化函数" class="headerlink" title="定义优化函数"></a>定义优化函数</h3><p>在这里优化函数使用的是小批量随机梯度下降：</p>
-<script type="math/tex; mode=display">
-(\mathbf{w},b) \leftarrow (\mathbf{w},b) - \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \partial_{(\mathbf{w},b)} l^{(i)}(\mathbf{w},b)</script><pre><code class="lang-python">def sgd(params, lr, batch_size): 
-    # params : [w, b]
-    for param in params:
-        # 在梯度的负方向累加一个值，达到优化的效果（趋于谷底）
-        param.data -= lr * param.grad / batch_size # ues .data to operate param without gradient track
+<p>可以应用在对话系统、生成式任务中。</p>
+<h1 id="Sequence-to-Sequence模型"><a href="#Sequence-to-Sequence模型" class="headerlink" title="Sequence to Sequence模型"></a>Sequence to Sequence模型</h1><h3 id="模型："><a href="#模型：" class="headerlink" title="模型："></a>模型：</h3><ul>
+<li>训练（已知英语所对应的法语）</li>
+<li>Encoder 是一个 RNN，可以是 LSTM 可以是 GRU</li>
+<li>hidden state 就是 Encoder 得到的 ht，就是语义编码，也就是 Decoder 用来初始化的 $H_{-1}$</li>
+<li>Decoder 就是一个生成语言模型，有了前几个生成后几个，类似于歌词生成<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/JL3VW7gznsGIStw.png" alt="生成"></li>
+<li>预测（不知道对应的法语）</li>
+</ul>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/YhcpTl6nQERLosu.png" alt="预测"></p>
+<h3 id="具体结构："><a href="#具体结构：" class="headerlink" title="具体结构："></a>具体结构：</h3><ul>
+<li>比如 apple 对应的 id，会把它翻译成<code>词向量</code>，代表 apple 的含义</li>
+<li><code>dense()</code>多用于CNN网络搭建时搭建全连接层使用，在RNN网络搭建，特别是涉及到用RNN做分类时，dense()可以用作RNN<code>分类预测输出</code>, 每个输出也是一个分类问题</li>
+<li><code>embedding层</code>的作用就是给每个单词，赋一个特定的词向量<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/5otbRSFCVqhZDUK.png" alt="具体结构"><h3 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h3></li>
+</ul>
+<pre><code class="lang-python">class Seq2SeqEncoder(d2l.Encoder):
+    def __init__(self, vocab_size, embed_size, num_hiddens, num_layers,
+                 dropout=0, **kwargs):
+        super(Seq2SeqEncoder, self).__init__(**kwargs)
+        self.num_hiddens=num_hiddens
+        self.num_layers=num_layers
+        self.embedding = nn.Embedding(vocab_size, embed_size) # embed_size 词向量维度，输入单词的形状
+        self.rnn = nn.LSTM(embed_size,num_hiddens, num_layers, dropout=dropout)
+
+    def begin_state(self, batch_size, device):  # 初始化
+        return [torch.zeros(size=(self.num_layers, batch_size, self.num_hiddens),  device=device),
+                torch.zeros(size=(self.num_layers, batch_size, self.num_hiddens),  device=device)]
+    def forward(self, X, *args):
+        X = self.embedding(X) # X shape: (batch_size, seq_len, embed_size) 
+        # batch_size 有几句话，seq_len 一句话有几个单词，每个单词都变成了 embed_size 维的词向量
+        X = X.transpose(0, 1)  # RNN 第一个维度应该是时间（句子的顺序是第一个维度），所以把第 1、2 维度调换一下
+        # state = self.begin_state(X.shape[1], device=X.device)
+        out, state = self.rnn(X) # out 是每个单元的输出，state 是最后一个单元的输出
+        # out 的 shape 是 (seq_len, batch_size, num_hiddens).
+        # state 包含最后一个记忆细胞的状态，和隐层状态
+        # 在最后一步， state shape 是 (num_layers, batch_size, num_hiddens)
+        return out, state
 </code></pre>
-<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><p>当数据集、模型、损失函数和优化函数定义完了之后就可来准备进行模型的训练了。</p>
-<pre><code class="lang-python"># super parameters init
-lr = 0.03  # lr 学习率
-num_epochs = 5
-
-net = linreg
-loss = squared_loss
-
-# training
-for epoch in range(num_epochs):  # training repeats num_epochs times
-    # in each epoch, all the samples in dataset will be used once
-
-    # X is the feature and y is the label of a batch sample
-    for X, y in data_iter(batch_size, features, labels):
-        l = loss(net(X, w, b), y).sum()  
-        # calculate the gradient of batch sample loss 
-        l.backward()  
-        # using small batch random gradient descent to iter model parameters
-        sgd([w, b], lr, batch_size)  
-        # reset parameter gradient
-        w.grad.data.zero_()  # 每一次运算后都需要将上一次的梯度记录清空
-        b.grad.data.zero_()
-    train_l = loss(net(features, w, b), labels)
-    print(&#39;epoch %d, loss %f&#39; % (epoch + 1, train_l.mean().item()))
+<pre><code class="lang-python">encoder = Seq2SeqEncoder(vocab_size=10, embed_size=8,num_hiddens=16, num_layers=2) #每个词用 8 维向量表示
+X = torch.zeros((4, 7),dtype=torch.long)  # 输入 4 句话，每句话 7 个单词
+output, state = encoder(X)
+output.shape, len(state), state[0].shape, state[1].shape  # len(state)=2 表示包含了记忆细胞和隐层状态两个部分
 </code></pre>
-<h2 id="线性回归模型使用pytorch的简洁实现"><a href="#线性回归模型使用pytorch的简洁实现" class="headerlink" title="线性回归模型使用pytorch的简洁实现"></a>线性回归模型使用pytorch的简洁实现</h2><pre><code class="lang-python">import torch
-from torch import nn
-import numpy as np
-torch.manual_seed(1)   # 同样的随机初始化种子,保证结果可以复现
+<pre><code>(torch.Size([7, 4, 16]), 2, torch.Size([2, 4, 16]), torch.Size([2, 4, 16]))
+</code></pre><h1 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h1><pre><code class="lang-python">class Seq2SeqDecoder(d2l.Decoder):
+    def __init__(self, vocab_size, embed_size, num_hiddens, num_layers,
+                 dropout=0, **kwargs):
+        super(Seq2SeqDecoder, self).__init__(**kwargs)
+        self.embedding = nn.Embedding(vocab_size, embed_size)
+        self.rnn = nn.LSTM(embed_size,num_hiddens, num_layers, dropout=dropout)
+        self.dense = nn.Linear(num_hiddens,vocab_size) # dense 用于输出结果
+        # 通过全连接层把16个隐藏单元映射到100个单词，在100 维度的向量里，选出评分最高的，作为结果输出
 
-print(torch.__version__)
-torch.set_default_tensor_type(&#39;torch.FloatTensor&#39;)
+    def init_state(self, enc_outputs, *args):
+        return enc_outputs[1]  # 用 Encoder 的输出作初始化
+
+    def forward(self, X, state):
+        X = self.embedding(X).transpose(0, 1)
+        out, state = self.rnn(X, state)
+        # Make the batch to be the first dimension to simplify loss computation.
+        out = self.dense(out).transpose(0, 1)
+        return out, state
 </code></pre>
-<pre><code>1.3.0
-</code></pre><h3 id="生成数据集-1"><a href="#生成数据集-1" class="headerlink" title="生成数据集"></a>生成数据集</h3><p>在这里生成数据集跟从零开始的实现中是完全一样的。</p>
-<pre><code class="lang-python">num_inputs = 2
-num_examples = 1000
-
-true_w = [2, -3.4]
-true_b = 4.2
-
-features = torch.tensor(np.random.normal(0, 1, (num_examples, num_inputs)), dtype=torch.float)
-labels = true_w[0] * features[:, 0] + true_w[1] * features[:, 1] + true_b
-labels += torch.tensor(np.random.normal(0, 0.01, size=labels.size()), dtype=torch.float)
+<pre><code class="lang-python">decoder = Seq2SeqDecoder(vocab_size=10, embed_size=8,num_hiddens=16, num_layers=2)
+state = decoder.init_state(encoder(X))
+out, state = decoder(X, state)
+out.shape, len(state), state[0].shape, state[1].shape  # out 4*7*10 10 代表单词表大小，在 10 个得分里选最高的
 </code></pre>
-<h3 id="读取数据集-1"><a href="#读取数据集-1" class="headerlink" title="读取数据集"></a>读取数据集</h3><pre><code class="lang-python">import torch.utils.data as Data
-
-batch_size = 10
-
-# combine featues and labels of dataset
-dataset = Data.TensorDataset(features, labels)
-
-# put dataset into DataLoader
-data_iter = Data.DataLoader(
-    dataset=dataset,            # torch TensorDataset format
-    batch_size=batch_size,      # mini batch size
-    shuffle=True,               # whether shuffle the data or not
-    num_workers=2,              # read data in multithreading
-)
+<pre><code>(torch.Size([4, 7, 10]), 2, torch.Size([2, 4, 16]), torch.Size([2, 4, 16]))
+</code></pre><h3 id="损失函数-1"><a href="#损失函数-1" class="headerlink" title="损失函数"></a>损失函数</h3><p>计算有效长度, 忽略 padding</p>
+<pre><code class="lang-python">def SequenceMask(X, X_len,value=0):  
+    # X 一个 batch 的输入，X_len 输入原本的有效长度（由于有 pad）
+    maxlen = X.size(1)
+    mask = torch.arange(maxlen)[None, :].to(X_len.device) &lt; X_len[:, None] # len 以后的部分都用 value 填充
+    X[~mask]=value
+    return X
 </code></pre>
-<pre><code class="lang-python">for X, y in data_iter:
-    print(X, &#39;\n&#39;, y)
-    break
+<pre><code class="lang-python">X = torch.tensor([[1,2,3], [4,5,6]])
+SequenceMask(X,torch.tensor([1,2]))  # 第一句有效长度为 1，第二句有效长度为 2
 </code></pre>
-<pre><code>tensor([[ 0.2134,  0.7981],
-        [-0.3899, -0.4544],
-        [ 1.4472, -1.2160],
-        [-0.7354,  1.2216],
-        [-1.3233,  0.6937],
-        [-0.2810,  0.5505],
-        [-1.6620, -0.1457],
-        [-0.7635,  0.7058],
-        [ 0.6079, -0.7497],
-        [ 0.4924, -0.1376]]) 
- tensor([ 1.9045,  4.9770, 11.2503, -1.4180, -0.8159,  1.7737,  1.3910,  0.2721,
-         7.9648,  5.6408])
-</code></pre><h3 id="定义模型-1"><a href="#定义模型-1" class="headerlink" title="定义模型"></a>定义模型</h3><pre><code class="lang-python">class LinearNet(nn.Module):
-    def __init__(self, n_feature):
-        super(LinearNet, self).__init__()      # call father function to init 
-        self.linear = nn.Linear(n_feature, 1)  # function prototype: `torch.nn.Linear(in_features, out_features, bias=True)`
+<pre><code>tensor([[1, 0, 0],
+        [4, 5, 0]])
+</code></pre><pre><code class="lang-python">X = torch.ones((2,3, 4))
+SequenceMask(X, torch.tensor([1,2]),value=-1)
+</code></pre>
+<pre><code>tensor([[[ 1.,  1.,  1.,  1.],
+         [-1., -1., -1., -1.],
+         [-1., -1., -1., -1.]],
 
-    def forward(self, x):
-        y = self.linear(x)
-        return y
+        [[ 1.,  1.,  1.,  1.],
+         [ 1.,  1.,  1.,  1.],
+         [-1., -1., -1., -1.]]])
+</code></pre><p>定义交叉熵损失函数, 继承<code>CrossEntropyLoss</code></p>
+<pre><code class="lang-python">class MaskedSoftmaxCELoss(nn.CrossEntropyLoss):
+    # pred shape: (batch_size, seq_len, vocab_size)
+    # label shape: (batch_size, seq_len)
+    # valid_length shape: (batch_size, )
+    def forward(self, pred, label, valid_length):
+        # the sample weights shape should be (batch_size, seq_len)
+        weights = torch.ones_like(label)
+        weights = SequenceMask(weights, valid_length).float()  # padding 部分的损失变成 0，保留有效长度部分的存世
+        self.reduction=&#39;none&#39;
+        output=super(MaskedSoftmaxCELoss, self).forward(pred.transpose(1,2), label)
+        return (output*weights).mean(dim=1)
+</code></pre>
+<pre><code class="lang-python">loss = MaskedSoftmaxCELoss()
+loss(torch.ones((3, 4, 10)), torch.ones((3,4),dtype=torch.long), torch.tensor([4,3,0])) 
+# label 3个句子，4 个正确单词； 有效长度[4, 3, 0]
+</code></pre>
+<pre><code>tensor([2.3026, 1.7269, 0.0000])
+</code></pre><h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><pre><code class="lang-python">def train_ch7(model, data_iter, lr, num_epochs, device):  # Saved in d2l 如果device是GPU，下面的device都要设定
+    model.to(device)
+    optimizer = optim.Adam(model.parameters(), lr=lr)
+    loss = MaskedSoftmaxCELoss()
+    tic = time.time()
+    for epoch in range(1, num_epochs+1):
+        l_sum, num_tokens_sum = 0.0, 0.0  # loss 的总和，单词数量的总和
+        for batch in data_iter:
+            optimizer.zero_grad()
+            X, X_vlen, Y, Y_vlen = [x.to(device) for x in batch]
+            Y_input, Y_label, Y_vlen = Y[:,:-1], Y[:,1:], Y_vlen-1 # Y_input decoder的输入
 
-net = LinearNet(num_inputs)
-print(net)
-</code></pre>
-<pre><code>LinearNet(
-  (linear): Linear(in_features=2, out_features=1, bias=True)
-)
-</code></pre><pre><code class="lang-python"># ways to init a multilayer network
-# method one
-net = nn.Sequential(   # 一个时序容器，Modules 会以他们传入的顺序被添加到容器中
-    nn.Linear(num_inputs, 1)
-    # other layers can be added here
-    )
+            Y_hat, _ = model(X, Y_input, X_vlen, Y_vlen)
+            l = loss(Y_hat, Y_label, Y_vlen).sum()
+            l.backward()
 
-# method two
-net = nn.Sequential()
-net.add_module(&#39;linear&#39;, nn.Linear(num_inputs, 1))
-# net.add_module ......
+            with torch.no_grad():
+                d2l.grad_clipping_nn(model, 5, device)  #梯度裁剪
+            num_tokens = Y_vlen.sum().item()
+            optimizer.step()
+            l_sum += l.sum().item()
+            num_tokens_sum += num_tokens
+        if epoch % 50 == 0:
+            print(&quot;epoch {0:4d},loss {1:.3f}, time {2:.1f} sec&quot;.format( 
+                  epoch, (l_sum/num_tokens_sum), time.time()-tic))
+            tic = time.time()
+</code></pre>
+<pre><code class="lang-python">embed_size, num_hiddens, num_layers, dropout = 32, 32, 2, 0.0
+batch_size, num_examples, max_len = 64, 1e3, 10
+lr, num_epochs, ctx = 0.005, 300, d2l.try_gpu()
+src_vocab, tgt_vocab, train_iter = d2l.load_data_nmt(
+    batch_size, max_len,num_examples)
+encoder = Seq2SeqEncoder(
+    len(src_vocab), embed_size, num_hiddens, num_layers, dropout)
+decoder = Seq2SeqDecoder(
+    len(tgt_vocab), embed_size, num_hiddens, num_layers, dropout)
+model = d2l.EncoderDecoder(encoder, decoder)
+train_ch7(model, train_iter, lr, num_epochs, ctx)
+</code></pre>
+<pre><code>epoch   50,loss 0.093, time 38.2 sec
+epoch  100,loss 0.046, time 37.9 sec
+epoch  150,loss 0.032, time 36.8 sec
+epoch  200,loss 0.027, time 37.5 sec
+epoch  250,loss 0.026, time 37.8 sec
+epoch  300,loss 0.025, time 37.3 sec
+</code></pre><h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><pre><code class="lang-python">def translate_ch7(model, src_sentence, src_vocab, tgt_vocab, max_len, device):
+    src_tokens = src_vocab[src_sentence.lower().split(&#39; &#39;)]
+    src_len = len(src_tokens)
+    if src_len &lt; max_len:
+        src_tokens += [src_vocab.pad] * (max_len - src_len)  # 进行 padding
+    enc_X = torch.tensor(src_tokens, device=device)
+    enc_valid_length = torch.tensor([src_len], device=device)
+    # use expand_dim to add the batch_size dimension.
+    enc_outputs = model.encoder(enc_X.unsqueeze(dim=0), enc_valid_length) # unsqueeze 增加一个维度（因为有多个 batch_size)
+    dec_state = model.decoder.init_state(enc_outputs, enc_valid_length) # encoder 的输出作为 dec 的输入初始化
+    dec_X = torch.tensor([tgt_vocab.bos], device=device).unsqueeze(dim=0) # 设为 bos 表示开始
+    predict_tokens = []
+    for _ in range(max_len):
+        Y, dec_state = model.decoder(dec_X, dec_state) # 当前 RNN 单元的 output Y，给下一个单元的 dec_state
+        dec_X = Y.argmax(dim=2)  # 得分最高的单词，作为下一个单元的输入
+        py = dec_X.squeeze(dim=0).int().item()
+        if py == tgt_vocab.eos:  # 结束则跳出循环
+            break
+        predict_tokens.append(py)
+    return &#39; &#39;.join(tgt_vocab.to_tokens(predict_tokens))
+</code></pre>
+<pre><code class="lang-python">for sentence in [&#39;Go .&#39;, &#39;Wow !&#39;, &quot;I&#39;m OK .&quot;, &#39;I won !&#39;]:
+    print(sentence + &#39; =&gt; &#39; + translate_ch7(
+        model, sentence, src_vocab, tgt_vocab, max_len, ctx))
+</code></pre>
+<pre><code>Go . =&gt; va !
+Wow ! =&gt; &lt;unk&gt; !
+I&#39;m OK . =&gt; ça va .
+I won ! =&gt; j&#39;ai gagné !
+</code></pre><h2 id="Beam-Search-集束搜索"><a href="#Beam-Search-集束搜索" class="headerlink" title="Beam Search 集束搜索"></a>Beam Search 集束搜索</h2><p>简单greedy search：（贪心）只考虑了局部最优解</p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/emJlxcIbrCVTS1o.png" alt="简单贪心"></p>
+<p>维特比算法：选择整体分数最高的句子（搜索空间太大）<br>集束搜索：每次不只选一个，选择 top n，增加备选项但又不全局搜索</p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/L5aI1irfAKm2znq.png" alt="集束搜索"></p>
+<h2 id="练习题"><a href="#练习题" class="headerlink" title="练习题"></a>练习题</h2><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/BAHTqRNlPsiMdyr.png" alt="机器翻译-练习题"></p>
+<ul>
+<li>训练时下一个单词是已知的, 预测时需要作为下一个单词生成的输入</li>
+<li>每个 batch 之内, size 是给定的, 句子长度都是一样的</li>
+</ul>
 
-# method three
-from collections import OrderedDict
-net = nn.Sequential(OrderedDict([
-          (&#39;linear&#39;, nn.Linear(num_inputs, 1))
-          # ......
-        ]))
-
-print(net[0].weight)
-print(net[0].bias)
-# print(net)
-</code></pre>
-<pre><code>Parameter containing:
-tensor([[0.6652, 0.1260]], requires_grad=True)
-Parameter containing:
-tensor([0.5704], requires_grad=True)
-</code></pre><h3 id="初始化模型参数-1"><a href="#初始化模型参数-1" class="headerlink" title="初始化模型参数"></a>初始化模型参数</h3><pre><code class="lang-python">from torch.nn import init
-
-init.normal_(net[0].weight, mean=0.0, std=0.01)  # weight重新生成
-init.constant_(net[0].bias, val=0.0)  # bias[ 被赋值为 0
-
-print(net[0].weight)
-print(net[0].bias)
-</code></pre>
-<pre><code>Parameter containing:
-tensor([[0.0016, 0.0029]], requires_grad=True)
-Parameter containing:
-tensor([0.], requires_grad=True)
-</code></pre><pre><code class="lang-python">for param in net.parameters():
-    print(param)  # param 就是上面的 weight 和 bias
-</code></pre>
-<pre><code>Parameter containing:
-tensor([[0.0016, 0.0029]], requires_grad=True)
-Parameter containing:
-tensor([0.], requires_grad=True)
-</code></pre><h3 id="定义损失函数-1"><a href="#定义损失函数-1" class="headerlink" title="定义损失函数"></a>定义损失函数</h3><pre><code class="lang-python">loss = nn.MSELoss()    # nn built-in squared loss function   采用计算 MSE 的 loss
-                       # function prototype: `torch.nn.MSELoss(size_average=None, reduce=None, reduction=&#39;mean&#39;)`
-</code></pre>
-<h3 id="定义优化函数-1"><a href="#定义优化函数-1" class="headerlink" title="定义优化函数"></a>定义优化函数</h3><pre><code class="lang-python">import torch.optim as optim
-
-optimizer = optim.SGD(net.parameters(), lr=0.03)   # built-in random gradient descent function
-print(optimizer)  # function prototype: `torch.optim.SGD(params, lr=, momentum=0, dampening=0, weight_decay=0, nesterov=False)`
-</code></pre>
-<pre><code>SGD (
-Parameter Group 0
-    dampening: 0
-    lr: 0.03
-    momentum: 0
-    nesterov: False
-    weight_decay: 0
-)
-</code></pre><h3 id="训练-1"><a href="#训练-1" class="headerlink" title="训练"></a>训练</h3><pre><code class="lang-python">num_epochs = 3
-for epoch in range(1, num_epochs + 1):
-    for X, y in data_iter:
-        output = net(X)
-        l = loss(output, y.view(-1, 1))
-        optimizer.zero_grad() # reset gradient, equal to net.zero_grad()
-        l.backward()
-        optimizer.step()
-    print(&#39;epoch %d, loss: %f&#39; % (epoch, l.item()))
-</code></pre>
-<pre><code>epoch 1, loss: 0.000299
-epoch 2, loss: 0.000058
-epoch 3, loss: 0.000051
-</code></pre><pre><code class="lang-python"># result comparision
-dense = net[0]
-print(true_w, dense.weight.data)
-print(true_b, dense.bias.data)
-</code></pre>
-<pre><code>[2, -3.4] tensor([[ 2.0007, -3.3992]])
-4.2 tensor([4.1989])
-</code></pre>
             </div>
             <hr/>
 
@@ -850,7 +897,7 @@ print(true_b, dense.bias.data)
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://hopenx.github.io/2020/02/14/dl-notes1-lin-re/">https://hopenx.github.io/2020/02/14/dl-notes1-lin-re/</a>
+                    <a href="https://hopenx.github.io/2020/02/19/mach-trans/">https://hopenx.github.io/2020/02/19/mach-trans/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -888,8 +935,8 @@ print(true_b, dense.bias.data)
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                                    <span class="chip bg-color">深度学习</span>
+                                <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-NLP/">
+                                    <span class="chip bg-color">深度学习, NLP</span>
                                 </a>
                             
                         </div>
@@ -1059,24 +1106,24 @@ print(true_b, dense.bias.data)
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/02/14/dl-notes2-softmax/">
+                <a href="/2020/02/19/cnn-basic/">
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/3.jpg" class="responsive-img" alt="动手深度学习(二):Softmax">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/1.jpg" class="responsive-img" alt="卷积神经网络 CNN 基础">
                         
-                        <span class="card-title">动手深度学习(二):Softmax</span>
+                        <span class="card-title">卷积神经网络 CNN 基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            将线性的模型用于离散的分类问题, 常用 softmax 函数
+                            简要介绍 CNN 的基础概念, 卷积, 池化, 互相关运算, 特征图与感受野, 步幅与填充, 输入输出通道
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-14
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-19
                         </span>
                         <span class="publish-author">
                             
@@ -1108,19 +1155,19 @@ print(true_b, dense.bias.data)
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/02/14/dl-notes/">
+                <a href="/2020/02/14/dl-notes4-ov-und-fit/">
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/3.jpg" class="responsive-img" alt="深度学习基础">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/5.jpg" class="responsive-img" alt="动手深度学习(四):过拟合与欠拟合">
                         
-                        <span class="card-title">深度学习基础</span>
+                        <span class="card-title">动手深度学习(四):过拟合与欠拟合</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            简要介绍深度学习的一些基本概念, 深度学习作为机器学习的分支, 有自己一套完整的体系
+                            简要介绍过拟合 over-fitting 和欠拟合 under-fitting 是机器学习中常见的两种问题, 以及对应的解决方法
                         
                     </div>
                     <div class="publish-info">
