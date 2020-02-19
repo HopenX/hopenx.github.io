@@ -54,6 +54,31 @@
     
     
     <entry>
+      <title>动手深度学习(五):梯度消失、梯度爆炸</title>
+      <link href="/2020/02/19/dl-notes5-grad/"/>
+      <url>/2020/02/19/dl-notes5-grad/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> 机器学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 深度学习 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>动手深度学习(四):过拟合与欠拟合</title>
       <link href="/2020/02/14/dl-notes4-ov-und-fit/"/>
       <url>/2020/02/14/dl-notes4-ov-und-fit/</url>
