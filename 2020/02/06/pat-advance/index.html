@@ -498,7 +498,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    8k
+                    10.1k
                 </div>
                 
 
@@ -517,7 +517,8 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="PAT-甲级-做题笔记"><a href="#PAT-甲级-做题笔记" class="headerlink" title="PAT-甲级 做题笔记"></a>PAT-甲级 做题笔记</h1><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/06/Y49WNI6DpA3hSKX.png" alt="甲级题目分类"></p>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>0000 <a href="#0000">做题 Tips 基本经验</a><br>1003 <a href="#1003">Emergency (Dijkstra 算法)</a><br>1004 <a href="#1004">Counting Leaves (计算叶节点数，DFS/BFS 树算法)</a><br>1007 <a href="#1007">Maximum Subsequence Sum(最大子序列和)</a><br>1010 <a href="#1010">Radix (进制转换/二分法)</a><br>1012 <a href="#1012">The Best Rank (应用问题，数据结构设计，多维度排序)</a><br>1013 <a href="#1013">Battle Over Cities (图的遍历，统计强连通分量的个数，DFS)</a><br>1014 <a href="#1014">Waiting in Line (队列应用，排队问题)</a><br>1015 <a href="https://pintia.cn/problem-sets/994805342720868352/problems/994805495863296000" target="_blank" rel="noopener">Reversible Primes (进制转换+判断素数：可取用函数)</a><br>1016 <a href="#1016">Phone Bills (日期类计算)</a><br>1018 <a href="#1018">Public Bike Management (图最短路径 Dijkstra + DFS)</a><br>1020 <a href="#1020">Tree Traversals (已知后序和中序，转前序/层序)</a><br>1021 <a href="#1021">Deepest Root (求树中最长的路径，DFS，连通分量)</a><br>1040 <a href="#1040">Longest Symmetric String (求最长对称子串, DP)</a><br>1045 <a href="#1045">Favorite Color Stripe (最长不下降子序列, DP)</a><br>1068 <a href="#1068">Find More Coins (0-1 背包问题, DP)</a><br>1044 <a href="#1044">Shopping in Mars (特定值子序列和, 二分查找)</a><br>1085 <a href="#1085">Perfect Sequence (二分查找, upper_bound, 双指针)</a></p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h3 id="PAT"><a href="#PAT" class="headerlink" title="(PAT)"></a>(PAT)</h3><p>0000 <a href="#0000">做题 Tips 基本经验</a><br>1003 <a href="#1003">Emergency (Dijkstra 算法)</a><br>1004 <a href="#1004">Counting Leaves (计算叶节点数，DFS/BFS 树算法)</a><br>1007 <a href="#1007">Maximum Subsequence Sum(最大子序列和)</a><br>1010 <a href="#1010">Radix (进制转换/二分法)</a><br>1012 <a href="#1012">The Best Rank (应用问题，数据结构设计，多维度排序)</a><br>1013 <a href="#1013">Battle Over Cities (图的遍历，统计强连通分量的个数，DFS)</a><br>1014 <a href="#1014">Waiting in Line (队列应用，排队问题)</a><br>1015 <a href="#1015">Reversible Primes (进制转换+判断素数：可取用函数)</a><br>1016 <a href="#1016">Phone Bills (日期类计算)</a><br>1018 <a href="#1018">Public Bike Management (图最短路径 Dijkstra + DFS)</a><br>1020 <a href="#1020">Tree Traversals (已知后序和中序，转前序/层序)</a><br>1021 <a href="#1021">Deepest Root (求树中最长的路径，DFS，连通分量)</a><br>1040 <a href="#1040">Longest Symmetric String (求最长对称子串, DP)</a><br>1045 <a href="#1045">Favorite Color Stripe (最长不下降子序列, DP)</a><br>1068 <a href="#1068">Find More Coins (0-1 背包问题, DP)</a><br>1044 <a href="#1044">Shopping in Mars (特定值子序列和, 二分查找)</a><br>1085 <a href="#1085">Perfect Sequence (二分查找, upper-bound, 双指针)</a><br>1071 <a href="#1071">Speech Patterns (词频统计)</a><br>1067 <a href="#1067">Sort with Swap(0, i) (贪心, 元素归位)</a></p>
+<h3 id="HUSTOJ"><a href="#HUSTOJ" class="headerlink" title="(HUSTOJ)"></a>(HUSTOJ)</h3><p>H1130 <a href="#H1130">分成两个尽可能接近的子数组 (背包问题 DP)</a></p>
 <hr>
 <h2 id="0000-做题-Tips-基本经验"><a href="#0000-做题-Tips-基本经验" class="headerlink" title="0000 做题 Tips 基本经验"></a>0000 做题 Tips 基本经验<span id="0000"></span></h2><ol>
 <li>最后千万别栽在头文件上，比如 reverse() 属于 &lt; algorithm&gt;</li>
@@ -530,8 +531,23 @@
  4
  5
 </code></pre></li>
-<li>int 最大范围 $-2^{31}$=-2147483648 到 $2^{31}$-1=2147483647  (10 位数)</li>
+<li><p>int 最大范围 $-2^{31}$=-2147483648 到 $2^{31}$-1=2147483647  (10 位数)</p>
+</li>
+<li><p>INT_MAX 和 INT_MIN 都在<code>#include &lt;limits.h&gt;</code>中定义的<br>其中 INT_MAX 就等于<code>0x7fffffff</code>, 也即<code>2147483647</code></p>
+</li>
+<li><p>输入一两个数, 用 cin 无伤大雅, 遇到下面这种</p>
+<pre><code class="lang-c++">for (int j = 0; j &lt; m; ++j) {
+     cin &gt;&gt; temp; }
+</code></pre>
+<p>由于 m 可以达到 $10^5$, cin 就会显得很耗时, 要用 scanf</p>
+</li>
+<li><p>结构体不能直接整个赋值</p>
+</li>
 </ol>
+<pre><code class="lang-c++">station st = {0, 0};
+scanf(&quot;%lf %lf&quot;, &amp;st.price, &amp;st.dis);
+v.push_back(st);
+</code></pre>
 <hr>
 <p><span id="1003"></span></p>
 <h2 id="1003-Emergency-Dijkstra-算法"><a href="#1003-Emergency-Dijkstra-算法" class="headerlink" title="1003 Emergency (Dijkstra 算法)"></a>1003 Emergency (Dijkstra 算法)</h2><h3 id="1-题目大意"><a href="#1-题目大意" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>n个城市m条路，每个城市有救援小组，所有的边的边权已知。给定起点和终点，求从起点到终点的最短路径条数以及最短路径上的救援小组数目之和。如果有多条就输出点权（城市救援小组数目）最大的那个</p>
@@ -639,7 +655,20 @@ for (int j = 0; j &lt; k; ++j) {
 }
 if(sum &lt; 0) sum = 0;  //如果全负则为 0，根据题目要求不要漏情况
 </code></pre>
-<h3 id="4-类似题"><a href="#4-类似题" class="headerlink" title="4. 类似题"></a>4. 类似题</h3><p><a href="https://www.cnblogs.com/grandyang/p/4480780.html" target="_blank" rel="noopener">最长无重复子串</a></p>
+<h3 id="4-类似题"><a href="#4-类似题" class="headerlink" title="4. 类似题"></a>4. 类似题</h3><h5 id="1-最长无重复子串"><a href="#1-最长无重复子串" class="headerlink" title="1) 最长无重复子串"></a>1) <a href="https://www.cnblogs.com/grandyang/p/4480780.html" target="_blank" rel="noopener">最长无重复子串</a></h5><h5 id="2-满足-gt-k-的最短连续子序列"><a href="#2-满足-gt-k-的最短连续子序列" class="headerlink" title="2) 满足 &gt;=k 的最短连续子序列"></a>2) 满足 &gt;=k 的最短连续子序列</h5><p>核心思想: 要求连续, 可以用<code>双指针法</code>, 记录 start 和 end, end 作为探路, start 作为后备, 满足之后 start 就可以前移. 整个过程中通过 min 沉淀出最短长度.</p>
+<pre><code class="lang-cpp">int start = 0, end = 0, ans = n, sum = 0;
+while (end &lt; n){
+    if(sum &lt; k)
+        sum += a[end];
+    while (sum &gt;= k){   //一直移到小于 k 为止, 满足 sum &gt;= k 的就有计数资格
+        ans = min(ans, end-start+1);
+        sum -= a[start++];   //start 后移
+    }
+    end++;
+
+}
+cout &lt;&lt; ans;
+</code></pre>
 <hr>
 <p>)<span id="1010"></span></p>
 <h2 id="1010-Radix-进制转换-二分法"><a href="#1010-Radix-进制转换-二分法" class="headerlink" title="1010 Radix (进制转换/二分法"></a>1010 Radix (进制转换/二分法</h2><h3 id="1-题目大意-3"><a href="#1-题目大意-3" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>给定两个相等数，已知一个数的进制，求另外一个数的进制（radix-&gt;基数）</p>
@@ -755,6 +784,33 @@ bool cmp(node &amp;a, node &amp;b){ return a.score[flag] &gt; b.score[flag];}
         }
 }
 </code></pre>
+<h3 id="4-坑点"><a href="#4-坑点" class="headerlink" title="4.坑点"></a>4.坑点</h3><p>有些题目, 没有给定 n 的范围, 开二维数组可能会内存超限. 所以可以使用<code>邻接表</code>, vector 的数组.</p>
+<pre><code class="lang-cpp">
+vector&lt;int&gt; Adj[maxn];
+
+//输入时
+if(m!=n){
+    Adj[n].push_back(m);
+    Adj[m].push_back(n);
+}
+else{
+    Adj[n].push_back(m);
+}
+
+//遍历时
+void DFS(int n)
+{
+    flag[n]=true;
+    for(int i=0; i&lt;Adj[n].size(); ++i) //只遍历自己的邻接点
+    {
+        int v=Adj[n][i];
+        if(flag[v]==false)
+        {
+            DFS(v);
+        }
+    }
+}
+</code></pre>
 <hr>
 <p><span id="1014"></span></p>
 <h2 id="1014-Reversible-Primes（队列应用-排队问题"><a href="#1014-Reversible-Primes（队列应用-排队问题" class="headerlink" title="1014 Reversible Primes（队列应用 排队问题"></a>1014 Reversible Primes（队列应用 排队问题</h2><h3 id="1-题目大意-6"><a href="#1-题目大意-6" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>n个窗口，每个窗口可以排队m人。有k位用户需要服务，给出了每位用户需要的minute数，所有客户在8点开始服务，如果有窗口还没排满就入队，否则就在黄线外等候。如果有某一列有一个用户走了服务完毕了，黄线外的人就进来一个。如果同时就选窗口数小的。求q个人的服务结束时间。<br>如果一个客户在17:00以及以后还没有开始服务（此处不是结束服务是开始17:00）就不再服务输出sorry；如果这个服务已经开始了，无论时间多长都要等他服务完毕。</p>
@@ -803,8 +859,32 @@ int index = 1;
     }
 </code></pre>
 <hr>
+<p><span id="1015"></span></p>
+<h2 id="1015-判断素数-进制转换"><a href="#1015-判断素数-进制转换" class="headerlink" title="1015 判断素数 进制转换"></a>1015 判断素数 进制转换</h2><h3 id="1-可以直接取用的函数"><a href="#1-可以直接取用的函数" class="headerlink" title="1. 可以直接取用的函数"></a>1. 可以直接取用的函数</h3><pre><code class="lang-cpp">//真正计算任意进制的方法, 10进制-&gt;任意进制
+void cal(){
+    int a, b;
+    scanf(&quot;%d %d&quot;, &amp;a, &amp;b);
+    int arr[40], index = 0;
+    while(a != 0) {
+        arr[index++] = a % b;
+        a = a / b;
+    }
+}
+
+//判断素数
+bool isPrime(int x){
+    if(x == 2) return true;
+    if(x &lt;= 1 ) return false;
+    int loop = (int)sqrt(x * 1.0);
+    for (int i = 2; i &lt;= loop; ++i) {
+        if(x % i == 0) return false;
+    }
+    return true;
+}
+</code></pre>
+<hr>
 <p><span id="1016"></span></p>
-<h2 id="1016-Phone-Bills（日期类计算"><a href="#1016-Phone-Bills（日期类计算" class="headerlink" title="1016 Phone Bills（日期类计算"></a>1016 Phone Bills（日期类计算</h2><h3 id="1-题目大意-7"><a href="#1-题目大意-7" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>给定固定格式的日期<code>mm:dd:hh:mm</code>计算各个时间的差值，以及每个时间段有不同的费率，计算总的账单费用。</p>
+<h2 id="1016-Phone-Bills（日期类计算"><a href="#1016-Phone-Bills（日期类计算" class="headerlink" title="1016 Phone Bills（日期类计算)"></a>1016 Phone Bills（日期类计算)</h2><h3 id="1-题目大意-7"><a href="#1-题目大意-7" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>给定固定格式的日期<code>mm:dd:hh:mm</code>计算各个时间的差值，以及每个时间段有不同的费率，计算总的账单费用。</p>
 <h3 id="2-学习要点-1"><a href="#2-学习要点-1" class="headerlink" title="2. 学习要点"></a>2. 学习要点</h3><p>1.数据结构设计<br>因为输入是给定一个个 call 序列，所以便于存储，也以每个 call 为单位，统一放在一个数组里，按照名字、时间排序，计算的时候，只要考虑 i 和 i-1 前后两个元素是否有同一个 name 以及 status 一个为 0 一个为 1 即可。</p>
 <pre><code class="lang-cpp">struct node {
     string name;
@@ -854,6 +934,24 @@ void pre(int root, int start, int end, int index){
 pre(n-1, 0, n-1, 0);
 </code></pre>
 <h3 id="4-类题"><a href="#4-类题" class="headerlink" title="4. 类题"></a>4. 类题</h3><p><a href="https://pintia.cn/problem-sets/994805342720868352/problems/994805380754817024" target="_blank" rel="noopener">PTA-1086</a>（已知前序和中序遍历，求后序遍历）<br>给出用栈进行中序遍历的过程，求后序遍历。有一个隐含条件，push 的顺序即为前序遍历，相对于已知 pre 和 in，求 post，同样找 root, start, end 即可。</p>
+<p><a href="https://pintia.cn/problem-sets/994805342720868352/problems/994805345078067200" target="_blank" rel="noopener">PTA-1138</a> (已知中序和前序遍历, 求后序遍历的第一个数字)<br>思路一样, 后序遍历是左右根, 因此有左边就只 post 递归左边, 没有左边才递归右边.</p>
+<pre><code class="lang-C++">int pre[50001], in[50001], n, fir;
+
+void post(int root, int start, int end){
+    if(start == end){
+        fir = start;
+        return;   //只有一个节点
+    }
+    int i = start;
+    while(i &lt;= end &amp;&amp; pre[root] != in[i]) i++;  //找到 in 序列中对应的 i
+
+    if(i &gt; start)
+        post(root+1, start, i-1);   //左边有就往左边遍历
+    else
+        post(root+1, i+1, end);
+
+}
+</code></pre>
 <hr>
 <p><span id="1021"></span></p>
 <h2 id="1021-Deepest-Root-求树中最长的路径，DFS，连通分量"><a href="#1021-Deepest-Root-求树中最长的路径，DFS，连通分量" class="headerlink" title="1021 Deepest Root (求树中最长的路径，DFS，连通分量)"></a>1021 Deepest Root (求树中最长的路径，DFS，连通分量)</h2><h3 id="1-题目大意-8"><a href="#1-题目大意-8" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>给出n个结点（1~n）之间的n条边，问是否能构成一棵树，如果不能构成则输出它有的连通分量个数；如果能构成一棵树，输出能构成最深的树的高度时，树的根结点。如果有多个，按照从小到大输出。</p>
@@ -1131,9 +1229,9 @@ int main(){
 </code></pre>
 <hr>
 <p><span id="1085"></span></p>
-<h2 id="1085-Perfect-Sequence-二分查找-upper-bound-双指针"><a href="#1085-Perfect-Sequence-二分查找-upper-bound-双指针" class="headerlink" title="1085 Perfect Sequence (二分查找, upper_bound, 双指针)"></a>1085 Perfect Sequence (二分查找, upper_bound, 双指针)</h2><h3 id="1-题目大意-14"><a href="#1-题目大意-14" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>设这个数列中的最大值是M，最小值是m，如果M &lt;= m * p，则称这个数列是完美数列. 现在给定一个序列, 求满足完美序列的最长子序列长度</p>
+<h2 id="1085-Perfect-Sequence-二分查找-upper-bound-双指针"><a href="#1085-Perfect-Sequence-二分查找-upper-bound-双指针" class="headerlink" title="1085 Perfect Sequence (二分查找, upper-bound, 双指针)"></a>1085 Perfect Sequence (二分查找, upper-bound, 双指针)</h2><h3 id="1-题目大意-14"><a href="#1-题目大意-14" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>设这个数列中的最大值是M，最小值是m，如果M &lt;= m * p，则称这个数列是完美数列. 现在给定一个序列, 求满足完美序列的最长子序列长度</p>
 <h3 id="2-二分法"><a href="#2-二分法" class="headerlink" title="2.二分法"></a>2.二分法</h3><p>本题可以应用 upper_bound 来查找, 既然要求满足最大的<code>max &lt;= p*min</code>, 那么找到第一个<code>max &gt; p*min</code>即可, 即找到第一个大于target 的元素.</p>
-<p><strong>upper_bound 代码</strong></p>
+<p><strong>upper-bound 代码</strong></p>
 <pre><code class="lang-c++">int bin_sear_upper(int left, int right, int target){
     int mid;
     while (left &lt; right){
@@ -1148,7 +1246,7 @@ int main(){
 </code></pre>
 <p>关键点 1: <code>left &lt; right</code>到最后必然会夹出 left==right 返回即可.<br>而普通的查找定值<code>if(a[mid]==target)</code>, 需要<code>left &lt;= right</code>作为条件, 找不到就返回-1</p>
 <p>关键点 2: 先判断<code>&gt;</code>, 让<code>right = mid</code>目的是尽可能保留大数,<code>left = mid + 1</code>小数不保留无所谓.</p>
-<p><strong>lower_bound 代码</strong></p>
+<p><strong>lower-bound 代码</strong></p>
 <pre><code class="lang-c++">if(a[mid] &gt;= target)
     right = mid;
 else
@@ -1173,7 +1271,7 @@ else
 }
 </code></pre>
 <p>应用的是 upper_bound, <code>right-1</code>即可得到满足<code>max &lt;= p*min</code>的最大数字.</p>
-<h3 id="4-坑点"><a href="#4-坑点" class="headerlink" title="4. 坑点"></a>4. 坑点</h3><ol>
+<h3 id="4-坑点-1"><a href="#4-坑点-1" class="headerlink" title="4. 坑点"></a>4. 坑点</h3><ol>
 <li><code>段错误</code> 数组开的不够大, 递归调用过多</li>
 <li><code>答案错误</code> 发现存在溢出, int 最大管到 $10^9$, 此题乘起来之后会超过, 要用 long long !</li>
 </ol>
@@ -1194,8 +1292,142 @@ else
     }
     cout &lt;&lt; result;
 </code></pre>
-<p>效率对比差距明显</p>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/12/Buth7AGTcCpPonS.png" alt="图片替换文本" width="140" height="180"/></p>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/12/Buth7AGTcCpPonS.png" alt="效率对比差距明显" width="140" height="180"/></p>
+<hr>
+<p><span id="1029"></span></p>
+<h2 id="1029-Median-找中位数-计数排序"><a href="#1029-Median-找中位数-计数排序" class="headerlink" title="1029 Median (找中位数 计数排序)"></a>1029 Median (找中位数 计数排序)</h2><h3 id="1-题目大意-15"><a href="#1-题目大意-15" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><hr>
+<p><span id="1143"></span></p>
+<h2 id="1143-Lowest-Common-Ancestor-最近的公共祖先"><a href="#1143-Lowest-Common-Ancestor-最近的公共祖先" class="headerlink" title="1143 Lowest Common Ancestor (最近的公共祖先)"></a>1143 Lowest Common Ancestor (最近的公共祖先)</h2><h3 id="1-题目大意-16"><a href="#1-题目大意-16" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>给定二叉搜索树 BST 的 pre 前序遍历, 再给定一对 U,V 求 U,V 的 LCA</p>
+<h3 id="2-分析-9"><a href="#2-分析-9" class="headerlink" title="2. 分析"></a>2. 分析</h3><p>本题有两个特殊条件, 一个是<code>BST</code>, 形式是<code>左边小右边大</code>, 一个是<code>前序遍历pre</code>, 对于数组形式的 pre 序列, 形式是<code>根左右</code>. 所以只需要 u,v 分别在 a 的两端, 一个比 a 大, 一个比 a 小, a 就是公共祖先. 当 <code>a==u || a==v 时</code>, 谁在前谁就是祖先</p>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3. 代码"></a>3. 代码</h3><pre><code class="lang-cpp">map&lt;int, bool&gt; mp;
+int main() {
+    int m, n, u, v, a;
+    scanf(&quot;%d %d&quot;, &amp;m, &amp;n);
+    vector&lt;int&gt; pre(n);
+    for (int i = 0; i &lt; n; i++) {
+        scanf(&quot;%d&quot;, &amp;pre[i]);
+        mp[pre[i]] = true;
+    }
+    for (int i = 0; i &lt; m; i++) {
+        scanf(&quot;%d %d&quot;, &amp;u, &amp;v);
+        for(int j = 0; j &lt; n; j++) {
+            a = pre[j];
+            if ((a &gt;= u &amp;&amp; a &lt;= v) || (a &gt;= v &amp;&amp; a &lt;= u)) break;
+        } 
+        if (mp[u] == false &amp;&amp; mp[v] == false)
+            printf(&quot;ERROR: %d and %d are not found.\n&quot;, u, v);
+        else if (mp[u] == false || mp[v] == false)
+            printf(&quot;ERROR: %d is not found.\n&quot;, mp[u] == false ? u : v);
+        else if (a == u || a == v)
+            printf(&quot;%d is an ancestor of %d.\n&quot;, a, a == u ? v : u);
+        else
+            printf(&quot;LCA of %d and %d is %d.\n&quot;, u, v, a);
+    }
+    return 0;
+}
+</code></pre>
+<hr>
+<p><span id="1071"></span></p>
+<h2 id="1071-Speech-Patterns-词频统计"><a href="#1071-Speech-Patterns-词频统计" class="headerlink" title="1071 Speech Patterns (词频统计)"></a>1071 Speech Patterns (词频统计)</h2><h3 id="1-题目大意-17"><a href="#1-题目大意-17" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>给定一行句子, 统计出现频率最高的 word. word 定义为仅包含<code>0-9 A-Z a-z</code>的连续串. 如果有相同词频, 就输出字典序最小的.</p>
+<pre><code>Can1: &quot;Can a can can a can?  It can!&quot;
+</code></pre><pre><code>can 5
+</code></pre><h3 id="2-个人代码-2"><a href="#2-个人代码-2" class="headerlink" title="2. 个人代码"></a>2. 个人代码</h3><pre><code class="lang-cpp">map&lt;string, int&gt; m;  //会按照键的字典序排序
+
+int main(){
+    string str, t;
+    int maxn=-1, i=0;
+    getline(cin, str);
+
+    for (auto &amp;c : str) {
+        i++;
+        if(isalnum(c)){
+            t += tolower(c);
+        }
+        if(!isalnum(c) || i==str.length()){ //碰到间隙或者结尾时, 进行计数
+            if(t.length()) m[t]++;
+            t = &quot;&quot;;
+        }
+    }
+
+    for(auto it=m.begin(); it!=m.end(); it++){
+        if(it-&gt;second &gt; maxn){
+            maxn = it-&gt;second;
+            t = it-&gt;first;
+        }
+    }
+
+    cout &lt;&lt; t &lt;&lt; &quot; &quot; &lt;&lt; maxn;
+
+    return 0;
+}
+</code></pre>
+<hr>
+<p><span id="H1130"></span></p>
+<h2 id="H1130-分成两个尽可能接近的子数组-背包问题-DP"><a href="#H1130-分成两个尽可能接近的子数组-背包问题-DP" class="headerlink" title="H1130 分成两个尽可能接近的子数组 (背包问题 DP)"></a>H1130 分成两个尽可能接近的子数组 (背包问题 DP)</h2><h3 id="1-题目大意-18"><a href="#1-题目大意-18" class="headerlink" title="1. 题目大意"></a>1. 题目大意</h3><p>小明班里要举行一次拔河比赛，班主任决定将所有人分为两队，每个人都必须参加。两个队伍的人数之差不能超过1，并且两个队伍的体重之和<code>要尽可能相近</code>，当然相同是最好的了。分别输出两个队伍的体重之和，按升序排序.</p>
+<p>简而言之, 将一个数组分成两个尽可能接近的子数组.</p>
+<h3 id="2-分析-10"><a href="#2-分析-10" class="headerlink" title="2. 分析"></a>2. 分析</h3><p>有一系列元素, 让这些元素尽可能地接近一个目标值, 这就是典型的背包 DP 问题. 本题的关键在于, 只研究一个数组, 让它尽可能接近 sum/2 即可, 另一个就与它最接近.</p>
+<h3 id="3-核心代码"><a href="#3-核心代码" class="headerlink" title="3. 核心代码"></a>3. 核心代码</h3><pre><code class="lang-cpp">int sum = 0;
+int a[n+1];
+for (int i = 1; i &lt;= n; ++i) {
+    cin &gt;&gt; a[i];
+    sum += a[i];
+}
+vector&lt;int&gt; dp(sum);  //dp[i]表示容量为 i 时能装下的总量
+fill(dp.begin(), dp.end(), 0);
+for (int i = 1; i &lt;= n; i++){  //面对第 i 个的时候
+    for (int j = sum/2; j &gt;= a[i]; j--){  //容量从目标开始减少
+        dp[j] = max(dp[j], dp[j-a[i]] + a[i]); //标准转移公式
+    }
+}
+int tmp = max(dp[sum/2], sum-dp[sum/2]);
+printf(&quot;%d %d\n&quot;, sum-tmp, tmp);
+</code></pre>
+<p>此程序的目的, 就是给定一个 target=sum/2, 让元素通过各种组合, 去无限逼近 target.</p>
+<p>对于<code>dp[j-a[i]] + a[i])</code>要理解清楚, 表示<code>已知</code>空出 a[i] 后的最大容量, 再加入 a[i] 看效果. 因为对于每一种容量, 不可能都会<code>恰好装满</code>, 所以 dp[5] 可能等于 3, 那么面对一个 4, dp[9] 就等于 3+4=7.</p>
+<h3 id="4-记忆点"><a href="#4-记忆点" class="headerlink" title="4. 记忆点"></a>4. 记忆点</h3><ul>
+<li><p>两层循环, 外层一件件物品遍历, <code>for (int i = 1; i &lt;= n; i++)</code>, 内层从目标容量递减 (容量是连续值) <code>for (int j = sum/2; j &gt;= a[i]; j--)</code>, 直到装不下为止.</p>
+</li>
+<li><p>转移公式<code>dp[j] = max(dp[j], dp[j-a[i]] + a[i]);</code>, 对应两种情况, <code>看见了 a[i] 但不装</code>, 和 <code>装下 a[i]</code></p>
+</li>
+<li><p>区别开来二维 dp 数组<br>```cpp<br>if(j &gt;= w[i])<br>  dp[i][j] = max(dp[i-1][j], dp[i-1][j-w[i]]+v[i]);<br>else<br>  dp[i][j] = dp[i-1][j];  </p>
+</li>
+</ul>
+<p>//面对这个 i 物品, 不拿(或装不下), 就等同于 i-1 的情况</p>
+<pre><code>`dp[i][j]` 表示 在面对第 i 件物品，且背包容量为 j 时所能获得的最大价值
+`dp[i-1][j-w[i]]+v[i]` 则是容量空出w[i]的情况下, i−1 表示回溯一个序号, 装入v[i]所能得到的价值.
+
+
+---------
+&lt;span id=&quot;1067&quot;&gt;&lt;/span&gt;
+
+## 1067 Sort with Swap(0, i) (贪心, 元素归位)
+
+### 1. 题目大意
+给定一个 0~n-1 的乱序序列, 每次只能用 0 与某个数交换, 求需要交换多少次才能归位.
+</code></pre><p>10<br>3 5 7 2 6 4 9 0 8 1</p>
+<pre><code>```
+9
+</code></pre><h3 id="2-分析-11"><a href="#2-分析-11" class="headerlink" title="2. 分析"></a>2. 分析</h3><p>基本思路: 把 0 当做哨兵, 根据 0 处在的位置 i , 每次让 0 与原本应处于 i 的那个数去交换. 如果 0 已经归位, 则顺次查找下一个不在本位的进行交换.</p>
+<p>一开始的做法是, 维护原来的数组, 每次 for 循环遍历查找对应的那个数, 结果超时/出错.</p>
+<p>本题巧妙之处在于, 由于数组是一个 0~n-1 的无重复数组, 不一定要保存值的数组, 而是保存一个索引的数组, 因为 swap 目的就是要交换位置, <code>交换索引</code>而已. 交换索引后, 不需要遍历查找对应数, 因为 a[0] 就是 0 所处在的位置index, 交换 a[0] 和 a[a[0]] 即可.</p>
+<h3 id="3-个人代码-10"><a href="#3-个人代码-10" class="headerlink" title="3. 个人代码"></a>3. 个人代码</h3><p>一个 n 的 for 循环, 当 n 个都满足<code>a[i] != i</code>就结束</p>
+<pre><code class="lang-cpp">vector&lt;int&gt; a(n);
+for (int i = 0; i &lt; n; ++i) {
+    cin &gt;&gt; t;
+    a[t] = i;   // t 对应的索引
+}
+
+for (int i = 1; i &lt; n; ++i) {  //a[0] 即 0 对应的索引, 每次拿 0 交换
+    while (a[0] != 0){
+        swap(a[0], a[a[0]]);   //可以一直换 0 的索引
+        cnt++;
+    }
+    if (a[i] != i){   //0 暂时归位,则判断当前 i 是否归位
+        swap(a[0], a[i]);
+        cnt++;
+    }
+}
+</code></pre>
 
             </div>
             <hr/>
@@ -1659,7 +1891,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">52.8k</span>&nbsp;字
+                class="white-color">55k</span>&nbsp;字
             
             
             
