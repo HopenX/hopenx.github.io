@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="housing-project, HopenX">
+    <meta name="keywords" content="竞赛-房租预测, HopenX">
     <meta name="description" content="比赛要求参赛选手根据给定的数据集，建立模型，预测房屋租金, 数据集中的数据类别包括租赁房源、小区、二手房、配套、新房、土地、人口、客户、真实租金等">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>housing-project | HopenX</title>
+    <title>竞赛-房租预测 | HopenX</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/awesome/css/all.css">
@@ -287,12 +287,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/17.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">housing-project</h1>
+                    <h1 class="description center-align post-title">竞赛-房租预测</h1>
                 </div>
             </div>
         </div>
@@ -759,7 +759,7 @@ plt.show()
 
 data_train = cleanData(data_train)
 </code></pre>
-<h2 id="特征工程-amp-特征选择"><a href="#特征工程-amp-特征选择" class="headerlink" title="特征工程&amp;特征选择"></a>特征工程&amp;特征选择</h2><h3 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h3><pre><code class="lang-python">#核心代码举例
+<h2 id="三-特征工程"><a href="#三-特征工程" class="headerlink" title="(三) 特征工程"></a>(三) 特征工程</h2><pre><code class="lang-python">#核心代码举例
 
 # 统计特征
     #计算均值
@@ -1256,7 +1256,7 @@ print(&quot;训练集结果：&quot;,score_train)
 score_test=r2_score(y_pred_test, target_test)
 print(&quot;测试集结果：&quot;,score_test)
 </code></pre>
-<h2 id="特征选择-1"><a href="#特征选择-1" class="headerlink" title="特征选择"></a>特征选择</h2><h3 id="以-lightGBM-为例"><a href="#以-lightGBM-为例" class="headerlink" title="以 lightGBM 为例"></a>以 lightGBM 为例</h3><pre><code class="lang-py">from __future__ import print_function
+<h2 id="四-模型选择"><a href="#四-模型选择" class="headerlink" title="(四) 模型选择"></a>(四) 模型选择</h2><h3 id="以-lightGBM-为例"><a href="#以-lightGBM-为例" class="headerlink" title="以 lightGBM 为例"></a>以 lightGBM 为例</h3><pre><code class="lang-py">from __future__ import print_function
 import lightgbm as lgb
 import sklearn
 import numpy
@@ -1384,7 +1384,7 @@ print(&#39;The best params:&#39;)
 print( best )
 print(&#39;\n\n&#39;)
 </code></pre>
-<h2 id="模型融合"><a href="#模型融合" class="headerlink" title="模型融合"></a>模型融合</h2><p>将特征放进模型中预测，并将预测结果作为新的特征加入原有特征中再经过模型预测结果（可以反复预测多次将结果加入最后的特征中）</p>
+<h2 id="五-模型融合"><a href="#五-模型融合" class="headerlink" title="(五) 模型融合"></a>(五) 模型融合</h2><p>将特征放进模型中预测，并将预测结果作为新的特征加入原有特征中再经过模型预测结果（可以反复预测多次将结果加入最后的特征中）</p>
 <pre><code class="lang-python">from sklearn.model_selection import KFold
     folds = KFold(n_splits=5, shuffle=True, random_state=2333)
 
@@ -1571,7 +1571,7 @@ Accuracy: 0.93 (+/- 0.05) [Random Forest]
 Accuracy: 0.92 (+/- 0.03) [Naive Bayes]
 Accuracy: 0.95 (+/- 0.03) [Stacking Classifier]
 </code></pre><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/26/aGs18DEHCYZFnoP.png" alt=""></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><a href="https://blog.csdn.net/qq_39756719/article/details/95634744" target="_blank" rel="noopener">答辩 ppt</a></p>
+<h2 id="六-总结"><a href="#六-总结" class="headerlink" title="(六) 总结"></a>(六) 总结</h2><p><a href="https://blog.csdn.net/qq_39756719/article/details/95634744" target="_blank" rel="noopener">答辩 ppt</a></p>
 
             </div>
             <hr/>
@@ -1815,9 +1815,9 @@ Accuracy: 0.95 (+/- 0.03) [Stacking Classifier]
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/23.jpg" class="responsive-img" alt="housing-project">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/17.jpg" class="responsive-img" alt="竞赛-房租预测">
                         
-                        <span class="card-title">housing-project</span>
+                        <span class="card-title">竞赛-房租预测</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
