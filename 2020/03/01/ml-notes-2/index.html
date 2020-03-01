@@ -611,22 +611,22 @@ f(w) & \text w 满足原始问题约束 \\
 & h_{i}(w)=0, \quad i=1, \ldots, l
 \end{array}</script><p>原始问题的解即为</p>
 <script type="math/tex; mode=display">
-p^{*}=\min _{w} \theta_{\mathcal{P}}(w)</script><p>求解 $f(w)$ 之所以添加一个 $\theta_{\mathcal{P}}(w)$, 就是为了省略掉 $g_{i}(w)$ 和 $h_{i}(w)=0$ 这些限制条件, 最后简洁地表示成一个函数.</p>
+p^*=\min _{w} \theta_{\mathcal{P}}(w)</script><p>求解 $f(w)$ 之所以添加一个 $\theta_{\mathcal{P}}(w)$, 就是为了省略掉 $g_{i}(w)$ 和 $h_{i}(w)=0$ 这些限制条件, 最后简洁地表示成一个函数.</p>
 <h4 id="对偶问题-amp-KKT"><a href="#对偶问题-amp-KKT" class="headerlink" title="对偶问题 &amp; KKT"></a>对偶问题 &amp; KKT</h4><p>将研究的参数转化为 $\alpha$ 和 $\beta$</p>
 <script type="math/tex; mode=display">
 \max _{\alpha, \beta: \alpha_{i} \geq 0} \theta_{\mathcal{D}}(\alpha, \beta)=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta)</script><p>对偶问题的解为</p>
 <script type="math/tex; mode=display">
-d^{*}=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta)</script><p>两者之间的关系 (恒成立)</p>
+d^*=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta)</script><p>两者之间的关系 (恒成立)</p>
 <script type="math/tex; mode=display">
-d^{*}=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta) \leq \min _{w} \max _{\alpha, \beta: \alpha_{i} \geq 0} \mathcal{L}(w, \alpha, \beta)=p^{*}</script><p>满足一定条件, 可以使 $d^{<em>}=p^{</em>}$, 即 <code>KKT 条件</code><br>前提:</p>
+d^*=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta) \leq \min _{w} \max _{\alpha, \beta: \alpha_{i} \geq 0} \mathcal{L}(w, \alpha, \beta)=p^*</script><p>满足一定条件, 可以使 $d^<em>=p^</em>$, 即 <code>KKT 条件</code><br>前提:</p>
 <ul>
 <li>假设 $f$ 以及 $g_i$ 是凸函数,并且 $h_i$ 为仿射函数,且 $g_i$ 严格满足可行域</li>
-<li><p>必然存在 $(w{<em>},\alpha{</em>},\beta{<em>})$, 满足: $w{</em>}$ 是原始问题的解, $\alpha{<em>}$ , $\beta{</em>}$ 是对偶问题的解, 且两个问题的解数值相等$d^{<em>}=p^{</em>}$ (注意区别$\alpha{<em>}$ 和 $\beta{</em>}$)</p>
+<li><p>必然存在 $(w<em>,\alpha</em>,\beta<em>)$, 满足: $w</em>$ 是原始问题的解, $\alpha<em>$ , $\beta</em>$ 是对偶问题的解, 且两个问题的解数值相等$d^<em>=p^</em>$ (注意区别$\alpha<em>$ 和 $\beta</em>$)</p>
 </li>
-<li><p>同时, $(w{<em>},\alpha{</em>},\beta{<em>})$ 满足KKT条件<br>( \frac{\partial}{\partial w_{i}} \mathcal{L}\left(w^{</em>}, \alpha^{<em>}, \beta^{</em>}\right)=0, i=1, \dots, n)<br>(\frac{\partial}{\partial \beta_{i}} \mathcal{L}\left(w^{<em>}, \alpha^{</em>}, \beta^{<em>}\right)=0, i=1, \ldots, l)<br>( \alpha_{i}^{</em>} g_{i}\left(w^{<em>}\right)=0, i=1, \dots, k)<br>(g_{i}\left(w^{</em>}\right) \leq 0, i=1, \dots, k)<br>(\alpha^{*} \geq 0, i=1, \dots, k)</p>
+<li><p>同时, $(w<em>,\alpha</em>,\beta<em>)$ 满足KKT条件<br>( \frac{\partial}{\partial w_{i}} \mathcal{L}\left(w^</em>, \alpha^<em>, \beta^</em>\right)=0, i=1, \dots, n)<br>(\frac{\partial}{\partial \beta_{i}} \mathcal{L}\left(w^<em>, \alpha^</em>, \beta^<em>\right)=0, i=1, \ldots, l)<br>( \alpha_{i}^</em> g_{i}\left(w^<em>\right)=0, i=1, \dots, k)<br>(g_{i}\left(w^</em>\right) \leq 0, i=1, \dots, k)<br>(\alpha^* \geq 0, i=1, \dots, k)</p>
 </li>
 </ul>
-<p>对 $w$ 和 对 $\beta_i$ 导数均为 0, 才能让他俩的梯度共线, 从而找到切点.<br>其中 $\alpha_{i}^{<em>} g_{i}\left(w^{</em>}\right)=0, i=1, \dots, k$ 称为<code>KKT对偶互补条件</code><br>因为原始的约束中, $g_{i}\left(w^{<em>}\right)\leq0$, 是有可能 $&lt;0$ 的, 这个时候 $\alpha_i$ 一定要 =0; 当 $\alpha_i\ne0$,  这个时候 $g_{i}\left(w^{</em>}\right)$ 一定要 $=0$</p>
+<p>对 $w$ 和 对 $\beta_i$ 导数均为 0, 才能让他俩的梯度共线, 从而找到切点.<br>其中 $\alpha_{i}^<em> g_{i}\left(w^</em>\right)=0, i=1, \dots, k$ 称为<code>KKT对偶互补条件</code><br>因为原始的约束中, $g_{i}\left(w^<em>\right)\leq0$, 是有可能 $&lt;0$ 的, 这个时候 $\alpha_i$ 一定要 =0; 当 $\alpha_i\ne0$,  这个时候 $g_{i}\left(w^</em>\right)$ 一定要 $=0$</p>
 <h4 id="SVM-求解推导"><a href="#SVM-求解推导" class="headerlink" title="SVM 求解推导"></a>SVM 求解推导</h4><ul>
 <li><strong>第一步: 利用拉格朗日对偶, 确定目标函数</strong></li>
 <li>目标函数: <code>寻找最优间隔分类器</code><br>由于已经固定 $\hat{\gamma}=1$, 也就意味着到超平面的距离为1的点都是支持向量<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/28/kOjBcHx6t8zZFNa.png" alt="支持向量"><br>代入 $\hat{\gamma}=1$, 问题变成<script type="math/tex; mode=display">
@@ -635,7 +635,7 @@ d^{*}=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, 
 &\text { s.t. } \quad y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq 1, \quad i=1, \ldots, m
 \end{aligned}</script>构造拉格朗日函数<script type="math/tex; mode=display">
 L(w, b, \alpha)=\frac{1}{2}\|w\|^2-\sum_{i=1}^{n} \alpha_{i}\left(y_{i}\left(w \cdot x_{i}+b\right)-1\right), \alpha_{i} \geq 0</script></li>
-<li>$\alpha&gt;0$ 成立的条件, 仅当 $x_i$ 卡在支持向量上, 即 $g_{i}\left(w^{*}\right)=0$ 的时候, 也即函数间隔$\hat{\gamma}=1$ 的时候. 其他点都没有影响, 对应的 $\alpha_i=0$. 这也说明, 分割平面 $w$ 的确定, 只取决于全局函数间隔最小的这几个点的位置.</li>
+<li>$\alpha&gt;0$ 成立的条件, 仅当 $x_i$ 卡在支持向量上, 即 $g_{i}\left(w^*\right)=0$ 的时候, 也即函数间隔$\hat{\gamma}=1$ 的时候. 其他点都没有影响, 对应的 $\alpha_i=0$. 这也说明, 分割平面 $w$ 的确定, 只取决于全局函数间隔最小的这几个点的位置.</li>
 <li>只要满足 KKT 条件, 求解对偶问题, 相当于间接地求解了原问题<br>现在需要最大化 $ L(w,b,\alpha )$，所以问题变成 <script type="math/tex; mode=display">
 \min _{w, b} \max _{\alpha} L(w, b, \alpha)</script>根据拉格朗日对偶性, 问题变成<script type="math/tex; mode=display">
 \max _{\alpha} \min _{w, b} L(w, b, \alpha)</script></li>
@@ -643,15 +643,15 @@ L(w, b, \alpha)=\frac{1}{2}\|w\|^2-\sum_{i=1}^{n} \alpha_{i}\left(y_{i}\left(w \
 <script type="math/tex; mode=display">
 \min _{w, b} L(w, b, \alpha)=-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} x_{j}\right)+\sum_{i=1}^{n} \alpha_{i}</script></li>
 <li><p><strong>第三步:  求 $ \mathop {\min }\limits_{w,b} L(w,b,\alpha )$ 对 $ \alpha $ 的极大值 (用到了 SMO)</strong><br>问题变为： </p>
-<script type="math/tex; mode=display">\mathop {\max }\limits_\alpha \ \ - \frac{1}{2}\sum\limits_{i = 1}^n {\sum\limits_{j = 1}^n { {\alpha _i}{\alpha _j}{y_i}{y_j}({x_i}{x_j})} } + \sum\limits_{i = 1}^n { {\alpha _i}}</script><p>约束条件为： <script type="math/tex">\sum\limits_{i = 1}^n { {\alpha _i}{y_i}} = 0，  {\alpha _i} \ge 0,i = 1,2...n</script><br>所以只要知道 $ {\alpha }$， 也就知道了$w$. 我们使用 SMO 算法, <code>假设已经求出</code>最优解为 $ {\alpha ^ <em> } = {(\alpha _1^ </em> ,\alpha _2^ <em> ….\alpha _n^ </em> )^T}$</p>
+<script type="math/tex; mode=display">\mathop {\max }\limits_\alpha \ \ - \frac{1}{2}\sum\limits_{i = 1}^n {\sum\limits_{j = 1}^n { {\alpha _i}{\alpha _j}{y_i}{y_j}({x_i}{x_j})} } + \sum\limits_{i = 1}^n { {\alpha _i}}</script><p>约束条件为： <script type="math/tex">\sum\limits_{i = 1}^n { {\alpha _i}{y_i}} = 0，  {\alpha _i} \ge 0,i = 1,2...n</script><br>所以只要知道 $ {\alpha }$， 也就知道了$w$. 我们使用 SMO 算法, <code>假设已经求出</code>最优解为 $ {\alpha^<em> } = {(\alpha _1^</em> ,\alpha _2^<em> ….\alpha _n^</em> )^T}$</p>
 </li>
-<li><p><strong>第四步:  求 ${w^ <em> }$ 和 $b^{</em>}$ 得到超平面</strong><br>已知最优的 ${\alpha ^ <em> }$, 由第一步 $w = \sum\limits_{i = 1}^n { {\alpha _i}{y_i}{x_i}}$ 可求出最优的 ${w^ </em> } $ </p>
-<script type="math/tex; mode=display">{w^ * } = \sum\limits_{i = 1}^n {\alpha _i^ * {y_i}{x_i}}</script><p>由 KKT 条件中的<code>对偶互补条件</code>, 至少存在一个 $ \alpha _i^ <em>&gt;0 $ 使得 $\alpha_{i}^{</em>} g_{i}\left(w^{*}\right)=0$, 即</p>
+<li><p><strong>第四步:  求 ${w^ <em> }$ 和 $b^</em>$ 得到超平面</strong><br>已知最优的 ${\alpha ^ <em> }$, 由第一步 $w=\sum\limits_{i = 1}^n {\alpha _i}{y_i}{x_i}$ 可求出最优的 ${w^</em> } $ </p>
+<script type="math/tex; mode=display">{w^* } = \sum\limits_{i = 1}^n {\alpha _i^* {y_i}{x_i}}</script><p>由 KKT 条件中的<code>对偶互补条件</code>, 至少存在一个 $ \alpha _i^<em>&gt;0 $ 使得 $\alpha_{i}^</em> g_{i}\left(w^*\right)=0$, 即</p>
 <script type="math/tex; mode=display">
-\alpha_{i}^{*}\left(y_{i}\left(w^{*} \cdot x_{i}+b^{*}\right)-1\right)=0, i=1,2 \ldots n</script><p>可以证明至少存在一个 $\alpha _j^ *&gt;0$ 使等式成立，所以可得：</p>
+\alpha_{i}^*\left(y_{i}\left(w^* \cdot x_{i}+b^*\right)-1\right)=0, i=1,2 \ldots n</script><p>可以证明至少存在一个 $\alpha _j^ *&gt;0$ 使等式成立，所以可得：</p>
 <script type="math/tex; mode=display">{y_j}({w^ * }\cdot {x_j} + {b^ * }) - 1 = 0</script><p>因为 $ {y_i} = \{ + 1, - 1\}$ ，所以 $\frac{1}{ { {y_i}}} = {y_i}$ 进而得到</p>
 <script type="math/tex; mode=display">
-b^{*}=y_{j}-\sum_{i=1}^{n} \alpha_{i}^{*} y_{i}\left(x_{i} \cdot x_{j}\right)</script><p>至此 $ w^<em> 和  b^</em> $ 都已经得到，所以可以得到<code>超平面</code>：$ {w^ <em> }\cdot x + {b^ </em> } = 0$</p>
+b^*=y_{j}-\sum_{i=1}^{n} \alpha_{i}^* y_{i}\left(x_{i} \cdot x_{j}\right)</script><p>至此 $ w^<em> 和  b^</em> $ 都已经得到，所以可以得到<code>超平面</code>：$ {w^ <em> }\cdot x + {b^ </em> } = 0$</p>
 </li>
 </ul>
 <h4 id="SMO-序列最小优化"><a href="#SMO-序列最小优化" class="headerlink" title="SMO 序列最小优化"></a>SMO 序列最小优化</h4><ul>
@@ -683,8 +683,8 @@ W(\alpha)=\sum_{i=1}^{m} \alpha_{i}-\frac{1}{2} \sum_{i, j=1}^{m} y^{(i)} y^{(j)
 <li>核技巧 Kernel Trick<br>多数情况下, 可以直接定义  $K\left(x^{(i)}, x^{(j)}\right)$ 而不需要 $\phi(x)$, 比如直接假定 $K\left(x^{(i)}, x^{(j)}\right)=\left(x^{(i)^{T}} x^{(j)}\right)^{2}$<br>时间复杂度可以明显降低, 比如从 $O(n^2)$ 降低到  $O(n)$</li>
 <li>给定核函数, 再通过 SMO 即可求得 $\alpha$, 再通过 $\alpha$ 求得 $w$ 和 $b$, $\phi(x)$ 的计算被约去, 得到函数间隔/目标函数为<script type="math/tex; mode=display">
 \begin{aligned}
-w^{* T} x+b^{*} &=\left(\sum_{i=1}^{m} \alpha_{i} y^{(i)} \phi\left(x^{(i)}\right)\right)^{T} \phi(x)+b^{*} \\
-&=\sum_{i=1}^{m} \alpha_{i} y^{(i)} K\left(x^{(i)}, x\right)+b^{*}
+w^{* T} x+b^* &=\left(\sum_{i=1}^{m} \alpha_{i} y^{(i)} \phi\left(x^{(i)}\right)\right)^{T} \phi(x)+b^* \\
+&=\sum_{i=1}^{m} \alpha_{i} y^{(i)} K\left(x^{(i)}, x\right)+b^*
 \end{aligned}</script></li>
 <li>高斯核函数 (非常常用)<br>对于 x 和 z 两个样例, 我们需要刻画其<code>相似性度量</code><script type="math/tex; mode=display">
 K(x, z)=\exp \left(-\frac{\|{x}-z \|^{2}}{2 \sigma^{2}}\right)</script>也称为<code>径向基函数</code>(RBF)核. 将其中一个 x 设为高斯分布的中心点, 计算 z 的概率密度</li>
