@@ -560,7 +560,7 @@ d=\frac{|w \cdot x+b|}{\|w\|}</script></li>
 <script type="math/tex; mode=display">
 \hat{\gamma}^{(i)}=y^{(i)}\left[\left(\frac{w}{\|w\|}\right)^{T} x^{(i)}+\frac{b}{\|w\|}\right]</script><p>给定一个训练集, 就可以依次计算 $\hat{\gamma}^{(i)}$, 选出最小的几何间隔 ${\gamma}$, 作为整个数据集到超平面的几何间隔. 满足这个几何间隔的点, 就是<code>支撑向量</code>.</p>
 </li>
-<li><p>优化目标:<br>对于几何间隔</p>
+<li><p><strong>优化目标</strong>:<br>对于几何间隔</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 &\max _{\gamma, \omega, b} \gamma\\
@@ -618,15 +618,15 @@ p^*=\min _{w} \theta_{\mathcal{P}}(w)</script><p>求解 $f(w)$ 之所以添加�
 <script type="math/tex; mode=display">
 d^*=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta)</script><p>两者之间的关系 (恒成立)</p>
 <script type="math/tex; mode=display">
-d^*=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta) \leq \min _{w} \max _{\alpha, \beta: \alpha_{i} \geq 0} \mathcal{L}(w, \alpha, \beta)=p^*</script><p>满足一定条件, 可以使 $d^<em>=p^</em>$, 即 <code>KKT 条件</code><br>前提:</p>
+d^*=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta) \leq \min _{w} \max _{\alpha, \beta: \alpha_{i} \geq 0} \mathcal{L}(w, \alpha, \beta)=p^*</script><p>满足一定条件, 可以使 $d^ <em> =p^ </em> $, 即 <code>KKT 条件</code><br>前提:</p>
 <ul>
 <li>假设 $f$ 以及 $g_i$ 是凸函数,并且 $h_i$ 为仿射函数,且 $g_i$ 严格满足可行域</li>
-<li><p>必然存在 $(w<em>,\alpha</em>,\beta<em>)$, 满足: $w</em>$ 是原始问题的解, $\alpha<em>$ , $\beta</em>$ 是对偶问题的解, 且两个问题的解数值相等$d^<em>=p^</em>$ (注意区别$\alpha<em>$ 和 $\beta</em>$)</p>
+<li><p>必然存在 $(w <em> ,\alpha </em> ,\beta <em> )$, 满足: $w </em> $ 是原始问题的解, $\alpha <em> $ , $\beta </em> $ 是对偶问题的解, 且两个问题的解数值相等$d^ <em> =p^ </em> $ (注意区别$\alpha <em> $ 和 $\beta </em> $)</p>
 </li>
-<li><p>同时, $(w<em>,\alpha</em>,\beta<em>)$ 满足KKT条件<br>( \frac{\partial}{\partial w_{i}} \mathcal{L}\left(w^</em>, \alpha^<em>, \beta^</em>\right)=0, i=1, \dots, n)<br>(\frac{\partial}{\partial \beta_{i}} \mathcal{L}\left(w^<em>, \alpha^</em>, \beta^<em>\right)=0, i=1, \ldots, l)<br>( \alpha_{i}^</em> g_{i}\left(w^<em>\right)=0, i=1, \dots, k)<br>(g_{i}\left(w^</em>\right) \leq 0, i=1, \dots, k)<br>(\alpha^* \geq 0, i=1, \dots, k)</p>
+<li><p>同时, $(w <em> ,\alpha </em> ,\beta <em> )$ 满足KKT条件<br>( \frac{\partial}{\partial w_{i}} \mathcal{L}\left(w^ </em> , \alpha^ <em> , \beta^ </em> \right)=0, i=1, \dots, n)<br>(\frac{\partial}{\partial \beta_{i}} \mathcal{L}\left(w^ <em> , \alpha^ </em> , \beta^ <em> \right)=0, i=1, \ldots, l)<br>( \alpha_{i}^ </em>  g_{i}\left(w^ <em> \right)=0, i=1, \dots, k)<br>(g_{i}\left(w^ </em> \right) \leq 0, i=1, \dots, k)<br>(\alpha^ * \geq 0, i=1, \dots, k)</p>
 </li>
 </ul>
-<p>对 $w$ 和 对 $\beta_i$ 导数均为 0, 才能让他俩的梯度共线, 从而找到切点.<br>其中 $\alpha_{i}^<em> g_{i}\left(w^</em>\right)=0, i=1, \dots, k$ 称为<code>KKT对偶互补条件</code><br>因为原始的约束中, $g_{i}\left(w^<em>\right)\leq0$, 是有可能 $&lt;0$ 的, 这个时候 $\alpha_i$ 一定要 =0; 当 $\alpha_i\ne0$,  这个时候 $g_{i}\left(w^</em>\right)$ 一定要 $=0$</p>
+<p>对 $w$ 和 对 $\beta_i$ 导数均为 0, 才能让他俩的梯度共线, 从而找到切点.<br>其中 $\alpha_{i}^ <em>  g_{i}\left(w^ </em> \right)=0, i=1, \dots, k$ 称为<code>KKT对偶互补条件</code><br>因为原始的约束中, $g_{i}\left(w^ <em> \right)\leq0$, 是有可能 $&lt;0$ 的, 这个时候 $\alpha_i$ 一定要 =0; 当 $\alpha_i\ne0$,  这个时候 $g_{i}\left(w^ </em> \right)$ 一定要 $=0$</p>
 <h4 id="SVM-求解推导"><a href="#SVM-求解推导" class="headerlink" title="SVM 求解推导"></a>SVM 求解推导</h4><ul>
 <li><strong>第一步: 利用拉格朗日对偶, 确定目标函数</strong></li>
 <li>目标函数: <code>寻找最优间隔分类器</code><br>由于已经固定 $\hat{\gamma}=1$, 也就意味着到超平面的距离为1的点都是支持向量<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/28/kOjBcHx6t8zZFNa.png" alt="支持向量"><br>代入 $\hat{\gamma}=1$, 问题变成<script type="math/tex; mode=display">
@@ -643,15 +643,15 @@ L(w, b, \alpha)=\frac{1}{2}\|w\|^2-\sum_{i=1}^{n} \alpha_{i}\left(y_{i}\left(w \
 <script type="math/tex; mode=display">
 \min _{w, b} L(w, b, \alpha)=-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} x_{j}\right)+\sum_{i=1}^{n} \alpha_{i}</script></li>
 <li><p><strong>第三步:  求 $ \mathop {\min }\limits_{w,b} L(w,b,\alpha )$ 对 $ \alpha $ 的极大值 (用到了 SMO)</strong><br>问题变为： </p>
-<script type="math/tex; mode=display">\mathop {\max }\limits_\alpha \ \ - \frac{1}{2}\sum\limits_{i = 1}^n {\sum\limits_{j = 1}^n { {\alpha _i}{\alpha _j}{y_i}{y_j}({x_i}{x_j})} } + \sum\limits_{i = 1}^n { {\alpha _i}}</script><p>约束条件为： <script type="math/tex">\sum\limits_{i = 1}^n { {\alpha _i}{y_i}} = 0，  {\alpha _i} \ge 0,i = 1,2...n</script><br>所以只要知道 $ {\alpha }$， 也就知道了$w$. 我们使用 SMO 算法, <code>假设已经求出</code>最优解为 $ {\alpha^<em> } = {(\alpha _1^</em> ,\alpha _2^<em> ….\alpha _n^</em> )^T}$</p>
+<script type="math/tex; mode=display">\mathop {\max }\limits_\alpha \ \ - \frac{1}{2}\sum\limits_{i = 1}^n {\sum\limits_{j = 1}^n { {\alpha _i}{\alpha _j}{y_i}{y_j}({x_i}{x_j})} } + \sum\limits_{i = 1}^n { {\alpha _i}}</script><p>约束条件为： <script type="math/tex">\sum\limits_{i = 1}^n { {\alpha _i}{y_i}} = 0，  {\alpha _i} \ge 0,i = 1,2...n</script><br>所以只要知道 $ {\alpha }$， 也就知道了$w$. 我们使用 SMO 算法, <code>假设已经求出</code>最优解为 $ {\alpha^ <em>  } = {(\alpha _1^ </em>  ,\alpha _2^ <em>  ….\alpha _n^ </em>  )^T}$</p>
 </li>
-<li><p><strong>第四步:  求 ${w^ <em> }$ 和 $b^</em>$ 得到超平面</strong><br>已知最优的 ${\alpha ^ <em> }$, 由第一步 $w=\sum\limits_{i = 1}^n {\alpha _i}{y_i}{x_i}$ 可求出最优的 ${w^</em> } $ </p>
-<script type="math/tex; mode=display">{w^* } = \sum\limits_{i = 1}^n {\alpha _i^* {y_i}{x_i}}</script><p>由 KKT 条件中的<code>对偶互补条件</code>, 至少存在一个 $ \alpha _i^<em>&gt;0 $ 使得 $\alpha_{i}^</em> g_{i}\left(w^*\right)=0$, 即</p>
+<li><p><strong>第四步:  求 ${w^ <em> }$ 和 $b^ </em> $ 得到超平面</strong><br>已知最优的 ${\alpha ^ <em> }$, 由第一步 $w=\sum\limits_{i = 1}^n {\alpha _i}{y_i}{x_i}$ 可求出最优的 ${w^ </em>  } $ </p>
+<script type="math/tex; mode=display">{w^* } = \sum\limits_{i = 1}^n {\alpha _i^ *  {y_i}{x_i}}</script><p>由 KKT 条件中的<code>对偶互补条件</code>, 至少存在一个 $ \alpha _i^ <em> &gt;0 $ 使得 $\alpha_{i}^ </em>  g_{i}\left(w^ * \right)=0$, 即</p>
 <script type="math/tex; mode=display">
-\alpha_{i}^*\left(y_{i}\left(w^* \cdot x_{i}+b^*\right)-1\right)=0, i=1,2 \ldots n</script><p>可以证明至少存在一个 $\alpha _j^ *&gt;0$ 使等式成立，所以可得：</p>
+\alpha_{i}^ * \left(y_{i}\left(w^ *  \cdot x_{i}+b^ * \right)-1\right)=0, i=1,2 \ldots n</script><p>可以证明至少存在一个 $\alpha _j^  * &gt;0$ 使等式成立，所以可得：</p>
 <script type="math/tex; mode=display">{y_j}({w^ * }\cdot {x_j} + {b^ * }) - 1 = 0</script><p>因为 $ {y_i} = \{ + 1, - 1\}$ ，所以 $\frac{1}{ { {y_i}}} = {y_i}$ 进而得到</p>
 <script type="math/tex; mode=display">
-b^*=y_{j}-\sum_{i=1}^{n} \alpha_{i}^* y_{i}\left(x_{i} \cdot x_{j}\right)</script><p>至此 $ w^<em> 和  b^</em> $ 都已经得到，所以可以得到<code>超平面</code>：$ {w^ <em> }\cdot x + {b^ </em> } = 0$</p>
+b^ * =y_{j}-\sum_{i=1}^{n} \alpha_{i}^ *  y_{i}\left(x_{i} \cdot x_{j}\right)</script><p>至此 $ w^ <em>  和  b^ </em>  $ 都已经得到，所以可以得到<code>超平面</code>：$ {w^ <em> }\cdot x + {b^ </em> } = 0$</p>
 </li>
 </ul>
 <h4 id="SMO-序列最小优化"><a href="#SMO-序列最小优化" class="headerlink" title="SMO 序列最小优化"></a>SMO 序列最小优化</h4><ul>
@@ -683,8 +683,8 @@ W(\alpha)=\sum_{i=1}^{m} \alpha_{i}-\frac{1}{2} \sum_{i, j=1}^{m} y^{(i)} y^{(j)
 <li>核技巧 Kernel Trick<br>多数情况下, 可以直接定义  $K\left(x^{(i)}, x^{(j)}\right)$ 而不需要 $\phi(x)$, 比如直接假定 $K\left(x^{(i)}, x^{(j)}\right)=\left(x^{(i)^{T}} x^{(j)}\right)^{2}$<br>时间复杂度可以明显降低, 比如从 $O(n^2)$ 降低到  $O(n)$</li>
 <li>给定核函数, 再通过 SMO 即可求得 $\alpha$, 再通过 $\alpha$ 求得 $w$ 和 $b$, $\phi(x)$ 的计算被约去, 得到函数间隔/目标函数为<script type="math/tex; mode=display">
 \begin{aligned}
-w^{* T} x+b^* &=\left(\sum_{i=1}^{m} \alpha_{i} y^{(i)} \phi\left(x^{(i)}\right)\right)^{T} \phi(x)+b^* \\
-&=\sum_{i=1}^{m} \alpha_{i} y^{(i)} K\left(x^{(i)}, x\right)+b^*
+w^{ *  T} x+b^ *  &=\left(\sum_{i=1}^{m} \alpha_{i} y^{(i)} \phi\left(x^{(i)}\right)\right)^{T} \phi(x)+b^ *  \\
+&=\sum_{i=1}^{m} \alpha_{i} y^{(i)} K\left(x^{(i)}, x\right)+b^ * 
 \end{aligned}</script></li>
 <li>高斯核函数 (非常常用)<br>对于 x 和 z 两个样例, 我们需要刻画其<code>相似性度量</code><script type="math/tex; mode=display">
 K(x, z)=\exp \left(-\frac{\|{x}-z \|^{2}}{2 \sigma^{2}}\right)</script>也称为<code>径向基函数</code>(RBF)核. 将其中一个 x 设为高斯分布的中心点, 计算 z 的概率密度</li>
@@ -793,7 +793,7 @@ x_{j}^{(i)} \leftarrow x_{j}^{(i)} / \sigma_{j}</script></li>
 <li>PCA 的目的是找到一个方向 $v$, 使得在这个方向上数据 X 的投影的<code>方差最大</code>, 方差越大越能保留尽可能多的有效信息. 由于均值已经为 0, 数据 $X$ 在方向 $v$ 的方差就是 $||Xv||^2$. 最后推算的结论就是, 需要<code>最大特征值</code>对应的<code>特征向量</code>.</li>
 <li>最终得到 X 的主成分矩阵为 $T=WX$, 其中 $W$ 为$ X^TX$ 的特征值矩阵<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/03/01/wXQY5E4Vpfb9SWN.png" alt=""><br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/03/01/pR8nGAxBsk7oNrv.png" alt=""></li>
 </ul>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>主要步骤, 给定数据 X, 进行均值归 0, 方差统一处理后, 得到 Z. 然后根据协方差矩阵 $Z^TZ$ 的特征值从大到小进行排序, 得到特征向量的矩阵 $V^<em>$. 计算 $Z^</em> = ZV^*<br>$</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>主要步骤, 给定数据 X, 进行均值归 0, 方差统一处理后, 得到 Z. 然后根据协方差矩阵 $Z^TZ$ 的特征值从大到小进行排序, 得到特征向量的矩阵 $V^ <em> $. 计算 $Z^ </em>  = ZV^ *<br>$</p>
 <p><a href="https://www.kaggle.com/coverdark/pca-principal-component-analysis/" target="_blank" rel="noopener">PCA 实现</a></p>
 <pre><code class="lang-py">def pca_custom(X, k):
     n, p = np.shape(X)
