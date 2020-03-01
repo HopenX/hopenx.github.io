@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="动手深度学习(二):Softmax, HopenX">
-    <meta name="description" content="将线性的模型用于离散的分类问题, 常用 softmax 函数">
+    <meta name="keywords" content="机器学习基础（二）LR SVM PCA, HopenX">
+    <meta name="description" content="重点介绍 LR SVM, PCA 等">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>动手深度学习(二):Softmax | HopenX</title>
+    <title>机器学习基础（二）LR SVM PCA | HopenX</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/awesome/css/all.css">
@@ -287,12 +287,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/5.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">动手深度学习(二):Softmax</h1>
+                    <h1 class="description center-align post-title">机器学习基础（二）LR SVM PCA</h1>
                 </div>
             </div>
         </div>
@@ -464,8 +464,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                                <span class="chip bg-color">深度学习</span>
+                            <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">机器学习</span>
                             </a>
                         
                     </div>
@@ -489,7 +489,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-02-14
+                    2020-03-01
                 </div>
                 
 
@@ -498,7 +498,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.4k
+                    5.9k
                 </div>
                 
 
@@ -516,377 +516,302 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="softmax和分类模型"><a href="#softmax和分类模型" class="headerlink" title="softmax和分类模型"></a>softmax和分类模型</h1><p>内容包含：</p>
-<ol>
-<li>softmax回归的基本概念</li>
-<li>如何获取Fashion-MNIST数据集和读取数据</li>
-<li>softmax回归模型的从零开始实现，实现一个对Fashion-MNIST训练集中的图像数据进行分类的模型</li>
-<li>使用pytorch重新实现softmax回归模型</li>
-</ol>
-<h2 id="softmax的基本概念"><a href="#softmax的基本概念" class="headerlink" title="softmax的基本概念"></a>softmax的基本概念</h2><ul>
-<li><p>分类问题<br>一个简单的图像分类问题，输入图像的高和宽均为2像素，色彩为灰度。<br>图像中的4像素分别记为$x_1, x_2, x_3, x_4$。<br>假设真实标签为狗、猫或者鸡，这些标签对应的离散值为$y_1, y_2, y_3$。<br>我们通常使用离散的数值来表示类别，例如$y_1=1, y_2=2, y_3=3$。</p>
+                <h1 id="机器学习笔记（二）"><a href="#机器学习笔记（二）" class="headerlink" title="机器学习笔记（二）"></a>机器学习笔记（二）</h1><h2 id="SVM-支持向量机"><a href="#SVM-支持向量机" class="headerlink" title="SVM 支持向量机"></a>SVM 支持向量机</h2><h3 id="线性分类器"><a href="#线性分类器" class="headerlink" title="线性分类器"></a>线性分类器</h3><ul>
+<li>线性可分的情况下, 决策边界可以是多样的</li>
+<li>考虑数据噪声, 可以去除一些错误的划分. 不断扩大数据噪声, 不合适的决策划分就会被筛选掉, 最后得到一种最优的决策边界<code>最大间隔边界</code></li>
+<li>SVM 思想: 最大化间隔边界<code>margin</code>. 噪声扩大到最大的时候, 能够较好地把数据分开.</li>
+</ul>
+<h3 id="逻辑回归回顾"><a href="#逻辑回归回顾" class="headerlink" title="逻辑回归回顾"></a>逻辑回归回顾</h3><ul>
+<li>逻辑回归是一种二分类模型, 给出的是划分为 (0, 1) 的概率. 通过$\theta^Tx$通过一个 sigmoid 函数映射到 0-1 范围内. sigmoid 将一个得分转化为概率输出. 设置一个阈值$h$, 大于$h$则判断为 1.</li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{array}{l}
+p_{\theta}(y=1 | x)=\sigma\left(\theta^{T} x\right)=\frac{1}{1+e^{-\theta^{T} x}} \\
+p_{\theta}(y=0 | x)=\frac{e^{-\theta^{T} x}}{1+e^{-\theta^{T} x}}
+\end{array}</script><ul>
+<li>均方误差 MSE<script type="math/tex; mode=display">
+M S E=\frac{1}{n} \sum_{i}^{n}\left(\hat{y}_{i}-y_{i}\right)^{2}</script>标准差 RMSE <script type="math/tex">RMSE=\sqrt{MSE}</script></li>
+</ul>
+<blockquote>
+<p>使用MSE的一个缺点就是其偏导值在输出概率值接近0或者接近1的时候非常小，这可能会造成模型刚开始训练时，偏导值几乎消失. 这导致模型在一开始学习的时候速率非常慢，而使用交叉熵作为损失函数则不会导致这样的情况发生.</p>
+</blockquote>
+<ul>
+<li>交叉熵损失函数<br>该函数是<code>凸函数</code>，求导时能够得到全局最优值. (记得前面有一个负号)<br>多分类情况下:<script type="math/tex; mode=display">
+L=\frac{1}{N} \sum_{i} L_{i}=\frac{1}{N} \sum_{i}-\sum_{c=1}^{M} y_{i c} \log \left(p_{i c}\right)</script>在二分的情况下，模型最后需要预测的结果只有两种情况，对于每个类别我们的预测得到的概率为 p 和 1-p. 此时表达式为：<script type="math/tex; mode=display">
+L=\frac{1}{N} \sum_{i} L_{i}=\frac{1}{N} \sum_{i}-\left[y_{i} \cdot \log \left(p_{i}\right)+\left(1-y_{i}\right) \cdot \log \left(1-p_{i}\right)\right]</script>其中：<br>$y_i$ —— 表示样本i的label，正类为1，负类为0<br>$p_i$ —— 表示样本i预测为正的概率<br><code>pi</code> 就是 sigmoid 函数输出的结果, 也可以写作为:<script type="math/tex; mode=display">
+\mathcal{L}\left(y, x, p_{\theta}\right)=-y \log \sigma\left(\theta^{T} x\right)-(1-y) \log \left(1-\sigma\left(\theta^{T} x\right)\right)</script>对应的梯度函数(导数):<script type="math/tex; mode=display">
+\frac{\partial \mathcal{L}\left(y, x, p_{\theta}\right)}{\partial \theta}=(\sigma(\theta^{T} x)-y) x</script>给定一个学习率 $\eta$, 步长 = 梯度 x 学习率, 那么 $\theta$ 学习/更新的过程就是:<script type="math/tex; mode=display">
+\theta \leftarrow \theta+\eta\left(y-\sigma\left(\theta^{T} x\right)\right) x</script></li>
+<li>逻辑回归打分函数:<script type="math/tex; mode=display">s(x)=\theta_0+\theta_1x_1+\theta_2x_2</script>也就是$\theta^{T} x$ ,也就是 $b+w^Tx$ . 在直线的上方, 函数值就会大于 0, sigmoid 的函数值就会越接近 1, 分类归为 1. 打分越高, 越远离决策边界, 具有更高的分类<code>置信度</code>.</li>
+</ul>
+<h3 id="SVM-支持向量机-简介"><a href="#SVM-支持向量机-简介" class="headerlink" title="SVM 支持向量机-简介"></a>SVM 支持向量机-简介</h3><h4 id="找到最小间隔"><a href="#找到最小间隔" class="headerlink" title="找到最小间隔"></a>找到最小间隔</h4><ul>
+<li>$y_i$ 取 -1 或 1</li>
+<li>思想: 找到离 decision boundry 最近的点, 找到 w 和 b, 让最小的 margin 获得比较大的值. <code>最大化最小的几何间隔</code></li>
+<li>点到直线的距离:<script type="math/tex; mode=display">
+d=\frac{\left|A x_{0}+B y_{0}+C\right|}{\sqrt{A^{2}+B^{2}}}</script>即<script type="math/tex; mode=display">
+d=\frac{\left|(A, B)\left(\begin{array}{c}
+x 0 \\
+y 0
+\end{array}\right)+C\right|}{\|(A, B)\|}</script>如果数据是 n 维时，此时直线就变成了平面，用 $w$ 表示平面的法向量得：<script type="math/tex; mode=display">
+d=\frac{|w \cdot x+b|}{\|w\|}</script></li>
+<li><strong>函数间隔</strong>:<br>由于分母${|w|}$都是相同的, 我们只需比较分子, 于是有了函数间隔<script type="math/tex; mode=display">
+\hat{\gamma}^{(i)}=y^{(i)}\left(w^{T} x^{(i)}+b\right).</script>乘以 $y^{(i)}$ 是为了<code>取绝对值</code>, 非 -1 即 1</li>
+<li><p><strong>几何间隔</strong>:<br>w 和 b 的赋值可以同时改变, 比如同时$*2$, $\hat{y}^{(i)}$ 值会变大, 但是分割超平面不会变化 (因为=0的解是一样的)<br>所以需要对法向量加某些约束, 我们可以除以一个||w||, 作为 normalizaiton<code>归一化</code>, 使得<code>函数间隔 -&gt; 几何间隔</code>. 即对 $w$ 使用<code>L2范数</code>进行规范化，使得间隔是确定的.</p>
+<script type="math/tex; mode=display">
+\hat{\gamma}^{(i)}=y^{(i)}\left[\left(\frac{w}{\|w\|}\right)^{T} x^{(i)}+\frac{b}{\|w\|}\right]</script><p>给定一个训练集, 就可以依次计算 $\hat{\gamma}^{(i)}$, 选出最小的几何间隔 ${\gamma}$, 作为整个数据集到超平面的几何间隔. 满足这个几何间隔的点, 就是<code>支撑向量</code>.</p>
 </li>
-<li><p>权重矢量  </p>
+<li><p>优化目标:<br>对于几何间隔</p>
 <script type="math/tex; mode=display">
-\begin{aligned} o_1 &= x_1 w_{11} + x_2 w_{21} + x_3 w_{31} + x_4 w_{41} + b_1 \end{aligned}</script></li>
-</ul>
+\begin{aligned}
+&\max _{\gamma, \omega, b} \gamma\\
+&\text { s.t. } \quad y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq \gamma, \quad i=1, \dots, m\\
+\end{aligned}</script><p>限定的条件是 $||w||=1$, 也就是 w 在一个环上, 不是一个凸集, 所以是一个<code>非凸约束</code>.<br>等同于优化一个<code>非凸的目标函数</code>, 这种情况下,  $||w||$ 作为分母, 仍然是一个非凸函数.(如果是分子, 就是凸函数)</p>
 <script type="math/tex; mode=display">
- \begin{aligned} o_2 &= x_1 w_{12} + x_2 w_{22} + x_3 w_{32} + x_4 w_{42} + b_2 \end{aligned}</script><script type="math/tex; mode=display">
- \begin{aligned} o_3 &= x_1 w_{13} + x_2 w_{23} + x_3 w_{33} + x_4 w_{43} + b_3 \end{aligned}</script><ul>
-<li>神经网络图<br>下图用神经网络图描绘了上面的计算。softmax回归同线性回归一样，也是一个单层神经网络。由于每个输出$o_1, o_2, o_3$的计算都要依赖于所有的输入$x_1, x_2, x_3, x_4$，softmax回归的输出层也是一个全连接层。</li>
-</ul>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/upload/image/q5hmymezog.png" alt="Image Name"></p>
+\begin{aligned}
+&\max _{\gamma, w, b} {\frac{\hat{\gamma}}{\|w\|}}\\
+&\text { s.t. } \quad y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq \hat{\gamma}, \quad i=1, \ldots, m
+\end{aligned}</script></li>
+<li><p>调整后的目标函数:<br>由于分类间隔的变化, 即 w, b 的放缩不会影响决策边界, 将函数间隔<code>固定为 1</code>, 即$\hat{\gamma}=1$, 目标函数重写为 (二次规划)</p>
 <script type="math/tex; mode=display">
-\begin{aligned}softmax回归是一个单层神经网络\end{aligned}</script><p>既然分类问题需要得到离散的预测输出，一个简单的办法是将输出值$o_i$当作预测类别是$i$的置信度，并将值最大的输出所对应的类作为预测输出，即输出 $\underset{i}{\arg\max} o_i$。例如，如果$o_1,o_2,o_3$分别为$0.1,10,0.1$，由于$o_2$最大，那么预测类别为2，其代表猫。</p>
-<ul>
-<li>输出问题<br>直接使用输出层的输出有两个问题：<ol>
-<li>一方面，由于输出层的输出值的范围不确定，我们难以直观上判断这些值的意义。例如，刚才举的例子中的输出值10表示“很置信”图像类别为猫，因为该输出值是其他两类的输出值的100倍。但如果$o_1=o_3=10^3$，那么输出值10却又表示图像类别为猫的概率很低。</li>
-<li>另一方面，由于真实标签是离散值，这些离散值与不确定范围的输出值之间的误差难以衡量。</li>
-</ol>
+\max _{w, b} \frac{1}{\|w\|}</script><p>等同于</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\min _{w, b} \frac{1}{2}{\|w\|}^2\\
+&\text { s.t. } \quad y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq \hat{\gamma}, \quad i=1, \ldots, m
+\end{aligned}</script><blockquote>
+<p>用直线画出来的区域/函数一定是一个凸集</p>
+</blockquote>
 </li>
 </ul>
-<p>softmax运算符（softmax operator）解决了以上两个问题。它通过下式将输出值变换成值为正且和为1的概率分布：</p>
+<h3 id="SVM-支持向量机-优化"><a href="#SVM-支持向量机-优化" class="headerlink" title="SVM 支持向量机-优化"></a>SVM 支持向量机-优化</h3><h4 id="拉格朗日乘子法"><a href="#拉格朗日乘子法" class="headerlink" title="拉格朗日乘子法"></a>拉格朗日乘子法</h4><p>对于凸优化问题</p>
 <script type="math/tex; mode=display">
- \hat{y}_1, \hat{y}_2, \hat{y}_3 = \text{softmax}(o_1, o_2, o_3)</script><p>其中</p>
+\begin{array}{ll}
+\min _{w} & f(w) \\
+\text { s.t. } & h_{i}(w)=0, \quad i=1, \dots, l
+\end{array}</script><p>拉格朗日函数定义为</p>
 <script type="math/tex; mode=display">
- \hat{y}1 = \frac{ \exp(o_1)}{\sum_{i=1}^3 \exp(o_i)},\quad \hat{y}2 = \frac{ \exp(o_2)}{\sum_{i=1}^3 \exp(o_i)},\quad \hat{y}3 = \frac{ \exp(o_3)}{\sum_{i=1}^3 \exp(o_i)}.</script><p>容易看出$\hat{y}_1 + \hat{y}_2 + \hat{y}_3 = 1$且$0 \leq \hat{y}_1, \hat{y}_2, \hat{y}_3 \leq 1$，因此$\hat{y}_1, \hat{y}_2, \hat{y}_3$是一个合法的概率分布。这时候，如果$\hat{y}_2=0.8$，不管$\hat{y}_1$和$\hat{y}_3$的值是多少，我们都知道图像类别为猫的概率是80%。此外，我们注意到</p>
+\mathcal{L}(w, \beta)=f(w)+\sum_{i=1}^{l} \beta_{i} h_{i}(w)</script><blockquote>
+<p>其中 $\beta_{i}$ 称之为拉格朗日乘子</p>
+</blockquote>
+<p>问题的解, 对 $w$ 和 $\beta$ 分别求导 =0 即可</p>
 <script type="math/tex; mode=display">
- \underset{i}{\arg\max} o_i = \underset{i}{\arg\max} \hat{y}_i</script><p>因此softmax运算不改变预测类别输出。</p>
+\frac{\partial \mathcal{L}(w, \beta)}{\partial w}=0 \quad \frac{\partial \mathcal{L}(w, \beta)}{\partial \beta}=0</script><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/27/WFAhMKzVsPD7xZJ.png" alt="拉格朗日法-原理解析"><br>解求得的点, 就是 $h(w)=0$ 与等高线的一个切点, 在其他任何地方, $f(w)$ 都会更大. 在这里, $f(w)$ 即为 $ \frac{1}{2}{|w|}^2$</p>
+<h4 id="通用凸优化问题"><a href="#通用凸优化问题" class="headerlink" title="通用凸优化问题"></a>通用凸优化问题</h4><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/28/97GTvousRYj8S1y.png" alt="凸优化问题"><br>满足约束条件的情况下, 后面两个式子一定 $=0$, 当约束条件不满足条件下, 一定能取 $\alpha_{i}$ 和 $\beta_{i}$, 最终拉格朗日函数 $=+\infty$<br>最后原始问题即为:</p>
+<script type="math/tex; mode=display">
+\theta_{\mathcal{P}}(w)=\left\{\begin{array}{ll}
+f(w) & \text w 满足原始问题约束 \\
++\infty & 其他
+\end{array}\right.</script><p>函数最小化问题</p>
+<script type="math/tex; mode=display">
+\min _{w} {\theta}_{\mathcal{P}}(w)=\min _{w} \max _{\alpha, \beta: \alpha_{i} \geq 0} \mathcal{L}(w, \alpha, \beta)</script><p>等同于原来的优化任务</p>
+<script type="math/tex; mode=display">
+\begin{array}{ll}
+\min _{w} & f(w) \\
+\text { s.t. } & g_{i}(w) \leq 0, \quad i=1, \ldots, k \\
+& h_{i}(w)=0, \quad i=1, \ldots, l
+\end{array}</script><p>原始问题的解即为</p>
+<script type="math/tex; mode=display">
+p^{*}=\min _{w} \theta_{\mathcal{P}}(w)</script><p>求解 $f(w)$ 之所以添加一个 $\theta_{\mathcal{P}}(w)$, 就是为了省略掉 $g_{i}(w)$ 和 $h_{i}(w)=0$ 这些限制条件, 最后简洁地表示成一个函数.</p>
+<h4 id="对偶问题-amp-KKT"><a href="#对偶问题-amp-KKT" class="headerlink" title="对偶问题 &amp; KKT"></a>对偶问题 &amp; KKT</h4><p>将研究的参数转化为 $\alpha$ 和 $\beta$</p>
+<script type="math/tex; mode=display">
+\max _{\alpha, \beta: \alpha_{i} \geq 0} \theta_{\mathcal{D}}(\alpha, \beta)=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta)</script><p>对偶问题的解为</p>
+<script type="math/tex; mode=display">
+d^{*}=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta)</script><p>两者之间的关系 (恒成立)</p>
+<script type="math/tex; mode=display">
+d^{*}=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta) \leq \min _{w} \max _{\alpha, \beta: \alpha_{i} \geq 0} \mathcal{L}(w, \alpha, \beta)=p^{*}</script><p>满足一定条件, 可以使 $d^{<em>}=p^{</em>}$, 即 <code>KKT 条件</code><br>前提:</p>
 <ul>
-<li>计算效率<ul>
-<li>单样本矢量计算表达式<br>为了提高计算效率，我们可以将单样本分类通过矢量计算来表达。在上面的图像分类问题中，假设softmax回归的权重和偏差参数分别为</li>
-</ul>
+<li>假设 $f$ 以及 $g_i$ 是凸函数,并且 $h_i$ 为仿射函数,且 $g_i$ 严格满足可行域</li>
+<li><p>必然存在 $(w{<em>},\alpha{</em>},\beta{<em>})$, 满足: $w{</em>}$ 是原始问题的解, $\alpha{<em>}$ , $\beta{</em>}$ 是对偶问题的解, 且两个问题的解数值相等$d^{<em>}=p^{</em>}$ (注意区别$\alpha{<em>}$ 和 $\beta{</em>}$)</p>
+</li>
+<li><p>同时, $(w{<em>},\alpha{</em>},\beta{<em>})$ 满足KKT条件<br>( \frac{\partial}{\partial w_{i}} \mathcal{L}\left(w^{</em>}, \alpha^{<em>}, \beta^{</em>}\right)=0, i=1, \dots, n)<br>(\frac{\partial}{\partial \beta_{i}} \mathcal{L}\left(w^{<em>}, \alpha^{</em>}, \beta^{<em>}\right)=0, i=1, \ldots, l)<br>( \alpha_{i}^{</em>} g_{i}\left(w^{<em>}\right)=0, i=1, \dots, k)<br>(g_{i}\left(w^{</em>}\right) \leq 0, i=1, \dots, k)<br>(\alpha^{*} \geq 0, i=1, \dots, k)</p>
 </li>
 </ul>
+<p>对 $w$ 和 对 $\beta_i$ 导数均为 0, 才能让他俩的梯度共线, 从而找到切点.<br>其中 $\alpha_{i}^{<em>} g_{i}\left(w^{</em>}\right)=0, i=1, \dots, k$ 称为<code>KKT对偶互补条件</code><br>因为原始的约束中, $g_{i}\left(w^{<em>}\right)\leq0$, 是有可能 $&lt;0$ 的, 这个时候 $\alpha_i$ 一定要 =0; 当 $\alpha_i\ne0$,  这个时候 $g_{i}\left(w^{</em>}\right)$ 一定要 $=0$</p>
+<h4 id="SVM-求解推导"><a href="#SVM-求解推导" class="headerlink" title="SVM 求解推导"></a>SVM 求解推导</h4><ul>
+<li><strong>第一步: 利用拉格朗日对偶, 确定目标函数</strong></li>
+<li>目标函数: <code>寻找最优间隔分类器</code><br>由于已经固定 $\hat{\gamma}=1$, 也就意味着到超平面的距离为1的点都是支持向量<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/28/kOjBcHx6t8zZFNa.png" alt="支持向量"><br>代入 $\hat{\gamma}=1$, 问题变成<script type="math/tex; mode=display">
+\begin{aligned}
+&\min _{w, b} \frac{1}{2}{\|w\|}^2\\
+&\text { s.t. } \quad y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq 1, \quad i=1, \ldots, m
+\end{aligned}</script>构造拉格朗日函数<script type="math/tex; mode=display">
+L(w, b, \alpha)=\frac{1}{2}\|w\|^2-\sum_{i=1}^{n} \alpha_{i}\left(y_{i}\left(w \cdot x_{i}+b\right)-1\right), \alpha_{i} \geq 0</script></li>
+<li>$\alpha&gt;0$ 成立的条件, 仅当 $x_i$ 卡在支持向量上, 即 $g_{i}\left(w^{*}\right)=0$ 的时候, 也即函数间隔$\hat{\gamma}=1$ 的时候. 其他点都没有影响, 对应的 $\alpha_i=0$. 这也说明, 分割平面 $w$ 的确定, 只取决于全局函数间隔最小的这几个点的位置.</li>
+<li>只要满足 KKT 条件, 求解对偶问题, 相当于间接地求解了原问题<br>现在需要最大化 $ L(w,b,\alpha )$，所以问题变成 <script type="math/tex; mode=display">
+\min _{w, b} \max _{\alpha} L(w, b, \alpha)</script>根据拉格朗日对偶性, 问题变成<script type="math/tex; mode=display">
+\max _{\alpha} \min _{w, b} L(w, b, \alpha)</script></li>
+<li><p><strong>第二步: 求  $ \mathop {\min }\limits_{w,b} L(w,b,\alpha )$</strong><br>让  $L(w,b,\alpha)$  分别对 $w,b$ 求偏导，使导数为 0：<br>$ \frac{ {\partial L(w,b,\alpha )} }{ {\partial w} } = w - \sum\limits_{i = 1}^n { {\alpha _i}{y_i}{x_i} } = 0$  ————&gt;  $ w = \sum\limits_{i = 1}^n { {\alpha _i}{y_i}{x_i} }$<br>$ \frac{ {\partial L(w,b,\alpha )} }{ {\partial b} } = \sum\limits_{i = 1}^n { {\alpha _i}{y_i} } = 0$ ————————-&gt; $\sum\limits_{i = 1}^n { {\alpha _i} {y_i} } = 0 $<br>代入原式$L(w, b, \alpha)$可得</p>
 <script type="math/tex; mode=display">
- \boldsymbol{W} = \begin{bmatrix} w_{11} & w_{12} & w_{13} \\ w_{21} & w_{22} & w_{23} \\ w_{31} & w_{32} & w_{33} \\ w_{41} & w_{42} & w_{43} \end{bmatrix},\quad \boldsymbol{b} = \begin{bmatrix} b_1 & b_2 & b_3 \end{bmatrix},</script><p>设高和宽分别为2个像素的图像样本$i$的特征为</p>
+\min _{w, b} L(w, b, \alpha)=-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} x_{j}\right)+\sum_{i=1}^{n} \alpha_{i}</script></li>
+<li><p><strong>第三步:  求 $ \mathop {\min }\limits_{w,b} L(w,b,\alpha )$ 对 $ \alpha $ 的极大值 (用到了 SMO)</strong><br>问题变为： </p>
+<script type="math/tex; mode=display">\mathop {\max }\limits_\alpha \ \ - \frac{1}{2}\sum\limits_{i = 1}^n {\sum\limits_{j = 1}^n { {\alpha _i}{\alpha _j}{y_i}{y_j}({x_i}{x_j})} } + \sum\limits_{i = 1}^n { {\alpha _i}}</script><p>约束条件为： <script type="math/tex">\sum\limits_{i = 1}^n { {\alpha _i}{y_i}} = 0，  {\alpha _i} \ge 0,i = 1,2...n</script><br>所以只要知道 $ {\alpha }$， 也就知道了$w$. 我们使用 SMO 算法, <code>假设已经求出</code>最优解为 $ {\alpha ^ <em> } = {(\alpha _1^ </em> ,\alpha _2^ <em> ….\alpha _n^ </em> )^T}$</p>
+</li>
+<li><p><strong>第四步:  求 ${w^ <em> }$ 和 $b^{</em>}$ 得到超平面</strong><br>已知最优的 ${\alpha ^ <em> }$, 由第一步 $w = \sum\limits_{i = 1}^n { {\alpha _i}{y_i}{x_i}}$ 可求出最优的 ${w^ </em> } $ </p>
+<script type="math/tex; mode=display">{w^ * } = \sum\limits_{i = 1}^n {\alpha _i^ * {y_i}{x_i}}</script><p>由 KKT 条件中的<code>对偶互补条件</code>, 至少存在一个 $ \alpha _i^ <em>&gt;0 $ 使得 $\alpha_{i}^{</em>} g_{i}\left(w^{*}\right)=0$, 即</p>
 <script type="math/tex; mode=display">
-\boldsymbol{x}^{(i)} = \begin{bmatrix}x_1^{(i)} & x_2^{(i)} & x_3^{(i)} & x_4^{(i)}\end{bmatrix},</script><p>输出层的输出为</p>
+\alpha_{i}^{*}\left(y_{i}\left(w^{*} \cdot x_{i}+b^{*}\right)-1\right)=0, i=1,2 \ldots n</script><p>可以证明至少存在一个 $\alpha _j^ *&gt;0$ 使等式成立，所以可得：</p>
+<script type="math/tex; mode=display">{y_j}({w^ * }\cdot {x_j} + {b^ * }) - 1 = 0</script><p>因为 $ {y_i} = \{ + 1, - 1\}$ ，所以 $\frac{1}{ { {y_i}}} = {y_i}$ 进而得到</p>
 <script type="math/tex; mode=display">
-\boldsymbol{o}^{(i)} = \begin{bmatrix}o_1^{(i)} & o_2^{(i)} & o_3^{(i)}\end{bmatrix},</script><p>预测为狗、猫或鸡的概率分布为</p>
-<script type="math/tex; mode=display">
-\boldsymbol{\hat{y}}^{(i)} = \begin{bmatrix}\hat{y}_1^{(i)} & \hat{y}_2^{(i)} & \hat{y}_3^{(i)}\end{bmatrix}.</script><p>softmax回归对样本$i$分类的矢量计算表达式为</p>
-<script type="math/tex; mode=display">
- \begin{aligned} \boldsymbol{o}^{(i)} &= \boldsymbol{x}^{(i)} \boldsymbol{W} + \boldsymbol{b},\\ \boldsymbol{\hat{y}}^{(i)} &= \text{softmax}(\boldsymbol{o}^{(i)}). \end{aligned}</script><ul>
-<li>小批量矢量计算表达式<br>  为了进一步提升计算效率，我们通常对小批量数据做矢量计算。广义上讲，给定一个小批量样本，其批量大小为$n$，输入个数（特征数）为$d$，输出个数（类别数）为$q$。设批量特征为$\boldsymbol{X} \in \mathbb{R}^{n \times d}$。假设softmax回归的权重和偏差参数分别为$\boldsymbol{W} \in \mathbb{R}^{d \times q}$和$\boldsymbol{b} \in \mathbb{R}^{1 \times q}$。softmax回归的矢量计算表达式为</li>
+b^{*}=y_{j}-\sum_{i=1}^{n} \alpha_{i}^{*} y_{i}\left(x_{i} \cdot x_{j}\right)</script><p>至此 $ w^<em> 和  b^</em> $ 都已经得到，所以可以得到<code>超平面</code>：$ {w^ <em> }\cdot x + {b^ </em> } = 0$</p>
+</li>
 </ul>
-<script type="math/tex; mode=display">
- \begin{aligned} \boldsymbol{O} &= \boldsymbol{X} \boldsymbol{W} + \boldsymbol{b},\\ \boldsymbol{\hat{Y}} &= \text{softmax}(\boldsymbol{O}), \end{aligned}</script><p>其中的加法运算使用了广播机制，$\boldsymbol{O}, \boldsymbol{\hat{Y}} \in \mathbb{R}^{n \times q}$且这两个矩阵的第$i$行分别为样本$i$的输出$\boldsymbol{o}^{(i)}$和概率分布$\boldsymbol{\hat{y}}^{(i)}$。</p>
-<h2 id="交叉熵损失函数"><a href="#交叉熵损失函数" class="headerlink" title="交叉熵损失函数"></a>交叉熵损失函数</h2><p>对于样本$i$，我们构造向量$\boldsymbol{y}^{(i)}\in \mathbb{R}^{q}$ ，使其第$y^{(i)}$（样本$i$类别的离散数值）个元素为1，其余为0。这样我们的训练目标可以设为使预测概率分布$\boldsymbol{\hat y}^{(i)}$尽可能接近真实的标签概率分布$\boldsymbol{y}^{(i)}$。</p>
+<h4 id="SMO-序列最小优化"><a href="#SMO-序列最小优化" class="headerlink" title="SMO 序列最小优化"></a>SMO 序列最小优化</h4><ul>
+<li>上面我们只是假设已经求得了 $ {\alpha ^ <em> } = {(\alpha _1^ </em> ,\alpha _2^ <em> ….\alpha _n^ </em> )^T}$，用到的方法是<code>SMO（Sequential Minimal Optimization）即序列最小优化</code>，感觉SMO其实不属于支持向量机算法的一部分.</li>
+<li>SMO的思想<br>拉格朗日乘子 $\alpha$ 有许多个，如果采用单个 $\alpha$ 坐标上升法, 无法满足 $\sum_{i=1}^{m} \alpha_{i} y^{(i)}=0$ 的条件.<br>于是, 每次只选择其中<code>两个</code>变量作为未知量，其他乘子作为已知量，将N个问题转变成两个变量的求解问题. 当 $W(\alpha)$ 的变化小于一个阈值, 比如 0.01, 可以判定为收敛. 比如对于线性可分支持向量机的目标函数：<script type="math/tex; mode=display">\mathop {\max }\limits_\alpha \ \ - \frac{1}{2}\sum\limits_{i = 1}^n {\sum\limits_{j = 1}^n { {\alpha _i}{\alpha _j}{y_i}{y_j}({x_i}{x_j})} } + \sum\limits_{i = 1}^n { {\alpha _i}}</script>约束条件为： <script type="math/tex">\sum\limits_{i = 1}^n { {\alpha _i}{y_i}} = 0，  {\alpha _i} \ge 0,i = 1,2...n</script><br>一开始随机选取两个变量 $ {\alpha _1},{\alpha _2} $作为未知量，其他因子 ${\alpha _i}(i = 3,4…n)$ 当作已知来求目标函数的最小值，求出 ${\alpha _1},{\alpha _2}$ 再带入进去，再选取 $ {\alpha _3},{\alpha _4}$ 求目标函数最小值，求出后继续带入，直到目标函数收敛.<br>由于每一对 ($\alpha_i, \alpha_j$) 都互相可以表示出来, 最终转化为以单个变量 $\alpha_j$ 的二次函数优化问题, 用二次函数即可求解.<script type="math/tex; mode=display">
+\begin{array}{c}
+\max _{\alpha_{2}} W\left(\alpha_{2}\right)=a \alpha_{2}^{2}+b \alpha_{2}+c \\
+\text { s.t. } 0 \leq \alpha_{2} \leq C
+\end{array}</script></li>
+</ul>
+<h4 id="核函数方法-Kernel-Function"><a href="#核函数方法-Kernel-Function" class="headerlink" title="核函数方法 Kernel Function"></a>核函数方法 Kernel Function</h4><ul>
+<li>处理线性不可分的情况, 增加一个<code>松弛变量</code>, 允许函数间隔小于 1, 甚至小于 0. <script type="math/tex; mode=display">
+\begin{array}{l}
+\min _{w, b, \xi} \frac{1}{2}\|w\|^{2}+c \sum_{i=1}^{m} \xi_{i} \\
+\\
+\text { s.t. } y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq 1-\xi_{i}, \quad i=1, \ldots, m \\
+\quad \xi_{i} \geq 0, \quad i=1, \ldots, m
+\end{array}</script></li>
+<li>拉格朗日函数<script type="math/tex; mode=display">
+\mathcal{L}(w, b, \xi, \alpha, r)=\frac{1}{2} w^{T} w+C \sum_{i=1}^{m} \xi_{i}-\sum_{i=1}^{m} \alpha_{i}\left[y^{(i)}\left(x^{T} w+b\right)-1+\xi_{i}\right]-\sum_{i=1}^{m} r_{i} \xi_{i}</script></li>
+<li>对偶问题: 此时 $\alpha$ 不再是 &gt;= 0, 而是 $0 \leq \alpha \leq C$<script type="math/tex; mode=display">
+\begin{aligned}
+&\max _{\alpha} W(\alpha)=\sum_{i=1}^{m} \alpha_{i}-\frac{1}{2} \sum_{i, j=1}^{m} y^{(i)} y^{(j)} \alpha_{i} \alpha_{j} x^{(i)^{T}} x^{(j)}\\
+&\text { s.t. } 0 \leq \alpha_{i} \leq C, \quad i=1, \ldots, m\\
+&\sum_{i=1}^{m} \alpha_{i} y^{(i)}=0
+\end{aligned}</script></li>
+<li>基本思想: 将原来的 x 空间中的特征, 映射到 $\phi(x)$ 高维空间中. 原本只着眼于内积运算 $x^{(i)^{T}} x^{(j)}$, 给定 $\phi(x)$, 变成<code>核函数</code>运算 <script type="math/tex; mode=display">K\left(x^{(i)}, x^{(j)}\right)=\phi\left(x^{(i)}\right)^{T} \phi\left(x^{(j)}\right)</script>目标函数变成<script type="math/tex; mode=display">
+W(\alpha)=\sum_{i=1}^{m} \alpha_{i}-\frac{1}{2} \sum_{i, j=1}^{m} y^{(i)} y^{(j)} \alpha_{i} \alpha_{j} K\left(x^{(i)}, x^{(j)}\right)</script></li>
+<li>核技巧 Kernel Trick<br>多数情况下, 可以直接定义  $K\left(x^{(i)}, x^{(j)}\right)$ 而不需要 $\phi(x)$, 比如直接假定 $K\left(x^{(i)}, x^{(j)}\right)=\left(x^{(i)^{T}} x^{(j)}\right)^{2}$<br>时间复杂度可以明显降低, 比如从 $O(n^2)$ 降低到  $O(n)$</li>
+<li>给定核函数, 再通过 SMO 即可求得 $\alpha$, 再通过 $\alpha$ 求得 $w$ 和 $b$, $\phi(x)$ 的计算被约去, 得到函数间隔/目标函数为<script type="math/tex; mode=display">
+\begin{aligned}
+w^{* T} x+b^{*} &=\left(\sum_{i=1}^{m} \alpha_{i} y^{(i)} \phi\left(x^{(i)}\right)\right)^{T} \phi(x)+b^{*} \\
+&=\sum_{i=1}^{m} \alpha_{i} y^{(i)} K\left(x^{(i)}, x\right)+b^{*}
+\end{aligned}</script></li>
+<li>高斯核函数 (非常常用)<br>对于 x 和 z 两个样例, 我们需要刻画其<code>相似性度量</code><script type="math/tex; mode=display">
+K(x, z)=\exp \left(-\frac{\|{x}-z \|^{2}}{2 \sigma^{2}}\right)</script>也称为<code>径向基函数</code>(RBF)核. 将其中一个 x 设为高斯分布的中心点, 计算 z 的概率密度</li>
+<li>核矩阵K<script type="math/tex; mode=display">
+\left\{K_{i, j}\right\}_{i, j=1, \ldots, m}</script></li>
+<li>有效核: 一定能写成两个 $\phi(x)$ 函数相乘, 一定是对称矩阵, 半正定矩阵 —&gt; 对于任何向量 z, $z^TKz\geq0$. 常见的有 RBF 核, 多项式核$K(x, z)=\left(x^{T} z\right)^{d}$, 余弦相似度核$K(x, z)=\frac{x^{T} z}{|x| \cdot|z|}$, sigmoid 核等. 使用 Sigmoid核的 SVM, 相似于于一个二层的感知机.</li>
+<li>核函数, 同样可以映射到<code>广义的线性模型</code>, 只要涉及到映射 $\phi(x)$, 就可以通过 Kernel Trick 免去计算 ${\Phi}^{T} {\Phi}$, 而直接计算核矩阵<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/gyzILRlJv1SjseU.png" alt="广义线性模型的核技巧"></li>
+</ul>
+<h4 id="SVM-总结"><a href="#SVM-总结" class="headerlink" title="SVM 总结"></a>SVM 总结</h4><ul>
+<li><p>SVM 独到的特点<br>不需要去具体计算 $w$ 和 $b$ 的值是多少, 新进来需要预测的点, 只需要计算<code>和已知的支持向量点的内积</code>即可, 即只需要计算两个点之间的相似度, 而不需要去具体计算支持向量是什么.</p>
+</li>
+<li><p>SVM 的损失函数<br>使用铰链损失 <code>Hinge Loss</code>, 只关注函数间隔 &lt;=1 的情况, &gt;1 的情况的 loss 忽略为 0. 而逻辑回归即使计算所得的 p 再高, 也依然要计算 loss.<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/28/OL46fhGWiAIQPgH.png" alt="损失函数对比"></p>
+</li>
+<li><p><a href="https://www.kaggle.com/zhpan92/boyu-svm" target="_blank" rel="noopener">代码实践👆(SMO 等具体细节)</a></p>
+</li>
+</ul>
+<p>调用 scikit-learn 为例, 使用 rbf 核函数</p>
+<pre><code class="lang-py">from sklearn import svm
+# x, y = simple_synthetic_data(50, 5, 5)
+x, y = spiral_data()
+
+model = svm.SVC(kernel=&#39;rbf&#39;, gamma=50, tol=1e-6)
+model.fit(x, y)
+
+fig = plt.figure(figsize=(6,6))
+ax = fig.add_subplot(111)
+plot(ax, model.predict, x, &#39;SVM + RBF&#39;)
+plt.show()
+</code></pre>
+<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/KcCRFjglUkh3Gos.png" alt=""></p>
+<h2 id="学习排序方法"><a href="#学习排序方法" class="headerlink" title="学习排序方法"></a>学习排序方法</h2><h3 id="Pointwise"><a href="#Pointwise" class="headerlink" title="Pointwise"></a>Pointwise</h3><ul>
+<li>预测绝对相关度 (比如 RMSE), 是预测专家系统, 人为地给定相关度评估, 提取一系列的特征, 当做<code>回归问题</code>处理.</li>
+<li>存在的问题: 单点精度 $\ne$ 排序精度, 在 $(\hat{y}-y)^2$ 相同的情况下, 排序顺序可能发生变化.</li>
+</ul>
+<h3 id="Pairwise"><a href="#Pairwise" class="headerlink" title="Pairwise"></a>Pairwise</h3><ul>
+<li>不关心绝对相关性, 关注文档的相对偏好, 转化为一系列<code>二分类问题</code>. 建立 RankNet</li>
+<li>每个文档的相对的目标概率<script type="math/tex; mode=display">
+y_{i, j}=f(x)=\left\{\begin{array}{lr}
+1, & \text { if } i排在j前 \\
+0, & \text { otherwise }
+\end{array}\right.</script>i 排在 j 前面则为 1, 否则为 0.<br>使用 sigmoid 构造逻辑回归 —-&gt; 使用交叉熵损失函数作为 loss —-&gt; 计算梯度 —-&gt; 在神经网络中 BP<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/EVvyXZgjtsnaM4k.png" alt="Pairwise"></li>
+<li>排序评估指标:<br>查询 q 的标准折扣累积增益 (NDGC@k)<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/PpWRifaGJ3koHZ7.png" alt="NDGC"></li>
+<li>缺点: 对于搜索引擎, 排在前列的文档是否排序正确, 更为重要. 各个文档之间相关性排序是否正确的重要性不同. 相同的排序 pair 错误 (交叉熵相同), 但对于整个排序列的影响不同. 比如 &lt; 1, 6 &gt; 和 &lt; 3, 4 &gt; 排序错误的影响不同.</li>
+</ul>
+<h3 id="Listwise"><a href="#Listwise" class="headerlink" title="Listwise"></a>Listwise</h3><p>对于一个 list, 即<code>预测排序列表</code>和<code>真实排序列表</code>之间的差异直接简历损失函数</p>
 <ul>
-<li>平方损失估计  </li>
+<li>ListNet<br>对于 n 个文档, 就是一个 n! 分类的问题. 对整个列表计算 softmax, 然后计算交叉熵 loss.<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/Q9l37MiZzuUxocn.png" alt="ListNet"></li>
+<li>KL 散度<br>计算不同分布之间的 distance</li>
 </ul>
+<h3 id="LambdaRank"><a href="#LambdaRank" class="headerlink" title="LambdaRank"></a>LambdaRank</h3><ul>
+<li>Pairwise 损失了 list-level 列表级评估, Listwise 要求较高的模型复杂度. 于是产生了结合方案: 利用 listwise 的信息, 做 pairwise 的二分类训练, 损失仍然建立在 pair 上, 但是利用 list 的信息, 做一个 weighting 操作</li>
+<li>LambdaRank 优化 NDGC<br>交换 i 和 j 的排序, 看看$\Delta$NDGC 的值, 即变化情况. 将外部排序的信息, 作为 $h\left(\lambda_{i, j}, g_{q}\right)$ 注入.<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/YpdGTvMh9ilo6gW.png" alt="LambdaRank"></li>
+<li>Pairwise 方法仍然是最受欢迎最广泛应用的学习排序算法<br>排序精度和训练效率的平衡              </li>
+<li>LambdaRank 是一种具有排序列表级信息的 pairwise 方法<br>容易实现,易于改进和调整</li>
+</ul>
+<h2 id="矩阵分解的协同过滤算法"><a href="#矩阵分解的协同过滤算法" class="headerlink" title="矩阵分解的协同过滤算法"></a>矩阵分解的协同过滤算法</h2><p>用户-物品矩阵进行预测, 都可以通过分解为两个低秩矩阵, 进行相乘, 从而可以得知矩阵空白处的预测值. 比如分解电影网站的用户打分矩阵, 和电影得分矩阵, 可以预测用户 p 对于一个新的物品 i 的喜好程度.</p>
+<h3 id="基本模型-Maxtrix-Factorization"><a href="#基本模型-Maxtrix-Factorization" class="headerlink" title="基本模型 Maxtrix Factorization"></a>基本模型 Maxtrix Factorization</h3><ul>
+<li>双线性模型, 参数与参数相乘, pu 为用户偏好矩阵, qi 为物品评价矩阵, 用户 u 在物品 i 上的预测为<script type="math/tex; mode=display">
+\hat{r}_{u, i}=p_{u}^{T} q_{i}</script></li>
+<li>均方误差构造损失函数<script type="math/tex; mode=display">
+\mathcal{L}\left(u, i, r_{u, i}\right)=\frac{1}{2}\left(r_{u, i}-p_{u}^{T} q_{i}\right)^{2}</script></li>
+<li>训练目标: 均方误差+L2范式<script type="math/tex; mode=display">
+\min _{P, Q} \sum_{r_{u, i} \in D} \frac{1}{2}\left(r_{u, i}-p_{u}^{T} q_{i}\right)^{2}+\frac{\lambda}{2}\left(\left\|p_{u}\right\|^{2}+\left\|q_{i}\right\|^{2}\right)</script></li>
+<li>梯度更新: pu 在 qi 方向上变大/变小, qi 在 pu 的方向上变大/变小<script type="math/tex; mode=display">
+\begin{array}{l}
+\frac{\partial \mathcal{L}\left(u, i, r_{u, i}\right)}{\partial p_{u}}=\left(p_{u}^{T} q_{i}-r_{u, i}\right) q_{i}+\lambda p_{u} \\
+\\
+\frac{\partial \mathcal{L}\left(u, i, r_{u, i}\right)}{\partial q_{i}}=\left(p_{u}^{T} q_{i}-r_{u, i}\right) p_{u}+\lambda q_{i}
+\end{array}</script></li>
+</ul>
+<h3 id="带偏差的矩阵分解模型"><a href="#带偏差的矩阵分解模型" class="headerlink" title="带偏差的矩阵分解模型"></a>带偏差的矩阵分解模型</h3><ul>
+<li><p>解决动态变化问题<br>因子模型方便地允许分别处理不同原因, 可以通过大量参数化函数来获得灵活性. 我们观察到的变化: 个人用户的评分等级 $b_u(t)$  个人物品的受欢迎程度 $b_i(t)$  用户偏好 $p_u(t)$  全局bias $\mu$ </p>
+</li>
+<li><p>考虑多种偏差, 用户 u 在物品 i 上的预测为<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/IovOtfdJp2lPKUR.png" alt=""></p>
+</li>
+<li><p>训练目标</p>
 <script type="math/tex; mode=display">
-\begin{aligned}Loss = |\boldsymbol{\hat y}^{(i)}-\boldsymbol{y}^{(i)}|^2/2\end{aligned}</script><p>然而，想要预测分类结果正确，我们其实并不需要预测概率完全等于标签概率。例如，在图像分类的例子里，如果$y^{(i)}=3$，那么我们只需要$\hat{y}^{(i)}_3$比其他两个预测值$\hat{y}^{(i)}_1$和$\hat{y}^{(i)}_2$大就行了。即使$\hat{y}^{(i)}_3$值为0.6，不管其他两个预测值为多少，类别预测均正确。而平方损失则过于严格，例如$\hat y^{(i)}_1=\hat y^{(i)}_2=0.2$比$\hat y^{(i)}_1=0, \hat y^{(i)}_2=0.4$的损失要小很多，虽然两者都有同样正确的分类预测结果。</p>
-<p>改善上述问题的一个方法是使用更适合衡量两个概率分布差异的测量函数。其中，交叉熵（cross entropy）是一个常用的衡量方法：</p>
+\min _{P, Q} \sum_{r_{u, i} \in D} \frac{1}{2}\left(r_{u, i}-\left(\mu+b_{u}+b_{i}+p_{u}^{\top} q_{i}\right)\right)^{2}+\frac{\lambda}{2}\left(\left\|p_{u}\right\|^{2}+\left\|q_{i}\right\|^{2}+b_{u}^{2}+b_{i}^{2}\right)</script></li>
+<li><p>梯度更新 导数$\times$步长</p>
 <script type="math/tex; mode=display">
-H\left(\boldsymbol y^{(i)}, \boldsymbol {\hat y}^{(i)}\right ) = -\sum_{j=1}^q y_j^{(i)} \log \hat y_j^{(i)},</script><p>其中带下标的$y_j^{(i)}$是向量$\boldsymbol y^{(i)}$中非0即1的元素，需要注意将它与样本$i$类别的离散数值，即不带下标的$y^{(i)}$区分。在上式中，我们知道向量$\boldsymbol y^{(i)}$中只有第$y^{(i)}$个元素$y^{(i)}{y^{(i)}}$为1，其余全为0，于是$H(\boldsymbol y^{(i)}, \boldsymbol {\hat y}^{(i)}) = -\log \hat y_{y^{(i)}}^{(i)}$。也就是说，交叉熵只关心对正确类别的预测概率，因为只要其值足够大，就可以确保分类结果正确。当然，遇到一个样本有多个标签时，例如图像里含有不止一个物体时，我们并不能做这一步简化。但即便对于这种情况，交叉熵同样只关心对图像中出现的物体类别的预测概率。</p>
-<p>假设训练数据集的样本数为$n$，交叉熵损失函数定义为 </p>
+\begin{aligned}
+\delta &=r_{u, i}-\left(\mu+b_{u}+b_{i}+p_{u}^{T} q_{i}\right) \\
+\mu & \leftarrow \mu+\eta \delta \\
+b_{u} & \leftarrow(1-\eta \lambda) b_{u}+\eta \delta \\
+b_{i} & \leftarrow(1-\eta \lambda) b_{i}+\eta \delta \\
+p_{u} & \leftarrow(1-\eta \lambda) p_{u}+\eta \delta q_{i} \\
+q_{i} & \leftarrow(1-\eta \lambda) q_{i}+\eta \delta p_{u}
+\end{aligned}</script></li>
+<li><p>发展: 深度学习大行其道</p>
+</li>
+<li>代码实践: <a href="https://www.kaggle.com/chenhaokun/matrix-factorization" target="_blank" rel="noopener">矩阵分解</a><br>向量即 embedding<br>embedding_size 每个用户的向量维度<br>user_embeddings 和 item_embeddings 即 p 和 q 的矩阵</li>
+</ul>
+<h2 id="主成分分析-PCA"><a href="#主成分分析-PCA" class="headerlink" title="主成分分析 PCA"></a>主成分分析 PCA</h2><p>目的: 将数据的某一维的特征差异进行放大, 其他维度进行压缩甚至忽略. 也可以选择降到 k 维.</p>
+<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><ol>
+<li><p>将数据集的中心移到 0</p>
 <script type="math/tex; mode=display">
-\ell(\boldsymbol{\Theta}) = \frac{1}{n} \sum_{i=1}^n H\left(\boldsymbol y^{(i)}, \boldsymbol {\hat y}^{(i)}\right ),</script><p>其中$\boldsymbol{\Theta}$代表模型参数。同样地，如果每个样本只有一个标签，那么交叉熵损失可以简写成$\ell(\boldsymbol{\Theta}) = -(1/n) \sum_{i=1}^n \log \hat y_{y^{(i)}}^{(i)}$。从另一个角度来看，我们知道最小化$\ell(\boldsymbol{\Theta})$等价于最大化$\exp(-n\ell(\boldsymbol{\Theta}))=\prod_{i=1}^n \hat y_{y^{(i)}}^{(i)}$，即最小化交叉熵损失函数等价于最大化训练数据集所有标签类别的联合预测概率。</p>
-<h2 id="模型训练和预测"><a href="#模型训练和预测" class="headerlink" title="模型训练和预测"></a>模型训练和预测</h2><p>在训练好softmax回归模型后，给定任一样本特征，就可以预测每个输出类别的概率。通常，我们把预测概率最大的类别作为输出类别。如果它与真实类别（标签）一致，说明这次预测是正确的。在3.6节的实验中，我们将使用准确率（accuracy）来评价模型的表现。它等于正确预测数量与总预测数量之比。</p>
-<h1 id="获取Fashion-MNIST训练集和读取数据"><a href="#获取Fashion-MNIST训练集和读取数据" class="headerlink" title="获取Fashion-MNIST训练集和读取数据"></a>获取Fashion-MNIST训练集和读取数据</h1><p>在介绍softmax回归的实现前我们先引入一个多类图像分类数据集。它将在后面的章节中被多次使用，以方便我们观察比较算法之间在模型精度和计算效率上的区别。图像分类数据集中最常用的是手写数字识别数据集MNIST[1]。但大部分模型在MNIST上的分类精度都超过了95%。为了更直观地观察算法之间的差异，我们将使用一个图像内容更加复杂的数据集Fashion-MNIST[2]。</p>
-<p>我这里我们会使用torchvision包，它是服务于PyTorch深度学习框架的，主要用来构建计算机视觉模型。torchvision主要由以下几部分构成：</p>
-<ol>
-<li>torchvision.datasets: 一些加载数据的函数及常用的数据集接口；</li>
-<li>torchvision.models: 包含常用的模型结构（含预训练模型），例如AlexNet、VGG、ResNet等；</li>
-<li>torchvision.transforms: 常用的图片变换，例如裁剪、旋转等；</li>
-<li>torchvision.utils: 其他的一些有用的方法。</li>
+\mu=\frac{1}{m} \sum_{i=1}^{m} x^{(i)}</script><script type="math/tex; mode=display">
+x^{(i)} \leftarrow x^{(i)}-\mu</script></li>
+<li><p>统一每个变量的方差</p>
+<script type="math/tex; mode=display">
+\sigma_{j}^{2}=\frac{1}{m} \sum_{i=1}^{m}\left(x_{j}^{(i)}\right)^{2}</script><script type="math/tex; mode=display">
+x_{j}^{(i)} \leftarrow x_{j}^{(i)} / \sigma_{j}</script></li>
 </ol>
-<pre><code class="lang-python"># import needed package
-%matplotlib inline
-from IPython import display
-import matplotlib.pyplot as plt
-
-import torch
-import torchvision
-import torchvision.transforms as transforms
-import time
-
-import sys
-sys.path.append(&quot;/home/kesci/input&quot;)
-import d2lzh1981 as d2l
-
-print(torch.__version__)
-print(torchvision.__version__)
-</code></pre>
-<pre><code>---------------------------------------------------------------------------
-
-ModuleNotFoundError                       Traceback (most recent call last)
-
-&lt;ipython-input-1-e3b06ab588d2&gt; in &lt;module&gt;
-      4 import matplotlib.pyplot as plt
-      5 
-----&gt; 6 import torch
-      7 import torchvision
-      8 import torchvision.transforms as transforms
-
-
-ModuleNotFoundError: No module named &#39;torch&#39;
-</code></pre><h2 id="get-dataset"><a href="#get-dataset" class="headerlink" title="get dataset"></a>get dataset</h2><pre><code class="lang-python">mnist_train = torchvision.datasets.FashionMNIST(root=&#39;/home/kesci/input/FashionMNIST2065&#39;, train=True, download=True, transform=transforms.ToTensor())
-mnist_test = torchvision.datasets.FashionMNIST(root=&#39;/home/kesci/input/FashionMNIST2065&#39;, train=False, download=True, transform=transforms.ToTensor())
-</code></pre>
-<p>class torchvision.datasets.FashionMNIST(root, train=True, transform=None, target_transform=None, download=False)</p>
-<ul>
-<li>root（string）– 数据集的根目录，其中存放processed/training.pt和processed/test.pt文件。</li>
-<li>train（bool, 可选）– 如果设置为True，从training.pt创建数据集，否则从test.pt创建。</li>
-<li>download（bool, 可选）– 如果设置为True，从互联网下载数据并放到root文件夹下。如果root目录下已经存在数据，不会再次下载。</li>
-<li>transform（可被调用 , 可选）– 一种函数或变换，输入PIL图片，返回变换之后的数据。如：transforms.RandomCrop。</li>
-<li>target_transform（可被调用 , 可选）– 一种函数或变换，输入目标，进行变换。</li>
+<h3 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h3><ul>
+<li>利用特征值与特征向量, 找到一组标准正交基 —-&gt; 从而可以将任何向量用标准正交基表示 —-&gt; 从而可以将任何协方差矩阵用 $UWU^T$ 形式表示, U 为正交基矩阵, W 就是本矩阵的特征值.</li>
+<li>PCA 的目的是找到一个方向 $v$, 使得在这个方向上数据 X 的投影的<code>方差最大</code>, 方差越大越能保留尽可能多的有效信息. 由于均值已经为 0, 数据 $X$ 在方向 $v$ 的方差就是 $||Xv||^2$. 最后推算的结论就是, 需要<code>最大特征值</code>对应的<code>特征向量</code>.</li>
+<li>最终得到 X 的主成分矩阵为 $T=WX$, 其中 $W$ 为$ X^TX$ 的特征值矩阵<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/03/01/wXQY5E4Vpfb9SWN.png" alt=""><br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/03/01/pR8nGAxBsk7oNrv.png" alt=""></li>
 </ul>
-<pre><code class="lang-python"># show result 
-print(type(mnist_train))
-print(len(mnist_train), len(mnist_test))
-</code></pre>
-<pre><code>&lt;class &#39;torchvision.datasets.mnist.FashionMNIST&#39;&gt;
-60000 10000
-</code></pre><pre><code class="lang-python"># 我们可以通过下标来访问任意一个样本
-feature, label = mnist_train[0]
-print(feature.shape, label)  # Channel x Height x Width
-</code></pre>
-<pre><code>torch.Size([1, 28, 28]) 9
-</code></pre><p>如果不做变换输入的数据是图像，我们可以看一下图片的类型参数：</p>
-<pre><code class="lang-python">mnist_PIL = torchvision.datasets.FashionMNIST(root=&#39;/home/kesci/input/FashionMNIST2065&#39;, train=True, download=True)
-PIL_feature, label = mnist_PIL[0]
-print(PIL_feature)
-</code></pre>
-<pre><code>&lt;PIL.Image.Image image mode=L size=28x28 at 0x7F54A41612E8&gt;
-</code></pre><pre><code class="lang-python"># 本函数已保存在d2lzh包中方便以后使用
-def get_fashion_mnist_labels(labels):
-    text_labels = [&#39;t-shirt&#39;, &#39;trouser&#39;, &#39;pullover&#39;, &#39;dress&#39;, &#39;coat&#39;,
-                   &#39;sandal&#39;, &#39;shirt&#39;, &#39;sneaker&#39;, &#39;bag&#39;, &#39;ankle boot&#39;]
-    return [text_labels[int(i)] for i in labels]
-</code></pre>
-<pre><code class="lang-python">def show_fashion_mnist(images, labels):
-    d2l.use_svg_display()
-    # 这里的_表示我们忽略（不使用）的变量
-    _, figs = plt.subplots(1, len(images), figsize=(12, 12))
-    for f, img, lbl in zip(figs, images, labels):
-        f.imshow(img.view((28, 28)).numpy())
-        f.set_title(lbl)
-        f.axes.get_xaxis().set_visible(False)
-        f.axes.get_yaxis().set_visible(False)
-    plt.show()
-</code></pre>
-<pre><code class="lang-python">X, y = [], []
-for i in range(10):
-    X.append(mnist_train[i][0]) # 将第i个feature加到X中
-    y.append(mnist_train[i][1]) # 将第i个label加到y中
-show_fashion_mnist(X, get_fashion_mnist_labels(y))
-</code></pre>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/056F457B00454FFD81A3CB6AD966C508/q5j7ehijw7.svg"></p>
-<pre><code class="lang-python"># 读取数据
-batch_size = 256
-num_workers = 4
-train_iter = torch.utils.data.DataLoader(mnist_train, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-test_iter = torch.utils.data.DataLoader(mnist_test, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-</code></pre>
-<pre><code class="lang-python">start = time.time()
-for X, y in train_iter:
-    continue
-print(&#39;%.2f sec&#39; % (time.time() - start))
-</code></pre>
-<pre><code>4.95 sec
-</code></pre><h1 id="softmax从零开始的实现"><a href="#softmax从零开始的实现" class="headerlink" title="softmax从零开始的实现"></a>softmax从零开始的实现</h1><pre><code class="lang-python">import torch
-import torchvision
-import numpy as np
-import sys
-sys.path.append(&quot;/home/kesci/input&quot;)
-import d2lzh1981 as d2l
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>主要步骤, 给定数据 X, 进行均值归 0, 方差统一处理后, 得到 Z. 然后根据协方差矩阵 $Z^TZ$ 的特征值从大到小进行排序, 得到特征向量的矩阵 $V^<em>$. 计算 $Z^</em> = ZV^*<br>$</p>
+<p><a href="https://www.kaggle.com/coverdark/pca-principal-component-analysis/" target="_blank" rel="noopener">PCA 实现</a></p>
+<pre><code class="lang-py">def pca_custom(X, k):
+    n, p = np.shape(X)
+    # 设置均值为 0
+    Z = X - np.mean(X, axis=0)
+    covZ = np.cov(Z.T) # 协方差矩阵按列计算, 需要转置一下
+    eigValue, eigVector = np.linalg.eig(covZ)  # 计算特征值, 特征向量
+    index = np.argsort(-eigValue)
 
-print(torch.__version__)
-print(torchvision.__version__)
+    if k &gt; p:
+        print (&quot;k must lower than input data dimension！&quot;)
+        return 1
+    else:
+        # 要降到 k 维, 选择前 k 个最大的
+        selectVector = eigVector[:, index[:k]]
+        T = np.matmul(Z, selectVector)
+    return T, selectVector
 </code></pre>
-<pre><code>1.3.0
-0.4.1a0+d94043a
-</code></pre><h2 id="获取训练集数据和测试集数据"><a href="#获取训练集数据和测试集数据" class="headerlink" title="获取训练集数据和测试集数据"></a>获取训练集数据和测试集数据</h2><pre><code class="lang-python">batch_size = 256
-train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, root=&#39;/home/kesci/input/FashionMNIST2065&#39;)
-</code></pre>
-<h2 id="模型参数初始化"><a href="#模型参数初始化" class="headerlink" title="模型参数初始化"></a>模型参数初始化</h2><pre><code class="lang-python">num_inputs = 784
-print(28*28)
-num_outputs = 10
-
-W = torch.tensor(np.random.normal(0, 0.01, (num_inputs, num_outputs)), dtype=torch.float)
-b = torch.zeros(num_outputs, dtype=torch.float)
-</code></pre>
-<pre><code>784
-</code></pre><pre><code class="lang-python">W.requires_grad_(requires_grad=True)
-b.requires_grad_(requires_grad=True)
-</code></pre>
-<pre><code>tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0.], requires_grad=True)
-</code></pre><h2 id="对多维Tensor按维度操作"><a href="#对多维Tensor按维度操作" class="headerlink" title="对多维Tensor按维度操作"></a>对多维Tensor按维度操作</h2><pre><code class="lang-python">X = torch.tensor([[1, 2, 3], [4, 5, 6]])
-print(X.sum(dim=0, keepdim=True))  # dim为0，按照相同的列求和，并在结果中保留列特征
-print(X.sum(dim=1, keepdim=True))  # dim为1，按照相同的行求和，并在结果中保留行特征
-print(X.sum(dim=0, keepdim=False)) # dim为0，按照相同的列求和，不在结果中保留列特征
-print(X.sum(dim=1, keepdim=False)) # dim为1，按照相同的行求和，不在结果中保留行特征
-</code></pre>
-<pre><code>tensor([[5, 7, 9]])
-tensor([[ 6],
-        [15]])
-tensor([5, 7, 9])
-tensor([ 6, 15])
-</code></pre><h2 id="定义softmax操作"><a href="#定义softmax操作" class="headerlink" title="定义softmax操作"></a>定义softmax操作</h2><script type="math/tex; mode=display">
- \hat{y}_j = \frac{ \exp(o_j)}{\sum_{i=1}^3 \exp(o_i)}</script><pre><code class="lang-python">def softmax(X):
-    X_exp = X.exp()
-    partition = X_exp.sum(dim=1, keepdim=True)
-    # print(&quot;X size is &quot;, X_exp.size())
-    # print(&quot;partition size is &quot;, partition, partition.size())
-    return X_exp / partition  # 这里应用了广播机制
-</code></pre>
-<pre><code class="lang-python">X = torch.rand((2, 5))
-X_prob = softmax(X)
-print(X_prob, &#39;\n&#39;, X_prob.sum(dim=1))
-</code></pre>
-<pre><code>tensor([[0.2253, 0.1823, 0.1943, 0.2275, 0.1706],
-        [0.1588, 0.2409, 0.2310, 0.1670, 0.2024]]) 
- tensor([1.0000, 1.0000])
-</code></pre><h2 id="softmax回归模型"><a href="#softmax回归模型" class="headerlink" title="softmax回归模型"></a>softmax回归模型</h2><script type="math/tex; mode=display">
- \begin{aligned} \boldsymbol{o}^{(i)} &= \boldsymbol{x}^{(i)} \boldsymbol{W} + \boldsymbol{b},\\ \boldsymbol{\hat{y}}^{(i)} &= \text{softmax}(\boldsymbol{o}^{(i)}). \end{aligned}</script><pre><code class="lang-python">def net(X):
-    return softmax(torch.mm(X.view((-1, num_inputs)), W) + b)
-</code></pre>
-<h2 id="定义损失函数"><a href="#定义损失函数" class="headerlink" title="定义损失函数"></a>定义损失函数</h2><script type="math/tex; mode=display">
-H\left(\boldsymbol y^{(i)}, \boldsymbol {\hat y}^{(i)}\right ) = -\sum_{j=1}^q y_j^{(i)} \log \hat y_j^{(i)},</script><script type="math/tex; mode=display">
-\ell(\boldsymbol{\Theta}) = \frac{1}{n} \sum_{i=1}^n H\left(\boldsymbol y^{(i)}, \boldsymbol {\hat y}^{(i)}\right ),</script><script type="math/tex; mode=display">
-\ell(\boldsymbol{\Theta}) = -(1/n) \sum_{i=1}^n \log \hat y_{y^{(i)}}^{(i)}</script><pre><code class="lang-python">y_hat = torch.tensor([[0.1, 0.3, 0.6], [0.3, 0.2, 0.5]])
-y = torch.LongTensor([0, 2])
-y_hat.gather(1, y.view(-1, 1))
-</code></pre>
-<pre><code>tensor([[0.1000],
-        [0.5000]])
-</code></pre><pre><code class="lang-python">def cross_entropy(y_hat, y):
-    return - torch.log(y_hat.gather(1, y.view(-1, 1)))
-</code></pre>
-<h2 id="定义准确率"><a href="#定义准确率" class="headerlink" title="定义准确率"></a>定义准确率</h2><p>我们模型训练完了进行模型预测的时候，会用到我们这里定义的准确率。</p>
-<pre><code class="lang-python">def accuracy(y_hat, y):
-    return (y_hat.argmax(dim=1) == y).float().mean().item()
-</code></pre>
-<pre><code class="lang-python">print(accuracy(y_hat, y))
-</code></pre>
-<pre><code>0.5
-</code></pre><pre><code class="lang-python"># 本函数已保存在d2lzh_pytorch包中方便以后使用。该函数将被逐步改进：它的完整实现将在“图像增广”一节中描述
-def evaluate_accuracy(data_iter, net):
-    acc_sum, n = 0.0, 0
-    for X, y in data_iter:
-        acc_sum += (net(X).argmax(dim=1) == y).float().sum().item()
-        n += y.shape[0]
-    return acc_sum / n
-</code></pre>
-<pre><code class="lang-python">print(evaluate_accuracy(test_iter, net))
-</code></pre>
-<pre><code>0.1445
-</code></pre><h2 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h2><pre><code class="lang-python">num_epochs, lr = 5, 0.1
-
-# 本函数已保存在d2lzh_pytorch包中方便以后使用
-def train_ch3(net, train_iter, test_iter, loss, num_epochs, batch_size,
-              params=None, lr=None, optimizer=None):
-    for epoch in range(num_epochs):
-        train_l_sum, train_acc_sum, n = 0.0, 0.0, 0
-        for X, y in train_iter:
-            y_hat = net(X)
-            l = loss(y_hat, y).sum()
-
-            # 梯度清零
-            if optimizer is not None:
-                optimizer.zero_grad()
-            elif params is not None and params[0].grad is not None:
-                for param in params:
-                    param.grad.data.zero_()
-
-            l.backward()
-            if optimizer is None:
-                d2l.sgd(params, lr, batch_size)
-            else:
-                optimizer.step() 
-
-
-            train_l_sum += l.item()
-            train_acc_sum += (y_hat.argmax(dim=1) == y).sum().item()
-            n += y.shape[0]
-        test_acc = evaluate_accuracy(test_iter, net)
-        print(&#39;epoch %d, loss %.4f, train acc %.3f, test acc %.3f&#39;
-              % (epoch + 1, train_l_sum / n, train_acc_sum / n, test_acc))
-
-train_ch3(net, train_iter, test_iter, cross_entropy, num_epochs, batch_size, [W, b], lr)
-</code></pre>
-<pre><code>epoch 1, loss 0.7851, train acc 0.750, test acc 0.791
-epoch 2, loss 0.5704, train acc 0.814, test acc 0.810
-epoch 3, loss 0.5258, train acc 0.825, test acc 0.819
-epoch 4, loss 0.5014, train acc 0.832, test acc 0.824
-epoch 5, loss 0.4865, train acc 0.836, test acc 0.827
-</code></pre><h2 id="模型预测"><a href="#模型预测" class="headerlink" title="模型预测"></a>模型预测</h2><p>现在我们的模型训练完了，可以进行一下预测，我们的这个模型训练的到底准确不准确。<br>现在就可以演示如何对图像进行分类了。给定一系列图像（第三行图像输出），我们比较一下它们的真实标签（第一行文本输出）和模型预测结果（第二行文本输出）。</p>
-<pre><code class="lang-python">X, y = iter(test_iter).next()
-
-true_labels = d2l.get_fashion_mnist_labels(y.numpy())
-pred_labels = d2l.get_fashion_mnist_labels(net(X).argmax(dim=1).numpy())
-titles = [true + &#39;\n&#39; + pred for true, pred in zip(true_labels, pred_labels)]
-
-d2l.show_fashion_mnist(X[0:9], titles[0:9])
-</code></pre>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.kesci.com/rt_upload/1DA8927186304BEBA2B3DCC4A9E027DD/q5j7fq2jer.svg"></p>
-<h1 id="softmax的简洁实现"><a href="#softmax的简洁实现" class="headerlink" title="softmax的简洁实现"></a>softmax的简洁实现</h1><pre><code class="lang-python"># 加载各种包或者模块
-import torch
-from torch import nn
-from torch.nn import init
-import numpy as np
-import sys
-sys.path.append(&quot;/home/kesci/input&quot;)
-import d2lzh1981 as d2l
-
-print(torch.__version__)
-</code></pre>
-<pre><code>1.3.0
-</code></pre><h2 id="初始化参数和获取数据"><a href="#初始化参数和获取数据" class="headerlink" title="初始化参数和获取数据"></a>初始化参数和获取数据</h2><pre><code class="lang-python">batch_size = 256
-train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, root=&#39;/home/kesci/input/FashionMNIST2065&#39;)
-</code></pre>
-<h2 id="定义网络模型"><a href="#定义网络模型" class="headerlink" title="定义网络模型"></a>定义网络模型</h2><pre><code class="lang-python">num_inputs = 784
-num_outputs = 10
-
-class LinearNet(nn.Module):
-    def __init__(self, num_inputs, num_outputs):
-        super(LinearNet, self).__init__()
-        self.linear = nn.Linear(num_inputs, num_outputs)
-    def forward(self, x): # x 的形状: (batch, 1, 28, 28)
-        y = self.linear(x.view(x.shape[0], -1))
-        return y
-
-# net = LinearNet(num_inputs, num_outputs)
-
-class FlattenLayer(nn.Module):
-    def __init__(self):
-        super(FlattenLayer, self).__init__()
-    def forward(self, x): # x 的形状: (batch, *, *, ...)
-        return x.view(x.shape[0], -1)
-
-from collections import OrderedDict
-net = nn.Sequential(
-        # FlattenLayer(),
-        # LinearNet(num_inputs, num_outputs) 
-        OrderedDict([
-           (&#39;flatten&#39;, FlattenLayer()),
-           (&#39;linear&#39;, nn.Linear(num_inputs, num_outputs))]) # 或者写成我们自己定义的 LinearNet(num_inputs, num_outputs) 也可以
-        )
-</code></pre>
-<h2 id="初始化模型参数"><a href="#初始化模型参数" class="headerlink" title="初始化模型参数"></a>初始化模型参数</h2><pre><code class="lang-python">init.normal_(net.linear.weight, mean=0, std=0.01)
-init.constant_(net.linear.bias, val=0)
-</code></pre>
-<pre><code>Parameter containing:
-tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0.], requires_grad=True)
-</code></pre><h2 id="定义损失函数-1"><a href="#定义损失函数-1" class="headerlink" title="定义损失函数"></a>定义损失函数</h2><pre><code class="lang-python">loss = nn.CrossEntropyLoss() # 下面是他的函数原型
-# class torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=-100, reduce=None, reduction=&#39;mean&#39;)
-</code></pre>
-<h2 id="定义优化函数"><a href="#定义优化函数" class="headerlink" title="定义优化函数"></a>定义优化函数</h2><pre><code class="lang-python">optimizer = torch.optim.SGD(net.parameters(), lr=0.1) # 下面是函数原型
-# class torch.optim.SGD(params, lr=, momentum=0, dampening=0, weight_decay=0, nesterov=False)
-</code></pre>
-<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><pre><code class="lang-python">num_epochs = 5
-d2l.train_ch3(net, train_iter, test_iter, loss, num_epochs, batch_size, None, None, optimizer)
-</code></pre>
-<pre><code>epoch 1, loss 0.0031, train acc 0.751, test acc 0.795
-epoch 2, loss 0.0022, train acc 0.813, test acc 0.809
-epoch 3, loss 0.0021, train acc 0.825, test acc 0.806
-epoch 4, loss 0.0020, train acc 0.833, test acc 0.813
-epoch 5, loss 0.0019, train acc 0.837, test acc 0.822
-</code></pre><h2 id="练习题"><a href="#练习题" class="headerlink" title="练习题"></a>练习题</h2><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/cwADXPBIbdjvGhN.png" alt=""></p>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/19/8pOqEmTBAYGcWMs.png" alt="解析"></p>
 
             </div>
             <hr/>
@@ -912,7 +837,7 @@ epoch 5, loss 0.0019, train acc 0.837, test acc 0.822
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://hopenx.github.io/2020/02/14/dl-notes2-softmax/">https://hopenx.github.io/2020/02/14/dl-notes2-softmax/</a>
+                    <a href="https://hopenx.github.io/2020/03/01/ml-notes-2/">https://hopenx.github.io/2020/03/01/ml-notes-2/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -950,8 +875,8 @@ epoch 5, loss 0.0019, train acc 0.837, test acc 0.822
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                                    <span class="chip bg-color">深度学习</span>
+                                <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">机器学习</span>
                                 </a>
                             
                         </div>
@@ -1117,29 +1042,30 @@ epoch 5, loss 0.0019, train acc 0.837, test acc 0.822
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/02/14/dl-notes3-mlp/">
+                <a href="/2020/03/01/ml-notes-2/">
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/8.jpg" class="responsive-img" alt="动手深度学习(三):多层感知机">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/5.jpg" class="responsive-img" alt="机器学习基础（二）LR SVM PCA">
                         
-                        <span class="card-title">动手深度学习(三):多层感知机</span>
+                        <span class="card-title">机器学习基础（二）LR SVM PCA</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            除了输入/输出层, 多层神经网络中引入了隐藏层, 以及一些常用的激活函数, ReLU, Sigmoid 等等
+                            重点介绍 LR SVM, PCA 等
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-14
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-01
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1152,11 +1078,12 @@ epoch 5, loss 0.0019, train acc 0.837, test acc 0.822
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                        <span class="chip bg-color">深度学习</span>
+                    <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">机器学习</span>
                     </a>
                     
                 </div>
@@ -1170,24 +1097,24 @@ epoch 5, loss 0.0019, train acc 0.837, test acc 0.822
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/02/14/dl-notes1-lin-re/">
+                <a href="/2020/02/26/housing-project/">
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/15.jpg" class="responsive-img" alt="动手深度学习(一):线性回归">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/17.jpg" class="responsive-img" alt="竞赛-房租预测">
                         
-                        <span class="card-title">动手深度学习(一):线性回归</span>
+                        <span class="card-title">竞赛-房租预测</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            从神经网络的角度, 重新认识一下线性回归
+                            比赛要求参赛选手根据给定的数据集，建立模型，预测房屋租金, 数据集中的数据类别包括租赁房源、小区、二手房、配套、新房、土地、人口、客户、真实租金等
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-26
                             </span>
                         <span class="publish-author">
                             
@@ -1204,8 +1131,12 @@ epoch 5, loss 0.0019, train acc 0.837, test acc 0.822
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                        <span class="chip bg-color">深度学习</span>
+                    <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">机器学习</span>
+                    </a>
+                    
+                    <a href="/tags/project/">
+                        <span class="chip bg-color">project</span>
                     </a>
                     
                 </div>
