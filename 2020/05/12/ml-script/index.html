@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="机器学习基础（二), HopenX">
-    <meta name="description" content="重点介绍 LR, SVM, 矩阵分解, 学习排序, PCA 等">
+    <meta name="keywords" content="ml-script, HopenX">
+    <meta name="description" content="脑中的知识网络电子化，腾空脑袋，专心研究公式与细节，每个节点都尽量简化，只作为提醒，可以作为速查速记的小抄，用的时候检索即可">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>机器学习基础（二) | HopenX</title>
+    <title>ml-script | HopenX</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/awesome/css/all.css">
@@ -292,7 +292,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">机器学习基础（二)</h1>
+                    <h1 class="description center-align post-title">ml-script</h1>
                 </div>
             </div>
         </div>
@@ -489,7 +489,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-03-01
+                    2020-05-12
                 </div>
                 
 
@@ -498,7 +498,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    6k
+                    2.4k
                 </div>
                 
 
@@ -516,307 +516,146 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="机器学习笔记（二）"><a href="#机器学习笔记（二）" class="headerlink" title="机器学习笔记（二）"></a>机器学习笔记（二）</h1><h2 id="SVM-支持向量机"><a href="#SVM-支持向量机" class="headerlink" title="SVM 支持向量机"></a>SVM 支持向量机</h2><h3 id="线性分类器"><a href="#线性分类器" class="headerlink" title="线性分类器"></a>线性分类器</h3><ul>
-<li>线性可分的情况下, 决策边界可以是多样的</li>
-<li>考虑数据噪声, 可以去除一些错误的划分. 不断扩大数据噪声, 不合适的决策划分就会被筛选掉, 最后得到一种最优的决策边界<code>最大间隔边界</code></li>
-<li>SVM 思想: 最大化间隔边界<code>margin</code>. 噪声扩大到最大的时候, 能够较好地把数据分开.</li>
-</ul>
-<h3 id="逻辑回归回顾"><a href="#逻辑回归回顾" class="headerlink" title="逻辑回归回顾"></a>逻辑回归回顾</h3><ul>
-<li>逻辑回归是一种二分类模型, 给出的是划分为 (0, 1) 的概率. 通过$\theta^Tx$通过一个 sigmoid 函数映射到 0-1 范围内. sigmoid 将一个得分转化为概率输出. 设置一个阈值$h$, 大于$h$则判断为 1.</li>
-</ul>
-<script type="math/tex; mode=display">
-\begin{array}{l}
-p_{\theta}(y=1 | x)=\sigma\left(\theta^{T} x\right)=\frac{1}{1+e^{-\theta^{T} x}} \\
-p_{\theta}(y=0 | x)=\frac{e^{-\theta^{T} x}}{1+e^{-\theta^{T} x}}
-\end{array}</script><ul>
-<li>均方误差 MSE<script type="math/tex; mode=display">
-M S E=\frac{1}{n} \sum_{i}^{n}\left(\hat{y}_{i}-y_{i}\right)^{2}</script>标准差 RMSE <script type="math/tex">RMSE=\sqrt{MSE}</script></li>
-</ul>
-<blockquote>
-<p>使用MSE的一个缺点就是其偏导值在输出概率值接近0或者接近1的时候非常小，这可能会造成模型刚开始训练时，偏导值几乎消失. 这导致模型在一开始学习的时候速率非常慢，而使用交叉熵作为损失函数则不会导致这样的情况发生.</p>
-</blockquote>
-<ul>
-<li>交叉熵损失函数<br>该函数是<code>凸函数</code>，求导时能够得到全局最优值. (记得前面有一个负号)<br>多分类情况下:<script type="math/tex; mode=display">
-L=\frac{1}{N} \sum_{i} L_{i}=\frac{1}{N} \sum_{i}-\sum_{c=1}^{M} y_{i c} \log \left(p_{i c}\right)</script>在二分的情况下，模型最后需要预测的结果只有两种情况，对于每个类别我们的预测得到的概率为 p 和 1-p. 此时表达式为：<script type="math/tex; mode=display">
-L=\frac{1}{N} \sum_{i} L_{i}=\frac{1}{N} \sum_{i}-\left[y_{i} \cdot \log \left(p_{i}\right)+\left(1-y_{i}\right) \cdot \log \left(1-p_{i}\right)\right]</script>其中：<br>$y_i$ —— 表示样本i的label，正类为1，负类为0<br>$p_i$ —— 表示样本i预测为正的概率<br><code>pi</code> 就是 sigmoid 函数输出的结果, 也可以写作为:<script type="math/tex; mode=display">
-\mathcal{L}\left(y, x, p_{\theta}\right)=-y \log \sigma\left(\theta^{T} x\right)-(1-y) \log \left(1-\sigma\left(\theta^{T} x\right)\right)</script>对应的梯度函数(导数):<script type="math/tex; mode=display">
-\frac{\partial \mathcal{L}\left(y, x, p_{\theta}\right)}{\partial \theta}=(\sigma(\theta^{T} x)-y) x</script>给定一个学习率 $\eta$, 步长 = 梯度 x 学习率, 那么 $\theta$ 学习/更新的过程就是:<script type="math/tex; mode=display">
-\theta \leftarrow \theta+\eta\left(y-\sigma\left(\theta^{T} x\right)\right) x</script></li>
-<li>逻辑回归打分函数:<script type="math/tex; mode=display">s(x)=\theta_0+\theta_1x_1+\theta_2x_2</script>也就是$\theta^{T} x$ ,也就是 $b+w^Tx$ . 在直线的上方, 函数值就会大于 0, sigmoid 的函数值就会越接近 1, 分类归为 1. 打分越高, 越远离决策边界, 具有更高的分类<code>置信度</code>.</li>
-</ul>
-<h3 id="SVM-支持向量机-简介"><a href="#SVM-支持向量机-简介" class="headerlink" title="SVM 支持向量机-简介"></a>SVM 支持向量机-简介</h3><h4 id="找到最小间隔"><a href="#找到最小间隔" class="headerlink" title="找到最小间隔"></a>找到最小间隔</h4><ul>
-<li>$y_i$ 取 -1 或 1</li>
-<li>思想: 找到离 decision boundry 最近的点, 找到 w 和 b, 让最小的 margin 获得比较大的值. <code>最大化最小的几何间隔</code></li>
-<li>点到直线的距离:<script type="math/tex; mode=display">
-d=\frac{\left|A x_{0}+B y_{0}+C\right|}{\sqrt{A^{2}+B^{2}}}</script>即<script type="math/tex; mode=display">
-d=\frac{\left|(A, B)\left(\begin{array}{c}
-x 0 \\
-y 0
-\end{array}\right)+C\right|}{\|(A, B)\|}</script>如果数据是 n 维时，此时直线就变成了平面，用 $w$ 表示平面的法向量得：<script type="math/tex; mode=display">
-d=\frac{|w \cdot x+b|}{\|w\|}</script></li>
-<li><strong>函数间隔</strong>:<br>由于分母${|w|}$都是相同的, 我们只需比较分子, 于是有了函数间隔<script type="math/tex; mode=display">
-\hat{\gamma}^{(i)}=y^{(i)}\left(w^{T} x^{(i)}+b\right).</script>乘以 $y^{(i)}$ 是为了<code>取绝对值</code>, 非 -1 即 1</li>
-<li><p><strong>几何间隔</strong>:<br>w 和 b 的赋值可以同时改变, 比如同时$*2$, $\hat{y}^{(i)}$ 值会变大, 但是分割超平面不会变化 (因为=0的解是一样的)<br>所以需要对法向量加某些约束, 我们可以除以一个||w||, 作为 normalizaiton<code>归一化</code>, 使得<code>函数间隔 -&gt; 几何间隔</code>. 即对 $w$ 使用<code>L2范数</code>进行规范化，使得间隔是确定的.</p>
-<script type="math/tex; mode=display">
-\hat{\gamma}^{(i)}=y^{(i)}\left[\left(\frac{w}{\|w\|}\right)^{T} x^{(i)}+\frac{b}{\|w\|}\right]</script><p>给定一个训练集, 就可以依次计算 $\hat{\gamma}^{(i)}$, 选出最小的几何间隔 ${\gamma}$, 作为整个数据集到超平面的几何间隔. 满足这个几何间隔的点, 就是<code>支撑向量</code>.</p>
+                <h1 id="机器学习小抄"><a href="#机器学习小抄" class="headerlink" title="机器学习小抄"></a>机器学习小抄</h1><h2 id="机器学习概观"><a href="#机器学习概观" class="headerlink" title="机器学习概观"></a>机器学习概观</h2><ol>
+<li><p>频率学派：统计学习<br>核心是「数据」，它既从数据中来，利用不同的模型去拟合数据背后的规律；也到数据中去，用拟合出的规律去推断和预测未知的结果. 统计学习中最基础的模型是<code>线性回归</code>，几乎所有其他模型都是从不同角度对线性回归模型做出的扩展与修正</p>
 </li>
-<li><p><strong>优化目标</strong>:<br>对于几何间隔</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-&\max _{\gamma, \omega, b} \gamma\\
-&\text { s.t. } \quad y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq \gamma, \quad i=1, \dots, m\\
-\end{aligned}</script><p>限定的条件是 $||w||=1$, 也就是 w 在一个环上, 不是一个凸集, 所以是一个<code>非凸约束</code>.<br>等同于优化一个<code>非凸的目标函数</code>, 这种情况下,  $||w||$ 作为分母, 仍然是一个非凸函数.(如果是分子, 就是凸函数)</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-&\max _{\gamma, w, b} {\frac{\hat{\gamma}}{\|w\|}}\\
-&\text { s.t. } \quad y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq \hat{\gamma}, \quad i=1, \ldots, m
-\end{aligned}</script></li>
-<li><p>调整后的目标函数:<br>由于分类间隔的变化, 即 w, b 的放缩不会影响决策边界, 将函数间隔<code>固定为 1</code>, 即$\hat{\gamma}=1$, 目标函数重写为 (二次规划)</p>
-<script type="math/tex; mode=display">
-\max _{w, b} \frac{1}{\|w\|}</script><p>等同于</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-&\min _{w, b} \frac{1}{2}{\|w\|}^2\\
-&\text { s.t. } \quad y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq \hat{\gamma}, \quad i=1, \ldots, m
-\end{aligned}</script><blockquote>
-<p>用直线画出来的区域/函数一定是一个凸集</p>
-</blockquote>
+<li><p>贝叶斯学派：符号学习，概率图模型<br>基于关系的图模型更多地代表了「因果推理」的发展方向. 贝叶斯主义也需要计算待学习对象的概率分布，但它利用的不是海量的具体数据，而是变量之间的相关关系、每个变量的先验分布和大量复杂的积分技巧</p>
 </li>
-</ul>
-<h3 id="SVM-支持向量机-优化"><a href="#SVM-支持向量机-优化" class="headerlink" title="SVM 支持向量机-优化"></a>SVM 支持向量机-优化</h3><h4 id="拉格朗日乘子法"><a href="#拉格朗日乘子法" class="headerlink" title="拉格朗日乘子法"></a>拉格朗日乘子法</h4><p>对于凸优化问题</p>
-<script type="math/tex; mode=display">
-\begin{array}{ll}
-\min _{w} & f(w) \\
-\text { s.t. } & h_{i}(w)=0, \quad i=1, \dots, l
-\end{array}</script><p>拉格朗日函数定义为</p>
-<script type="math/tex; mode=display">
-\mathcal{L}(w, \beta)=f(w)+\sum_{i=1}^{l} \beta_{i} h_{i}(w)</script><blockquote>
-<p>其中 $\beta_{i}$ 称之为拉格朗日乘子</p>
-</blockquote>
-<p>问题的解, 对 $w$ 和 $\beta$ 分别求导 =0 即可</p>
-<script type="math/tex; mode=display">
-\frac{\partial \mathcal{L}(w, \beta)}{\partial w}=0 \quad \frac{\partial \mathcal{L}(w, \beta)}{\partial \beta}=0</script><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/27/WFAhMKzVsPD7xZJ.png" alt="拉格朗日法-原理解析"><br>解求得的点, 就是 $h(w)=0$ 与等高线的一个切点, 在其他任何地方, $f(w)$ 都会更大. 在这里, $f(w)$ 即为 $ \frac{1}{2}{|w|}^2$</p>
-<h4 id="通用凸优化问题"><a href="#通用凸优化问题" class="headerlink" title="通用凸优化问题"></a>通用凸优化问题</h4><p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/28/97GTvousRYj8S1y.png" alt="凸优化问题"><br>满足约束条件的情况下, 后面两个式子一定 $=0$, 当约束条件不满足条件下, 一定能取 $\alpha_{i}$ 和 $\beta_{i}$, 最终拉格朗日函数 $=+\infty$<br>最后原始问题即为:</p>
-<script type="math/tex; mode=display">
-\theta_{\mathcal{P}}(w)=\left\{\begin{array}{ll}
-f(w) & \text w 满足原始问题约束 \\
-+\infty & 其他
-\end{array}\right.</script><p>函数最小化问题</p>
-<script type="math/tex; mode=display">
-\min _{w} {\theta}_{\mathcal{P}}(w)=\min _{w} \max _{\alpha, \beta: \alpha_{i} \geq 0} \mathcal{L}(w, \alpha, \beta)</script><p>等同于原来的优化任务</p>
-<script type="math/tex; mode=display">
-\begin{array}{ll}
-\min _{w} & f(w) \\
-\text { s.t. } & g_{i}(w) \leq 0, \quad i=1, \ldots, k \\
-& h_{i}(w)=0, \quad i=1, \ldots, l
-\end{array}</script><p>原始问题的解即为</p>
-<script type="math/tex; mode=display">
-p^\star=\min _{w} \theta_{\mathcal{P}}(w)</script><p>求解 $f(w)$ 之所以添加一个 $\theta_{\mathcal{P}}(w)$, 就是为了省略掉 $g_{i}(w)$ 和 $h_{i}(w)=0$ 这些限制条件, 最后简洁地表示成一个函数.</p>
-<h4 id="对偶问题-amp-KKT"><a href="#对偶问题-amp-KKT" class="headerlink" title="对偶问题 &amp; KKT"></a>对偶问题 &amp; KKT</h4><p>将研究的参数转化为 $\alpha$ 和 $\beta$</p>
-<script type="math/tex; mode=display">
-\max _{\alpha, \beta: \alpha_{i} \geq 0} \theta_{\mathcal{D}}(\alpha, \beta)=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta)</script><p>对偶问题的解为</p>
-<script type="math/tex; mode=display">
-d^\star=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta)</script><p>两者之间的关系 (恒成立)</p>
-<script type="math/tex; mode=display">
-d^\star=\max _{\alpha, \beta: \alpha_{i} \geq 0} \min _{w} \mathcal{L}(w, \alpha, \beta) \leq \min _{w} \max _{\alpha, \beta: \alpha_{i} \geq 0} \mathcal{L}(w, \alpha, \beta)=p^\star</script><p>满足一定条件, 可以使 $d^ \star =p^ \star $, 即 <code>KKT 条件</code><br>前提:</p>
-<ul>
-<li>假设 $f$ 以及 $g_i$ 是凸函数,并且 $h_i$ 为仿射函数,且 $g_i$ 严格满足可行域</li>
-<li>必然存在 $(w^\star ,\alpha^\star ,\beta^\star )$, 满足: $w_\star $ 是原始问题的解, $\alpha^\star $ , $\beta^\star $ 是对偶问题的解, 且两个问题的解数值相等$d^ \star =p^ \star $</li>
-<li>同时, $(w^\star ,\alpha^\star ,\beta^\star )$ 满足KKT条件<script type="math/tex; mode=display">
-\begin{aligned}
-&\frac{\partial}{\partial w_{i}} \mathcal{L}\left(w^{\star}, \alpha^{\star}, \beta^{\star}\right)=0, i=1, \dots, n\\
-&\frac{\partial}{\partial \beta_{i}} \mathcal{L}\left(w^{\star}, \alpha^{\star}, \beta^{\star}\right)=0, i=1, \ldots, l\\
-&\alpha_{i}^{\star} g_{i}\left(w^{\star}\right)=0, i=1, \dots, k\\
-&g_{i}\left(w^{\star}\right) \leq 0, i=1, \dots, k\\
-&{\alpha}^{\star} \geq 0, i=1, \ldots, k
-\end{aligned}</script></li>
-</ul>
-<p>对 $w$ 和 对 $\beta_i$ 导数均为 0, 才能让他俩的梯度共线, 从而找到切点.<br>其中 $\alpha_{i}^ \star  g_{i}\left(w^ \star \right)=0, i=1, \dots, k$ 称为<code>KKT对偶互补条件</code><br>因为原始的约束中, $g_{i}\left(w^ \star \right)\leq0$, 是有可能 $&lt;0$ 的, 这个时候 $\alpha_i$ 一定要 $=0$; 当 $\alpha_i\ne0$,  这个时候 $g_{i}\left(w^ \star \right)$ 一定要 $=0$</p>
-<h4 id="SVM-求解推导"><a href="#SVM-求解推导" class="headerlink" title="SVM 求解推导"></a>SVM 求解推导</h4><ul>
-<li><strong>第一步: 利用拉格朗日对偶, 确定目标函数</strong></li>
-<li>目标函数: <code>寻找最优间隔分类器</code><br>由于已经固定 $\hat{\gamma}=1$, 也就意味着到超平面的距离为1的点都是支持向量<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/28/kOjBcHx6t8zZFNa.png" alt="支持向量"><br>代入 $\hat{\gamma}=1$, 问题变成<script type="math/tex; mode=display">
-\begin{aligned}
-&\min _{w, b} \frac{1}{2}{\|w\|}^2\\
-&\text { s.t. } \quad y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq 1, \quad i=1, \ldots, m
-\end{aligned}</script>构造拉格朗日函数<script type="math/tex; mode=display">
-L(w, b, \alpha)=\frac{1}{2}\|w\|^2-\sum_{i=1}^{n} \alpha_{i}\left(y_{i}\left(w \cdot x_{i}+b\right)-1\right), \alpha_{i} \geq 0</script></li>
-<li>$\alpha&gt;0$ 成立的条件, 仅当 $x_i$ 卡在支持向量上, 即 $g_{i}\left(w^\star\right)=0$ 的时候, 也即函数间隔 $\hat{\gamma}=1$ 的时候. 其他点都没有影响, 对应的 $\alpha_i=0$. 这也说明, 分割平面 $w$ 的确定, 只取决于全局函数间隔最小的这几个点的位置.</li>
-<li>只要满足 KKT 条件, 求解对偶问题, 相当于间接地求解了原问题<br>现在需要最大化 $ L(w,b,\alpha )$，所以问题变成 <script type="math/tex; mode=display">
-\min _{w, b} \max _{\alpha} L(w, b, \alpha)</script>根据拉格朗日对偶性, 问题变成<script type="math/tex; mode=display">
-\max _{\alpha} \min _{w, b} L(w, b, \alpha)</script></li>
-<li><p><strong>第二步: 求  $ \mathop {\min }\limits_{w,b} L(w,b,\alpha )$</strong><br>让  $L(w,b,\alpha)$  分别对 $w,b$ 求偏导，使导数为 0：<br>$ \frac{ {\partial L(w,b,\alpha )} }{ {\partial w} } = w - \sum\limits_{i = 1}^n { {\alpha _i}{y_i}{x_i} } = 0$  ————&gt;  $ w = \sum\limits_{i = 1}^n { {\alpha _i}{y_i}{x_i} }$<br>$ \frac{ {\partial L(w,b,\alpha )} }{ {\partial b} } = \sum\limits_{i = 1}^n { {\alpha _i}{y_i} } = 0$ ————————-&gt; $\sum\limits_{i = 1}^n { {\alpha _i} {y_i} } = 0 $<br>代入原式$L(w, b, \alpha)$可得</p>
-<script type="math/tex; mode=display">
-\min _{w, b} L(w, b, \alpha)=-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} x_{j}\right)+\sum_{i=1}^{n} \alpha_{i}</script></li>
-<li><p><strong>第三步:  求 $ \mathop {\min }\limits_{w,b} L(w,b,\alpha )$ 对 $ \alpha $ 的极大值 - SMO</strong><br>问题变为： </p>
-<script type="math/tex; mode=display">\mathop {\max }\limits_\alpha \ \ - \frac{1}{2}\sum\limits_{i = 1}^n {\sum\limits_{j = 1}^n { {\alpha _i}{\alpha _j}{y_i}{y_j}({x_i}{x_j})} } + \sum\limits_{i = 1}^n { {\alpha _i}}</script><p>约束条件为： <script type="math/tex">\sum\limits_{i = 1}^n { {\alpha _i}{y_i}} = 0，  {\alpha _i} \ge 0,i = 1,2...n</script><br>所以只要知道 $ {\alpha }$， 也就知道了$w$. 我们使用 SMO 算法, <code>假设已经求出</code>最优解为 $ {\alpha^ \star  } = {(\alpha _1^ \star  ,\alpha _2^ \star  ….\alpha _n^ \star  )^T}$</p>
+<li><p>机器学习三要素<br>机器学习的三要素就是：<code>表示，评估和优化</code><br>表示：指的是将样本空间映射到一个合适的特征空间，一般地，我们更青睐于这样的表示是低维度的，是更加稀疏交互的，同时也希望是相互独立的<br>评估：指的是模型在数据上表现的量化形式，我们选取合适的函数来表示什么样子的模型是好的，性能度量就是评估<br>优化：就是对评估函数进行求解，找出最合适的解，来确定最终的模型</p>
 </li>
-<li><p><strong>第四步:  求 ${w^ \star }$ 和 $b^ \star $ 得到超平面</strong><br>已知最优的 ${\alpha ^ \star }$, 由第一步 $w=\sum\limits_{i = 1}^n {\alpha _i}{y_i}{x_i}$ 可求出最优的 ${w^ \star  } $ </p>
-<script type="math/tex; mode=display">{w^\star } = \sum\limits_{i = 1}^n {\alpha _i^ \star  {y_i}{x_i}}</script><p>由 KKT 条件中的<code>对偶互补条件</code>, 至少存在一个 $ \alpha _i^ \star &gt;0 $ 使得 $\alpha_{i}^ \star  g_{i}\left(w^ \star \right)=0$, 即</p>
-<script type="math/tex; mode=display">
-\alpha_{i}^ \star \left(y_{i}\left(w^ \star  \cdot x_{i}+b^ \star \right)-1\right)=0, i=1,2 \ldots n</script><p>可以证明至少存在一个 $\alpha _j^  \star &gt;0$ 使等式成立，所以可得：</p>
-<script type="math/tex; mode=display">{y_j}({w^ \star }\cdot {x_j} + {b^ \star }) - 1 = 0</script><p>因为 $ {y_i} = \{ + 1, - 1\}$ ，所以 $\frac{1}{ { {y_i}}} = {y_i}$ 进而得到</p>
-<script type="math/tex; mode=display">
-b^ \star =y_{j}-\sum_{i=1}^{n} \alpha_{i}^ \star  y_{i}\left(x_{i} \cdot x_{j}\right)</script><p>至此 $ w^ \star  和  b^ \star  $ 都已经得到，所以可以得到<code>超平面</code>：$ {w^ \star }\cdot x + {b^ \star } = 0$</p>
-</li>
-</ul>
-<h4 id="SMO-序列最小优化"><a href="#SMO-序列最小优化" class="headerlink" title="SMO 序列最小优化"></a>SMO 序列最小优化</h4><ul>
-<li>上面我们只是假设已经求得了 $ {\alpha ^ \star } = {(\alpha _1^ \star ,\alpha _2^ \star ….\alpha _n^ \star )^T}$，用到的方法是<code>SMO（Sequential Minimal Optimization）即序列最小优化</code>，感觉SMO其实不属于支持向量机算法的一部分.</li>
-<li>SMO的思想<br>拉格朗日乘子 $\alpha$ 有许多个，如果采用单个 $\alpha$ 坐标上升法, 无法满足 $\sum_{i=1}^{m} \alpha_{i} y^{(i)}=0$ 的条件.<br>于是, 每次只选择其中<code>两个</code>变量作为未知量，其他乘子作为已知量，将N个问题转变成两个变量的求解问题. 当 $W(\alpha)$ 的变化小于一个阈值, 比如 0.01, 可以判定为收敛. 比如对于线性可分支持向量机的目标函数：<script type="math/tex; mode=display">\mathop {\max }\limits_\alpha \ \ - \frac{1}{2}\sum\limits_{i = 1}^n {\sum\limits_{j = 1}^n { {\alpha _i}{\alpha _j}{y_i}{y_j}({x_i}{x_j})} } + \sum\limits_{i = 1}^n { {\alpha _i}}</script>约束条件为： <script type="math/tex">\sum\limits_{i = 1}^n { {\alpha _i}{y_i}} = 0，  {\alpha _i} \ge 0,i = 1,2...n</script><br>一开始随机选取两个变量 $ {\alpha _1},{\alpha _2} $作为未知量，其他因子 ${\alpha _i}(i = 3,4…n)$ 当作已知来求目标函数的最小值，求出 ${\alpha _1},{\alpha _2}$ 再带入进去，再选取 $ {\alpha _3},{\alpha _4}$ 求目标函数最小值，求出后继续带入，直到目标函数收敛.<br>由于每一对 $(\alpha_i, \alpha_j)$ 都互相可以表示出来, 最终转化为以单个变量 $\alpha_j$ 的二次函数优化问题, 用二次函数即可求解.<script type="math/tex; mode=display">
-\begin{array}{c}
-\max _{\alpha_{2}} W\left(\alpha_{2}\right)=a \alpha_{2}^{2}+b \alpha_{2}+c \\
-\text { s.t. } 0 \leq \alpha_{2} \leq C
-\end{array}</script></li>
-</ul>
-<h4 id="核函数方法-Kernel-Function"><a href="#核函数方法-Kernel-Function" class="headerlink" title="核函数方法 Kernel Function"></a>核函数方法 Kernel Function</h4><ul>
-<li>处理线性不可分的情况, 增加一个<code>松弛变量</code> $\xi$, 允许函数间隔小于 1, 甚至小于 0. <script type="math/tex; mode=display">
-\begin{array}{l}
-\min _{w, b, \xi} \frac{1}{2}\|w\|^{2}+c \sum_{i=1}^{m} \xi_{i} \\
-\\
-\text { s.t. } y^{(i)}\left(w^{T} x^{(i)}+b\right) \geq 1-\xi_{i}, \quad i=1, \ldots, m \\
-\quad \xi_{i} \geq 0, \quad i=1, \ldots, m
-\end{array}</script></li>
-<li>拉格朗日函数<script type="math/tex; mode=display">
-\mathcal{L}(w, b, \xi, \alpha, r)=\frac{1}{2} w^{T} w+C \sum_{i=1}^{m} \xi_{i}-\sum_{i=1}^{m} \alpha_{i}\left[y^{(i)}\left(x^{T} w+b\right)-1+\xi_{i}\right]-\sum_{i=1}^{m} r_{i} \xi_{i}</script></li>
-<li>对偶问题: 此时 $\alpha$ 不再是 &gt;= 0, 而是 $0 \leq \alpha \leq C$<script type="math/tex; mode=display">
-\begin{aligned}
-&\max _{\alpha} W(\alpha)=\sum_{i=1}^{m} \alpha_{i}-\frac{1}{2} \sum_{i, j=1}^{m} y^{(i)} y^{(j)} \alpha_{i} \alpha_{j} x^{(i)^{T}} x^{(j)}\\
-&\text { s.t. } 0 \leq \alpha_{i} \leq C, \quad i=1, \ldots, m\\
-&\sum_{i=1}^{m} \alpha_{i} y^{(i)}=0
-\end{aligned}</script></li>
-<li>基本思想: 将原来的 x 空间中的特征, 映射到 $\phi(x)$ 高维空间中. 原本只着眼于内积运算 $x^{(i)^{T}} x^{(j)}$, 给定 $\phi(x)$, 变成<code>核函数</code>运算 <script type="math/tex; mode=display">K\left(x^{(i)}, x^{(j)}\right)=\phi\left(x^{(i)}\right)^{T} \phi\left(x^{(j)}\right)</script>目标函数变成<script type="math/tex; mode=display">
-W(\alpha)=\sum_{i=1}^{m} \alpha_{i}-\frac{1}{2} \sum_{i, j=1}^{m} y^{(i)} y^{(j)} \alpha_{i} \alpha_{j} K\left(x^{(i)}, x^{(j)}\right)</script></li>
-<li><code>核技巧</code> Kernel Trick<br>多数情况下, 可以直接定义  $K\left(x^{(i)}, x^{(j)}\right)$ 而不需要 $\phi(x)$, 比如直接假定 $K\left(x^{(i)}, x^{(j)}\right)=\left(x^{(i)^{T}} x^{(j)}\right)^{2}$<br>时间复杂度可以明显降低, 比如从 $O(n^2)$ 降低到  $O(n)$</li>
-<li>给定核函数, 再通过 SMO 即可求得 $\alpha$, 再通过 $\alpha$ 求得 $w$ 和 $b$, $\phi(x)$ 的计算被约去, 得到函数间隔/目标函数为<script type="math/tex; mode=display">
-\begin{aligned}
-w^{ \star  T} x+b^ \star  &=\left(\sum_{i=1}^{m} \alpha_{i} y^{(i)} \phi\left(x^{(i)}\right)\right)^{T} \phi(x)+b^ \star  \\
-&=\sum_{i=1}^{m} \alpha_{i} y^{(i)} K\left(x^{(i)}, x\right)+b^ \star 
-\end{aligned}</script></li>
-<li>高斯核函数 - 非常常用<br>对于 x 和 z 两个样例, 我们需要刻画其<code>相似性度量</code><script type="math/tex; mode=display">
-K(x, z)=\exp \left(-\frac{\|{x}-z \|^{2}}{2 \sigma^{2}}\right)</script>也称为<code>径向基函数</code>(RBF)核. 将其中一个 x 设为高斯分布的中心点, 计算 z 的概率密度</li>
-<li>核矩阵K<script type="math/tex; mode=display">
-\left\{K_{i, j}\right\}_{i, j=1, \ldots, m}</script></li>
-<li>有效核: 一定能写成两个 $\phi(x)$ 函数相乘, 一定是对称矩阵, 半正定矩阵 —&gt; 对于任何向量 z, $z^TKz\geq0$. 常见的有 RBF 核, 多项式核$K(x, z)=\left(x^{T} z\right)^{d}$, 余弦相似度核$K(x, z)=\frac{x^{T} z}{|x| \cdot|z|}$, sigmoid 核等. 使用 Sigmoid核的 SVM, 相似于于一个二层的感知机.</li>
-<li>核函数, 同样可以映射到<code>广义的线性模型</code>, 只要涉及到映射 $\phi(x)$, 就可以通过 Kernel Trick 免去计算 ${\Phi}^{T} {\Phi}$, 而直接计算核矩阵<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/gyzILRlJv1SjseU.png" alt="广义线性模型的核技巧"></li>
-</ul>
-<h4 id="SVM-总结"><a href="#SVM-总结" class="headerlink" title="SVM 总结"></a>SVM 总结</h4><ul>
-<li><p>SVM 独到的特点<br>不需要去具体计算 $w$ 和 $b$ 的值是多少, 新进来需要预测的点, 只需要计算<code>和已知的支持向量点的内积</code>即可, 即只需要计算两个点之间的相似度, 而不需要去具体计算支持向量是什么.</p>
-</li>
-<li><p>SVM 的损失函数<br>使用铰链损失 <code>Hinge Loss</code>, 只关注函数间隔 &lt;=1 的情况, &gt;1 的情况的 loss 忽略为 0. 而逻辑回归即使计算所得的 p 再高, 也依然要计算 loss.<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/28/OL46fhGWiAIQPgH.png" alt="损失函数对比"></p>
-</li>
-<li><p><a href="https://www.kaggle.com/zhpan92/boyu-svm" target="_blank" rel="noopener">代码实践👆(SMO 等具体细节)</a></p>
-</li>
-</ul>
-<p>调用 scikit-learn 为例, 使用 rbf 核函数</p>
-<pre><code class="lang-py">from sklearn import svm
-# x, y = simple_synthetic_data(50, 5, 5)
-x, y = spiral_data()
-
-model = svm.SVC(kernel=&#39;rbf&#39;, gamma=50, tol=1e-6)
-model.fit(x, y)
-
-fig = plt.figure(figsize=(6,6))
-ax = fig.add_subplot(111)
-plot(ax, model.predict, x, &#39;SVM + RBF&#39;)
-plt.show()
-</code></pre>
-<p><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/KcCRFjglUkh3Gos.png" alt=""></p>
-<h2 id="学习排序方法"><a href="#学习排序方法" class="headerlink" title="学习排序方法"></a>学习排序方法</h2><h3 id="Pointwise"><a href="#Pointwise" class="headerlink" title="Pointwise"></a>Pointwise</h3><ul>
-<li>预测绝对相关度 (比如 RMSE), 是预测专家系统, 人为地给定相关度评估, 提取一系列的特征, 当做<code>回归问题</code>处理.</li>
-<li>存在的问题: 单点精度 $\ne$ 排序精度, 在 $(\hat{y}-y)^2$ 相同的情况下, 排序顺序可能发生变化.</li>
-</ul>
-<h3 id="Pairwise"><a href="#Pairwise" class="headerlink" title="Pairwise"></a>Pairwise</h3><ul>
-<li>不关心绝对相关性, 关注文档的相对偏好, 转化为一系列<code>二分类问题</code>. 建立 RankNet</li>
-<li>每个文档的相对的目标概率<script type="math/tex; mode=display">
-y_{i, j}=f(x)=\left\{\begin{array}{lr}
-1, & \text { if } i排在j前 \\
-0, & \text { otherwise }
-\end{array}\right.</script>i 排在 j 前面则为 1, 否则为 0.<br>使用 sigmoid 构造逻辑回归 —-&gt; 使用交叉熵损失函数作为 loss —-&gt; 计算梯度 —-&gt; 在神经网络中 BP<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/EVvyXZgjtsnaM4k.png" alt="Pairwise"></li>
-<li>排序评估指标:<br>查询 q 的标准折扣累积增益 (NDGC@k)<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/PpWRifaGJ3koHZ7.png" alt="NDGC"></li>
-<li>缺点: 对于搜索引擎, 排在前列的文档是否排序正确, 更为重要. 各个文档之间相关性排序是否正确的重要性不同. 相同的排序 pair 错误, 即两对排序交叉熵相同, 但对于整个排序列的影响不同. 比如 &lt; 1, 6 &gt; 和 &lt; 3, 4 &gt; 排序错误的影响不同.</li>
-</ul>
-<h3 id="Listwise"><a href="#Listwise" class="headerlink" title="Listwise"></a>Listwise</h3><p>对于一个 list, 即<code>预测排序列表</code>和<code>真实排序列表</code>之间的差异直接简历损失函数</p>
-<ul>
-<li>ListNet<br>对于 n 个文档, 就是一个 n! 分类的问题. 对整个列表计算 softmax, 然后计算交叉熵 loss.<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/Q9l37MiZzuUxocn.png" alt="ListNet"></li>
-<li>KL 散度<br>计算不同分布之间的 distance</li>
-</ul>
-<h3 id="LambdaRank"><a href="#LambdaRank" class="headerlink" title="LambdaRank"></a>LambdaRank</h3><ul>
-<li>Pairwise 损失了 list-level 列表级评估, Listwise 要求较高的模型复杂度. 于是产生了结合方案: 利用 listwise 的信息, 做 pairwise 的二分类训练, 损失仍然建立在 pair 上, 但是利用 list 的信息, 做一个 weighting 操作</li>
-<li>LambdaRank 优化 NDGC<br>交换 i 和 j 的排序, 看看$\Delta$NDGC 的值, 即变化情况. 将外部排序的信息, 作为 $h\left(\lambda_{i, j}, g_{q}\right)$ 注入.<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/YpdGTvMh9ilo6gW.png" alt="LambdaRank"></li>
-<li>Pairwise 方法仍然是最受欢迎最广泛应用的学习排序算法<br>排序精度和训练效率的平衡              </li>
-<li>LambdaRank 是一种具有排序列表级信息的 pairwise 方法<br>容易实现,易于改进和调整</li>
-</ul>
-<h2 id="矩阵分解的协同过滤算法"><a href="#矩阵分解的协同过滤算法" class="headerlink" title="矩阵分解的协同过滤算法"></a>矩阵分解的协同过滤算法</h2><p>用户-物品矩阵进行预测, 都可以通过分解为两个低秩矩阵, 进行相乘, 从而可以得知矩阵空白处的预测值. 比如分解电影网站的用户打分矩阵, 和电影得分矩阵, 可以预测用户 p 对于一个新的物品 i 的喜好程度.</p>
-<h3 id="基本模型-Matrix-Factorization"><a href="#基本模型-Matrix-Factorization" class="headerlink" title="基本模型 Matrix Factorization"></a>基本模型 Matrix Factorization</h3><ul>
-<li>双线性模型, 参数与参数相乘, pu 为用户偏好矩阵, qi 为物品评价矩阵, 用户 u 在物品 i 上的预测为<script type="math/tex; mode=display">
-\hat{r}_{u, i}=p_{u}^{T} q_{i}</script></li>
-<li>均方误差构造损失函数<script type="math/tex; mode=display">
-\mathcal{L}\left(u, i, r_{u, i}\right)=\frac{1}{2}\left(r_{u, i}-p_{u}^{T} q_{i}\right)^{2}</script></li>
-<li>训练目标: 均方误差+L2范式<script type="math/tex; mode=display">
-\min _{P, Q} \sum_{r_{u, i} \in D} \frac{1}{2}\left(r_{u, i}-p_{u}^{T} q_{i}\right)^{2}+\frac{\lambda}{2}\left(\left\|p_{u}\right\|^{2}+\left\|q_{i}\right\|^{2}\right)</script></li>
-<li>梯度更新: pu 在 qi 方向上变大/变小, qi 在 pu 的方向上变大/变小<script type="math/tex; mode=display">
-\begin{array}{l}
-\frac{\partial \mathcal{L}\left(u, i, r_{u, i}\right)}{\partial p_{u}}=\left(p_{u}^{T} q_{i}-r_{u, i}\right) q_{i}+\lambda p_{u} \\
-\\
-\frac{\partial \mathcal{L}\left(u, i, r_{u, i}\right)}{\partial q_{i}}=\left(p_{u}^{T} q_{i}-r_{u, i}\right) p_{u}+\lambda q_{i}
-\end{array}</script></li>
-</ul>
-<h3 id="带偏差的矩阵分解模型"><a href="#带偏差的矩阵分解模型" class="headerlink" title="带偏差的矩阵分解模型"></a>带偏差的矩阵分解模型</h3><ul>
-<li><p>解决动态变化问题<br>因子模型方便地允许分别处理不同原因, 可以通过大量参数化函数来获得灵活性. 我们观察到的变化: 个人用户的评分等级 $b_u(t)$  个人物品的受欢迎程度 $b_i(t)$  用户偏好 $p_u(t)$  全局bias $\mu$ </p>
-</li>
-<li><p>考虑多种偏差, 用户 u 在物品 i 上的预测为<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/IovOtfdJp2lPKUR.png" alt=""></p>
-</li>
-<li><p>训练目标</p>
-<script type="math/tex; mode=display">
-\min _{P, Q} \sum_{r_{u, i} \in D} \frac{1}{2}\left(r_{u, i}-\left(\mu+b_{u}+b_{i}+p_{u}^{\top} q_{i}\right)\right)^{2}+\frac{\lambda}{2}\left(\left\|p_{u}\right\|^{2}+\left\|q_{i}\right\|^{2}+b_{u}^{2}+b_{i}^{2}\right)</script></li>
-<li><p>梯度更新 导数$\times$步长</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\delta &=r_{u, i}-\left(\mu+b_{u}+b_{i}+p_{u}^{T} q_{i}\right) \\
-\mu & \leftarrow \mu+\eta \delta \\
-b_{u} & \leftarrow(1-\eta \lambda) b_{u}+\eta \delta \\
-b_{i} & \leftarrow(1-\eta \lambda) b_{i}+\eta \delta \\
-p_{u} & \leftarrow(1-\eta \lambda) p_{u}+\eta \delta q_{i} \\
-q_{i} & \leftarrow(1-\eta \lambda) q_{i}+\eta \delta p_{u}
-\end{aligned}</script></li>
-<li><p>发展: 深度学习大行其道</p>
-</li>
-<li>代码实践: <a href="https://www.kaggle.com/chenhaokun/matrix-factorization" target="_blank" rel="noopener">👆矩阵分解</a><br>向量即 embedding<br>embedding_size 每个用户的向量维度<br>user_embeddings 和 item_embeddings 即 p 和 q 的矩阵</li>
-</ul>
-<h2 id="主成分分析-PCA"><a href="#主成分分析-PCA" class="headerlink" title="主成分分析 PCA"></a>主成分分析 PCA</h2><p>目的: 将数据的某一维的特征差异进行放大, 其他维度进行压缩甚至忽略. 也可以选择降到 k 维.</p>
-<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><ol>
-<li><p>将数据集的中心移到 0</p>
-<script type="math/tex; mode=display">
-\mu=\frac{1}{m} \sum_{i=1}^{m} x^{(i)}</script><script type="math/tex; mode=display">
-x^{(i)} \leftarrow x^{(i)}-\mu</script></li>
-<li><p>统一每个变量的方差</p>
-<script type="math/tex; mode=display">
-\sigma_{j}^{2}=\frac{1}{m} \sum_{i=1}^{m}\left(x_{j}^{(i)}\right)^{2}</script><script type="math/tex; mode=display">
-x_{j}^{(i)} \leftarrow x_{j}^{(i)} / \sigma_{j}</script></li>
 </ol>
-<h3 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h3><ul>
-<li>利用特征值与特征向量, 找到一组标准正交基 —-&gt; 从而可以将任何向量用标准正交基表示 —-&gt; 从而可以将任何协方差矩阵用 $UWU^T$ 形式表示, U 为正交基矩阵, W 就是本矩阵的特征值.</li>
-<li>PCA 的目的是找到一个方向 $v$, 使得在这个方向上数据 X 的投影的<code>方差最大</code>, 方差越大越能保留尽可能多的有效信息. 由于均值已经为 0, 数据 $X$ 在方向 $v$ 的方差就是 $||Xv||^2$. 最后推算的结论就是, 需要<code>最大特征值</code>对应的<code>特征向量</code>.</li>
-<li>最终得到 X 的主成分矩阵为 $T=WX$, 其中 $W$ 为$ X^TX$ 的特征值矩阵<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/03/01/wXQY5E4Vpfb9SWN.png" alt=""><br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/03/01/pR8nGAxBsk7oNrv.png" alt=""></li>
+<h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><h3 id="1-特征选择"><a href="#1-特征选择" class="headerlink" title="1. 特征选择"></a>1. 特征选择</h3><h3 id="2-特征表达"><a href="#2-特征表达" class="headerlink" title="2. 特征表达"></a>2. 特征表达</h3><h3 id="3-特征预处理"><a href="#3-特征预处理" class="headerlink" title="3. 特征预处理"></a>3. 特征预处理</h3><p>标准化 归一化 </p>
+<h3 id="4-降维-PCA-LDA-SVD"><a href="#4-降维-PCA-LDA-SVD" class="headerlink" title="4. 降维 PCA LDA SVD"></a>4. 降维 PCA LDA SVD</h3><h2 id="模型评估"><a href="#模型评估" class="headerlink" title="模型评估"></a>模型评估</h2><h3 id="1-分类"><a href="#1-分类" class="headerlink" title="1. 分类"></a>1. 分类</h3><p>TP FP TN FN ROC AUC</p>
+<h3 id="2-回归"><a href="#2-回归" class="headerlink" title="2.回归"></a>2.回归</h3><p>均方误差，平均误差，R 方</p>
+<h3 id="3-检验"><a href="#3-检验" class="headerlink" title="3. 检验"></a>3. 检验</h3><p>训练集 -（测试集） - 验证集<br>k 折交叉验证，留一法，自助法</p>
+<h3 id="4-超参数调优"><a href="#4-超参数调优" class="headerlink" title="4. 超参数调优"></a>4. 超参数调优</h3><p>网格搜索，随机搜索，贝叶斯优化先验</p>
+<h3 id="5-过拟合与欠拟合"><a href="#5-过拟合与欠拟合" class="headerlink" title="5. 过拟合与欠拟合"></a>5. 过拟合与欠拟合</h3><p>正则化，集成学习，dropout，特征选择</p>
+<h2 id="假设空间"><a href="#假设空间" class="headerlink" title="假设空间"></a>假设空间</h2><h3 id="1-损失函数"><a href="#1-损失函数" class="headerlink" title="1. 损失函数"></a>1. 损失函数</h3><p>0-1 损失，平方损失，log 对数损失/交叉熵损失（逻辑回归），hinge 损失（SVM），指数损失（Adaboost）<br>多分类问题中，上述通过最大似然估计得到的损失函数与通过交叉熵得到的损失函数相同</p>
+<script type="math/tex; mode=display">
+l_{C E}=-\sum_{i=1}^{C} t_{i} \log \left(y_{i}\right)</script><h3 id="2-目标函数"><a href="#2-目标函数" class="headerlink" title="2. 目标函数"></a>2. 目标函数</h3><p>目标函数即最小化损失函数+正则</p>
+<ul>
+<li>经验风险（训练集上的）</li>
+<li>期望风险（验证集上的）</li>
+<li>结构风险（加入一个正则化）</li>
+<li>正则化项 -&gt; 模型的复杂度</li>
 </ul>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>主要步骤, 给定数据 X, 进行均值归 0, 方差统一处理后, 得到 Z. 然后根据协方差矩阵 $Z^TZ$ 的特征值从大到小进行排序, 得到特征向量的矩阵 $V^ \star $. 计算 $Z^ \star  = ZV^ \star<br>$</p>
-<p><a href="https://www.kaggle.com/coverdark/pca-principal-component-analysis/" target="_blank" rel="noopener">👆PCA 实现</a></p>
-<pre><code class="lang-py">def pca_custom(X, k):
-    n, p = np.shape(X)
-    # 设置均值为 0
-    Z = X - np.mean(X, axis=0)
-    covZ = np.cov(Z.T) # 协方差矩阵按列计算, 需要转置一下
-    eigValue, eigVector = np.linalg.eig(covZ)  # 计算特征值, 特征向量
-    index = np.argsort(-eigValue)
-
-    if k &gt; p:
-        print (&quot;k must lower than input data dimension！&quot;)
-        return 1
-    else:
-        # 要降到 k 维, 选择前 k 个最大的
-        selectVector = eigVector[:, index[:k]]
-        T = np.matmul(Z, selectVector)
-    return T, selectVector
-</code></pre>
+<h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><p>[详情点击]<a href="https://blog.csdn.net/qq_28168421/article/details/81097655" target="_blank" rel="noopener">https://blog.csdn.net/qq_28168421/article/details/81097655</a><br>欧氏距离 马氏距离 等等</p>
+<h2 id="目标函数的-优化-or-求解"><a href="#目标函数的-优化-or-求解" class="headerlink" title="目标函数的 优化 or 求解"></a>目标函数的 优化 or 求解</h2><ol>
+<li><p>解析法<br>最小二乘法</p>
+</li>
+<li><p>迭代优化：一阶泰勒展开<br>梯度下降、随机梯度下降、批量梯度下降、共轭梯度法</p>
+</li>
+<li><p>迭代优化：二阶泰勒展开<br>牛顿法、拟牛顿法<br>（二阶法的收敛速度一般要远快于一阶法，但是在高维情况下，Hessian 矩阵求逆的计算复杂度很大，而且当目标函数非凸时，二阶法有可能会收到鞍点（Saddle Point)）</p>
+</li>
+<li><p>随机梯度下降<br>动量 Momentum（保持惯性），AdaGrad（环境感知），Adam（保持惯性+环境感知）……</p>
+</li>
+<li><p>限制中优化<br>KKT 条件（最大最小化互换），拉格朗日乘子法（讲约束条件融合到目标函数中）</p>
+</li>
+</ol>
+<h2 id="逻辑回归小记"><a href="#逻辑回归小记" class="headerlink" title="逻辑回归小记"></a>逻辑回归小记</h2><ol>
+<li><p>sigmoid 函数<br>将线性回归转化为逻辑回归，将回归问题转化为二分类问题</p>
+</li>
+<li><p>softmax 是对于 sigmoid 的多分类推广<br>将输出值变换成值为正且和为1的概率分布</p>
+<script type="math/tex; mode=display">
+\hat{y} 1=\frac{\exp \left(o_{1}\right)}{\sum_{i=1}^{3} \exp \left(o_{i}\right)}</script></li>
+<li><p>均方误差 不如 交叉熵损失函数<br>不会使得偏导接近 0 而难以学习</p>
+</li>
+<li><p>更新参数 𝜃<br>步长 = 梯度 x 学习率</p>
+</li>
+</ol>
+<h2 id="PCA-降维"><a href="#PCA-降维" class="headerlink" title="PCA 降维"></a>PCA 降维</h2><ol>
+<li><p>步骤<br>样本中心化 -&gt; 计算协方差矩阵 -&gt; 对协方差矩阵进行特征值分解 -&gt; 取最大的 m 个特征值对应的特征向量</p>
+</li>
+<li><p>原理<br>利用特征值与特征向量, 找到一组标准正交基 —-&gt; 从而可以将任何向量用标准正交基表示 —-&gt; 从而可以将任何协方差矩阵用 $UWU^T$ 形式表示, U 为正交基矩阵, W 就是本矩阵的特征值.</p>
+</li>
+<li><p>解释<br>PCA 的目的是找到一个方向 $v$, 使得在这个方向上数据 X 的投影的方差最大, 方差越大越能保留尽可能多的有效信息. 由于均值已经为 0, 数据 𝑋 在方向 𝑣 的方差就是 $Xv^2$. 最后推算的结论就是, 需要最大特征值对应的特征向量.<br>最终得到 X 的主成分矩阵为 $T=WX$, 其中 $W$ 为$XTX$ 的特征值矩阵.</p>
+</li>
+</ol>
+<h2 id="SVM-算法小记"><a href="#SVM-算法小记" class="headerlink" title="SVM 算法小记"></a>SVM 算法小记</h2><ol>
+<li><p>超平面，函数间隔，几何间隔<br>w, b 任意缩放，几何间隔不变</p>
+</li>
+<li><p>目标函数<br>找到最小的几何间隔，即为支持向量点，最大化这个支持向量到超平面的几何间隔</p>
+</li>
+<li><p>拉格朗日法：融合约束条件和目标函数<br>先调整 α 最大化目标函数；再调整 w,b 最小化目标函数</p>
+</li>
+<li><p>KKT 条件：满足最大最小化 -&gt; 得到对偶形式<br>可以先调整 w,b 对 w,b 求导，最后只剩 α</p>
+</li>
+<li><p>SMO 算法<br>选择优化两个参数，固定其他 N-2 个参数，简化成为二元函数 -&gt; 再转化为一元函数</p>
+</li>
+<li><p>线性不可分的情况<br>加松弛变量，利用核函数（代替内积，建立一个映射，在低维计算，大大减少计算量）</p>
+</li>
+<li><p>损失函数<br>铰链损失 Hinge Loss, 只关注函数间隔 &lt;=1 的情况, &gt;1 的情况的 loss 忽略为 0</p>
+</li>
+</ol>
+<h2 id="决策树小记"><a href="#决策树小记" class="headerlink" title="决策树小记"></a>决策树小记</h2><ol>
+<li><p>分类<br>ID3， C4.5， CART</p>
+</li>
+<li><p>C4.5 对 ID3 的改进</p>
+</li>
+</ol>
+<ul>
+<li>连续的特征离散化</li>
+<li>引入信息增益比</li>
+<li>针对有缺失值提出策略</li>
+<li>针对过拟合的改进：预剪枝（生成决策树的时候判定）后剪枝（交叉验证判定）</li>
+</ul>
+<ol>
+<li>CART 对 C4.5 的优化</li>
+</ol>
+<ul>
+<li>使用基尼系数，无需对数运算</li>
+<li>使用二叉树</li>
+<li>除了分类，可以进行回归（用叶子的均值来预测结果）</li>
+</ul>
+<h2 id="集成学习（Ensemble）"><a href="#集成学习（Ensemble）" class="headerlink" title="集成学习（Ensemble）"></a>集成学习（Ensemble）</h2><ol>
+<li>总体两类：</li>
+</ol>
+<ul>
+<li>串行生成/序列集成，利用基础学习器之间的依赖关系。通过对之前训练中错误标记的样本赋值较高的权重</li>
+<li>并行生成，利用基础学习器之间的独立性，通过平均可以显著降低错误</li>
+<li>三大方法：Bagging，Boosting，Stacking</li>
+</ul>
+<ol>
+<li>Bagging（bootstrap aggregating）自助采样法</li>
+</ol>
+<ul>
+<li>从原始样本集中抽取训练集，k个训练集共得到k个模型，可以并行生成</li>
+<li>分类问题：k个模型采用投票的方式得到分类结果 -&gt; 决策树演化为「随机森林」</li>
+<li>回归问题：模型的均值作为最后的结果</li>
+</ul>
+<ol>
+<li>Boosting 算法<br>将弱分类器组装成一个强分类器</li>
+</ol>
+<ul>
+<li><p>AdaBoost（Adaptive boosting）算法：每次训练后，对训练失败的训练例赋以较大的<code>权重</code>，从而得到多个预测函数. 通过拟合<code>残差</code>的方式逐步减小残差，将每一步生成的模型<code>叠加</code>，只能顺序生成</p>
+</li>
+<li><p>GBDT（Gradient Boost Decision Tree)，每一次的计算是为了减少上一次的残差，GBDT在残差减少（负梯度）的方向上<code>建立一个新的模型</code></p>
+</li>
+</ul>
+<ol>
+<li><p>Stacking 算法<br>把之前训练的各个模型的「输出」，作为为「输入」来<code>训练</code>一个模型，以得到一个最终的输出. 通常使用logistic回归作为组合策略</p>
+</li>
+<li><p>决策树与这些算法框架进行结合所得到的新的算法：<br>1）Bagging + 决策树 = 随机森林<br>2）AdaBoost + 决策树 = 提升树<br>3）Gradient Boosting + 决策树 = GBDT</p>
+</li>
+</ol>
+<h2 id="机器学习概念细节-（最好做一个速查索引）"><a href="#机器学习概念细节-（最好做一个速查索引）" class="headerlink" title="机器学习概念细节 （最好做一个速查索引）"></a>机器学习概念细节 （最好做一个速查索引）</h2><h3 id="范数-L1-L2"><a href="#范数-L1-L2" class="headerlink" title="范数 L1 L2"></a>范数 L1 L2</h3><ol>
+<li>范数的概念<br>范数是具有“长度”概念的函数. 在向量空间内，为所有的向量的赋予非零的增长度或者大小. 不同的范数，所求的向量的长度或者大小是不同的. </li>
+</ol>
+<p>举个例子，2维空间中，向量(3,4)的长度是5，那么5就是这个向量的一个范数的值，更确切的说，是欧式范数或者L2范数的值. </p>
+<ol>
+<li>各种范数<br>L0范数是指向量中非0的元素的个数. (L0范数很难优化求解)</li>
+</ol>
+<p>L1范数是指向量中各个元素绝对值之和</p>
+<p>L2范数是指向量各元素的平方和然后求平方根 -&gt; 岭回归 Ridge Regression == 权值衰减 weight decay</p>
+<p>L1范数可以进行特征选择，即让特征的系数变为0.</p>
+<p>L2范数可以防止过拟合，提升模型的泛化能力，有助于处理 condition number不好下的矩阵(数据变化很小矩阵求解后结果变化很大)</p>
+<ol>
+<li>各自的区别<br>L1范数和L0范数可以实现稀疏，L1因具有比L0更好的优化求解特性而被广泛应用</li>
+</ol>
+<p>L1 可以实现稀疏性，而 L2 不行. L1会趋向于产生少量的特征，而其他的特征都是0，而L2会选择更多的特征，这些特征都会接近于0. Lasso在特征选择时候非常有用，而Ridge就只是一种规则化而已</p>
+<ol>
+<li>实现稀疏的好处<br>利于特征选择 + 更好的可解释性</li>
+</ol>
 
             </div>
             <hr/>
@@ -842,7 +681,7 @@ x_{j}^{(i)} \leftarrow x_{j}^{(i)} / \sigma_{j}</script></li>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://hopenx.github.io/2020/03/01/ml-notes-2/">https://hopenx.github.io/2020/03/01/ml-notes-2/</a>
+                    <a href="https://hopenx.github.io/2020/05/12/ml-script/">https://hopenx.github.io/2020/05/12/ml-script/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1047,30 +886,29 @@ x_{j}^{(i)} \leftarrow x_{j}^{(i)} / \sigma_{j}</script></li>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/03/01/ml-notes-2/">
+                <a href="/2020/05/12/rec-sys-notes/">
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/17.jpg" class="responsive-img" alt="机器学习基础（二)">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/3.jpg" class="responsive-img" alt="推荐系统与信息检索入门">
                         
-                        <span class="card-title">机器学习基础（二)</span>
+                        <span class="card-title">推荐系统与信息检索入门</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            重点介绍 LR, SVM, 矩阵分解, 学习排序, PCA 等
+                            从信息检索的基本原理开始，讲解文本搜索、个性化推荐系统、互联网广告的各环节技术，以信息检索问题和模块作为主线，引入相关的数据科学和机器学习方法论
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-01
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-05-12
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1083,12 +921,11 @@ x_{j}^{(i)} \leftarrow x_{j}^{(i)} / \sigma_{j}</script></li>
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
-                        <span class="chip bg-color">机器学习</span>
+                    <a href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">推荐系统</span>
                     </a>
                     
                 </div>
@@ -1298,7 +1135,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">77.7k</span>&nbsp;字
+                class="white-color">80.5k</span>&nbsp;字
             
             
             

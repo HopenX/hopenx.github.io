@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="深度学习基础, HopenX">
-    <meta name="description" content="简要介绍深度学习的一些基本概念, 深度学习作为机器学习的分支, 有自己一套完整的体系">
+    <meta name="keywords" content="推荐系统与信息检索入门, HopenX">
+    <meta name="description" content="从信息检索的基本原理开始，讲解文本搜索、个性化推荐系统、互联网广告的各环节技术，以信息检索问题和模块作为主线，引入相关的数据科学和机器学习方法论">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>深度学习基础 | HopenX</title>
+    <title>推荐系统与信息检索入门 | HopenX</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/awesome/css/all.css">
@@ -292,7 +292,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">深度学习基础</h1>
+                    <h1 class="description center-align post-title">推荐系统与信息检索入门</h1>
                 </div>
             </div>
         </div>
@@ -464,8 +464,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                                <span class="chip bg-color">深度学习</span>
+                            <a href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
+                                <span class="chip bg-color">推荐系统</span>
                             </a>
                         
                     </div>
@@ -489,7 +489,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-02-14
+                    2020-05-12
                 </div>
                 
 
@@ -498,7 +498,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    2.3k
                 </div>
                 
 
@@ -516,7 +516,83 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h1 id="推荐系统与信息检索入门"><a href="#推荐系统与信息检索入门" class="headerlink" title="推荐系统与信息检索入门"></a>推荐系统与信息检索入门</h1><h2 id="学习排序方法"><a href="#学习排序方法" class="headerlink" title="学习排序方法"></a>学习排序方法</h2><h3 id="Pointwise"><a href="#Pointwise" class="headerlink" title="Pointwise"></a>Pointwise</h3><ul>
+<li>预测绝对相关度 (比如 RMSE), 是预测专家系统, 人为地给定相关度评估, 提取一系列的特征, 当做<code>回归问题</code>处理.</li>
+<li>存在的问题: 单点精度 $\ne$ 排序精度, 在 $(\hat{y}-y)^2$ 相同的情况下, 排序顺序可能发生变化.</li>
+</ul>
+<h3 id="Pairwise"><a href="#Pairwise" class="headerlink" title="Pairwise"></a>Pairwise</h3><ul>
+<li>不关心绝对相关性, 关注文档的相对偏好, 转化为一系列<code>二分类问题</code>. 建立 RankNet</li>
+<li>每个文档的相对的目标概率<script type="math/tex; mode=display">
+y_{i, j}=f(x)=\left\{\begin{array}{lr}
+1, & \text { if } i排在j前 \\
+0, & \text { otherwise }
+\end{array}\right.</script>i 排在 j 前面则为 1, 否则为 0.<br>使用 sigmoid 构造逻辑回归 —-&gt; 使用交叉熵损失函数作为 loss —-&gt; 计算梯度 —-&gt; 在神经网络中 BP<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/EVvyXZgjtsnaM4k.png" alt="Pairwise"></li>
+<li>排序评估指标:<br>查询 q 的标准折扣累积增益 (NDGC@k)<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/PpWRifaGJ3koHZ7.png" alt="NDGC"></li>
+<li>缺点: 对于搜索引擎, 排在前列的文档是否排序正确, 更为重要. 各个文档之间相关性排序是否正确的重要性不同. 相同的排序 pair 错误, 即两对排序交叉熵相同, 但对于整个排序列的影响不同. 比如 &lt; 1, 6 &gt; 和 &lt; 3, 4 &gt; 排序错误的影响不同.</li>
+</ul>
+<h3 id="Listwise"><a href="#Listwise" class="headerlink" title="Listwise"></a>Listwise</h3><p>对于一个 list, 即<code>预测排序列表</code>和<code>真实排序列表</code>之间的差异直接简历损失函数</p>
+<ul>
+<li>ListNet<br>对于 n 个文档, 就是一个 n! 分类的问题. 对整个列表计算 softmax, 然后计算交叉熵 loss.<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/Q9l37MiZzuUxocn.png" alt="ListNet"></li>
+<li>KL 散度<br>计算不同分布之间的 distance</li>
+</ul>
+<h3 id="LambdaRank"><a href="#LambdaRank" class="headerlink" title="LambdaRank"></a>LambdaRank</h3><ul>
+<li>Pairwise 损失了 list-level 列表级评估, Listwise 要求较高的模型复杂度. 于是产生了结合方案: 利用 listwise 的信息, 做 pairwise 的二分类训练, 损失仍然建立在 pair 上, 但是利用 list 的信息, 做一个 weighting 操作</li>
+<li>LambdaRank 优化 NDGC<br>交换 i 和 j 的排序, 看看$\Delta$NDGC 的值, 即变化情况. 将外部排序的信息, 作为 $h\left(\lambda_{i, j}, g_{q}\right)$ 注入.<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/YpdGTvMh9ilo6gW.png" alt="LambdaRank"></li>
+<li>Pairwise 方法仍然是最受欢迎最广泛应用的学习排序算法<br>排序精度和训练效率的平衡              </li>
+<li>LambdaRank 是一种具有排序列表级信息的 pairwise 方法<br>容易实现,易于改进和调整</li>
+</ul>
+<h2 id="矩阵分解的协同过滤算法"><a href="#矩阵分解的协同过滤算法" class="headerlink" title="矩阵分解的协同过滤算法"></a>矩阵分解的协同过滤算法</h2><p>用户-物品矩阵进行预测, 都可以通过分解为两个低秩矩阵, 进行相乘, 从而可以得知矩阵空白处的预测值. 比如分解电影网站的用户打分矩阵, 和电影得分矩阵, 可以预测用户 p 对于一个新的物品 i 的喜好程度.</p>
+<h3 id="基本模型-Matrix-Factorization"><a href="#基本模型-Matrix-Factorization" class="headerlink" title="基本模型 Matrix Factorization"></a>基本模型 Matrix Factorization</h3><ul>
+<li>双线性模型, 参数与参数相乘, pu 为用户偏好矩阵, qi 为物品评价矩阵, 用户 u 在物品 i 上的预测为<script type="math/tex; mode=display">
+\hat{r}_{u, i}=p_{u}^{T} q_{i}</script></li>
+<li>均方误差构造损失函数<script type="math/tex; mode=display">
+\mathcal{L}\left(u, i, r_{u, i}\right)=\frac{1}{2}\left(r_{u, i}-p_{u}^{T} q_{i}\right)^{2}</script></li>
+<li>训练目标: 均方误差+L2范式<script type="math/tex; mode=display">
+\min _{P, Q} \sum_{r_{u, i} \in D} \frac{1}{2}\left(r_{u, i}-p_{u}^{T} q_{i}\right)^{2}+\frac{\lambda}{2}\left(\left\|p_{u}\right\|^{2}+\left\|q_{i}\right\|^{2}\right)</script></li>
+<li>梯度更新: pu 在 qi 方向上变大/变小, qi 在 pu 的方向上变大/变小<script type="math/tex; mode=display">
+\begin{array}{l}
+\frac{\partial \mathcal{L}\left(u, i, r_{u, i}\right)}{\partial p_{u}}=\left(p_{u}^{T} q_{i}-r_{u, i}\right) q_{i}+\lambda p_{u} \\
+\\
+\frac{\partial \mathcal{L}\left(u, i, r_{u, i}\right)}{\partial q_{i}}=\left(p_{u}^{T} q_{i}-r_{u, i}\right) p_{u}+\lambda q_{i}
+\end{array}</script></li>
+</ul>
+<h3 id="带偏差的矩阵分解模型"><a href="#带偏差的矩阵分解模型" class="headerlink" title="带偏差的矩阵分解模型"></a>带偏差的矩阵分解模型</h3><ul>
+<li><p>解决动态变化问题<br>因子模型方便地允许分别处理不同原因, 可以通过大量参数化函数来获得灵活性. 我们观察到的变化: 个人用户的评分等级 $b_u(t)$  个人物品的受欢迎程度 $b_i(t)$  用户偏好 $p_u(t)$  全局bias $\mu$ </p>
+</li>
+<li><p>考虑多种偏差, 用户 u 在物品 i 上的预测为<br><img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://i.loli.net/2020/02/29/IovOtfdJp2lPKUR.png" alt=""></p>
+</li>
+<li><p>训练目标</p>
+<script type="math/tex; mode=display">
+\min _{P, Q} \sum_{r_{u, i} \in D} \frac{1}{2}\left(r_{u, i}-\left(\mu+b_{u}+b_{i}+p_{u}^{\top} q_{i}\right)\right)^{2}+\frac{\lambda}{2}\left(\left\|p_{u}\right\|^{2}+\left\|q_{i}\right\|^{2}+b_{u}^{2}+b_{i}^{2}\right)</script></li>
+<li><p>梯度更新 导数$\times$步长</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\delta &=r_{u, i}-\left(\mu+b_{u}+b_{i}+p_{u}^{T} q_{i}\right) \\
+\mu & \leftarrow \mu+\eta \delta \\
+b_{u} & \leftarrow(1-\eta \lambda) b_{u}+\eta \delta \\
+b_{i} & \leftarrow(1-\eta \lambda) b_{i}+\eta \delta \\
+p_{u} & \leftarrow(1-\eta \lambda) p_{u}+\eta \delta q_{i} \\
+q_{i} & \leftarrow(1-\eta \lambda) q_{i}+\eta \delta p_{u}
+\end{aligned}</script></li>
+<li><p>发展: 深度学习大行其道</p>
+</li>
+<li>代码实践: <a href="https://www.kaggle.com/chenhaokun/matrix-factorization" target="_blank" rel="noopener">👆矩阵分解</a><br>向量即 embedding<br>embedding_size 每个用户的向量维度<br>user_embeddings 和 item_embeddings 即 p 和 q 的矩阵</li>
+</ul>
+<h3 id="常见的几种协同过滤"><a href="#常见的几种协同过滤" class="headerlink" title="常见的几种协同过滤"></a>常见的几种协同过滤</h3><p><strong>以使用者为基础（User-based）的协同过滤</strong><br>用相似统计的方法得到具有相似爱好或者兴趣的相邻用户，所以称之为以用户为基础（User-based）的协同过滤或基于邻居的协同过滤(Neighbor-based Collaborative Filtering)。 </p>
+<p>方法步骤：</p>
+<ol>
+<li>收集用户信息：收集可以代表用户兴趣的信息。一般的网站系统使用评分的方式或是给予评价，这种方式被称为“主动评分”。另外一种是“被动评分”，是根据用户的行为模式由系统代替用户完成评价，不需要用户直接打分或输入评价数据。电子商务网站在被动评分的数据获取上有其优势，用户购买的商品记录是相当有用的数据。</li>
+<li>最近邻搜索(Nearest neighbor search, NNS)：以用户为基础（User-based）的协同过滤的出发点是与用户兴趣爱好相同的另一组用户，就是计算两个用户的相似度。例如：查找n个和A有相似兴趣用户，把他们对M的评分作为A对M的评分预测。一般会根据数据的不同选择不同的算法，当前较多使用的相似度算法有Pearson Correlation Coefficient、Cosine-based Similarity、Adjusted Cosine Similarity。</li>
+<li>产生推荐结果：有了最近邻**，就可以对目标用户的兴趣进行预测，产生推荐结果。依据推荐目的的不同进行不同形式的推荐，较常见的推荐结果有Top-N 推荐和关系推荐。Top-N 推荐是针对个体用户产生，对每个人产生不一样的结果，例如：透过对A用户的最近邻用户进行统计，选择出现频率高且在A用户的评分项目中不存在的，作为推荐结果。关系推荐是对最近邻用户的记录进行关系规则(association rules)挖掘。</li>
+</ol>
+<p><strong>以项目为基础（Item-based）的协同过滤</strong><br>以用户为基础的协同推荐算法随着用户数量的增多，计算的时间就会变长，所以在2001年Sarwar提出了基于项目的协同过滤推荐算法(Item-based Collaborative Filtering Algorithms)。以项目为基础的协同过滤方法有一个基本的假设“能够引起用户兴趣的项目，必定与其之前评分高的项目相似”，透过计算项目之间的相似性来代替用户之间的相似性。<br>方法步骤：</p>
+<ol>
+<li>收集用户信息：同以用户为基础（User-based）的协同过滤。</li>
+<li>针对项目的最近邻搜索：先计算已评价项目和待预测项目的相似度，并以相似度作为权重，加权各已评价项目的分数，得到待预测项目的预测值。例如：要对项目 A 和项目 B 进行相似性计算，要先找出同时对 A 和 B 打过分的组合，对这些组合进行相似度计算，常用的算法同以用户为基础（User-based）的协同过滤。</li>
+<li>产生推荐结果：以项目为基础的协同过滤不用考虑用户间的差别，所以精度比较差。但是却不需要用户的历史数据，或是进行用户识别。对于项目来讲，它们之间的相似性要稳定很多，因此可以离线完成工作量最大的相似性计算步骤，从而降低了在线计算量，提高推荐效率，尤其是在用户多于项目的情形下尤为显着。</li>
+</ol>
+<p><strong>以模型为基础（Model- based）的协同过滤</strong><br>以用户为基础（User-based）的协同过滤和以项目为基础（Item-based）的协同过滤系统称为以记忆为基础（Memory based）的协同过滤技术，他们共有的缺点是数据稀疏，难以处理大数据量影响即时结果，因此发展出以模型为基础的协同过滤技术。 以模型为基础的协同过滤(Model-based Collaborative Filtering)是先用历史数据得到一个模型，再用此模型进行预测。以模型为基础的协同过滤广泛使用的技术包括Latent Semantic Indexing、Bayesian Networks…等，根据对一个样本的分析得到模型。</p>
+
             </div>
             <hr/>
 
@@ -541,7 +617,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://hopenx.github.io/2020/02/14/dl-notes/">https://hopenx.github.io/2020/02/14/dl-notes/</a>
+                    <a href="https://hopenx.github.io/2020/05/12/rec-sys-notes/">https://hopenx.github.io/2020/05/12/rec-sys-notes/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -579,8 +655,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                                    <span class="chip bg-color">深度学习</span>
+                                <a href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
+                                    <span class="chip bg-color">推荐系统</span>
                                 </a>
                             
                         </div>
@@ -746,29 +822,80 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/02/14/dl-notes1-lin-re/">
+                <a href="/2020/05/12/rec-sys-notes/">
                     <div class="card-image">
                         
                         
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/15.jpg" class="responsive-img" alt="动手深度学习(一):线性回归">
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/3.jpg" class="responsive-img" alt="推荐系统与信息检索入门">
                         
-                        <span class="card-title">动手深度学习(一):线性回归</span>
+                        <span class="card-title">推荐系统与信息检索入门</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            从神经网络的角度, 重新认识一下线性回归
+                            从信息检索的基本原理开始，讲解文本搜索、个性化推荐系统、互联网广告的各环节技术，以信息检索问题和模块作为主线，引入相关的数据科学和机器学习方法论
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-14
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    机器学习
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">推荐系统</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/05/12/ml-script/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/17.jpg" class="responsive-img" alt="ml-script">
+                        
+                        <span class="card-title">ml-script</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            脑中的知识网络电子化，腾空脑袋，专心研究公式与细节，每个节点都尽量简化，只作为提醒，可以作为速查速记的小抄，用的时候检索即可
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-12
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -784,53 +911,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                        <span class="chip bg-color">深度学习</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/02/09/hexo-experience/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="https://i.loli.net/2020/02/09/2OERK3tFJve4YDH.gif" data-original="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/1.jpg" class="responsive-img" alt="Hexo 踩坑记录">
-                        
-                        <span class="card-title">Hexo 踩坑记录</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Hexo 作一个优秀的博客框架，本人也是一直参考着网上零零碎碎的博文一步步搭建的，中间遇到不少坑
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-09
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            HopenX
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/hexo/">
-                        <span class="chip bg-color">hexo</span>
+                    <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">机器学习</span>
                     </a>
                     
                 </div>
