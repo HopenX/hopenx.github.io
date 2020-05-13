@@ -537,9 +537,9 @@
 \begin{array}{c}
 v_{t}=\gamma v_{t-1}+\alpha \nabla_{w} J(w) \\
 w=w_{t-1}-v_{t}
-\end{array}
-$$ 根据上述公式进行推导可得到第三次迭代的权重公式如下所示。即第三次迭代的权重值与之前每次的梯度值有关，且随着迭代次数的增加，越早的梯度影响越小。但因此也可以看出，如果本次的梯度方向与先前的一致，则会加速下降，解决原始方法下降太慢的问题；如果符号相反，则会和上次的结果相互抑制，减缓震荡。</script><p>w_{3}=w_{2}-\alpha\left(\gamma^{2} \nabla_{w} J(w)_{1}+\gamma \nabla_{w} J(w)_{2}+\nabla_{w} J(w)_{3}\right)<br>$$</p>
-</li>
+\end{array}</script><p>根据上述公式进行推导可得到第三次迭代的权重公式如下所示。即第三次迭代的权重值与之前每次的梯度值有关，且随着迭代次数的增加，越早的梯度影响越小。但因此也可以看出，如果本次的梯度方向与先前的一致，则会加速下降，解决原始方法下降太慢的问题；如果符号相反，则会和上次的结果相互抑制，减缓震荡。</p>
+<script type="math/tex; mode=display">
+w_{3}=w_{2}-\alpha\left(\gamma^{2} \nabla_{w} J(w)_{1}+\gamma \nabla_{w} J(w)_{2}+\nabla_{w} J(w)_{3}\right)</script></li>
 <li><p><strong>AdaGrad（Adaptive Gradient）：</strong><br>即自适应学习率。AdaGrad的基本思想是<code>对每个权重变量用不同的学习率</code>，这个学习率在一开始比较大，用于快速梯度下降。随着优化过程的进行，对于已经下降很多的变量，则减缓学习率。它主要的缺点是分母会不断累加，最后的学习率会变的非常小。</p>
 </li>
 <li><p><strong>RMSprop：</strong><br>可以解决Adagrad学习率急剧下降的问题。其与Adagrad不同之处就在于梯度累加方式的改变，使用的是梯度平方的指数加权平均</p>
