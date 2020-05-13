@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ml-script, HopenX">
+    <meta name="keywords" content="机器学习小抄, HopenX">
     <meta name="description" content="脑中的知识网络电子化，腾空脑袋，专心研究公式与细节，每个节点都尽量简化，只作为提醒，可以作为速查速记的小抄，用的时候检索即可">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>ml-script | HopenX</title>
+    <title>机器学习小抄 | HopenX</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/libs/awesome/css/all.css">
@@ -287,12 +287,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/hopenx/hopenx.github.io@master/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ml-script</h1>
+                    <h1 class="description center-align post-title">机器学习小抄</h1>
                 </div>
             </div>
         </div>
@@ -643,14 +643,10 @@ l_{C E}=-\sum_{i=1}^{C} t_{i} \log \left(y_{i}\right)</script><h3 id="2-目标�
 </ol>
 <p>举个例子，2维空间中，向量(3,4)的长度是5，那么5就是这个向量的一个范数的值，更确切的说，是欧式范数或者L2范数的值. </p>
 <ol>
-<li>各种范数<br>L0范数是指向量中非0的元素的个数. (L0范数很难优化求解)</li>
-</ol>
-<p>L1范数是指向量中各个元素绝对值之和</p>
-<p>L2范数是指向量各元素的平方和然后求平方根 -&gt; 岭回归 Ridge Regression == 权值衰减 weight decay</p>
-<p>L1范数可以进行特征选择，即让特征的系数变为0.</p>
-<p>L2范数可以防止过拟合，提升模型的泛化能力，有助于处理 condition number不好下的矩阵(数据变化很小矩阵求解后结果变化很大)</p>
-<ol>
-<li>各自的区别<br>L1范数和L0范数可以实现稀疏，L1因具有比L0更好的优化求解特性而被广泛应用</li>
+<li><p>各种范数<br>L0范数是指向量中非0的元素的个数. L0范数很难优化求解<br>L1范数是指向量中各个元素绝对值之和<br>L2范数是指向量各元素的平方和然后求平方根 -&gt; 岭回归 Ridge Regression == 权值衰减 weight decay<br>L1范数可以进行特征选择，即让特征的系数变为0.<br>L2范数可以防止过拟合，提升模型的泛化能力，有助于处理 condition number不好下的矩阵(数据变化很小矩阵求解后结果变化很大)</p>
+</li>
+<li><p>各自的区别<br>L1范数和L0范数可以实现稀疏，L1因具有比L0更好的优化求解特性而被广泛应用</p>
+</li>
 </ol>
 <p>L1 可以实现稀疏性，而 L2 不行. L1会趋向于产生少量的特征，而其他的特征都是0，而L2会选择更多的特征，这些特征都会接近于0. Lasso在特征选择时候非常有用，而Ridge就只是一种规则化而已</p>
 <ol>
@@ -1135,7 +1131,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">80.5k</span>&nbsp;字
+                class="white-color">82.4k</span>&nbsp;字
             
             
             
